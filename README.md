@@ -1,4 +1,4 @@
-![luseed](https://github.com/magniefique/luseed/assets/132038523/b5ffd038-1c62-471f-a3f3-9e0294cb0f8f)
+![luseed](https://github.com/magniefique/luseed/assets/132038523/cad56239-e2a3-4484-ae44-f979583cac6d)
 # 🌱 About
 A beginner friendly programming language without sacrificing syntactical elements. This language is made in python.
 
