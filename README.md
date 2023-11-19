@@ -7,5 +7,5 @@ A beginner friendly programming language without sacrificing syntactical element
 - Swap Functionality
 - Loop Naming
 
-# 🌱 Installation
+# 💾 Installation
 In order to install luseed to your device you must do the following:
