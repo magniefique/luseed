@@ -1,8 +1,4 @@
-from tokens import *
-from lexer import *
-import regex
 
-# Function that reads the file 
 def readfile(file_path: str):
     if file_path.endswith('.lsed'):
         file_content = ""

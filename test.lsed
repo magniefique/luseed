@@ -1,0 +1,8 @@
+display("Hello World");
+display("Hello");
+if(3 < 5):
+{
+    ask("Insert Number");
+    5 + 3;
+    i++;
+}
