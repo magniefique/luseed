@@ -1,8 +1,19 @@
 display("Hello World");
 display("Hello");
+int hellow_var;
+int int&jd2k;
+float var = 10.5;
+
 if(3 < 5):
 {
-    ask("Insert Number");
-    5 + 3;
-    i++;
+    ask("Insert Number: 5 * 3 ");
+}
+
+for(i = 1; i < 5; i++):
+{
+    display("Testing this lorem ipsum");
+}
+
+loop testLoop: for(i = 5; i < 10; i++){
+    display("@&dsd Hellow")
 }
