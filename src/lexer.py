@@ -25,14 +25,11 @@ class Lexer(object):
                 __lexeme += char
 
                 # Appends the current value of the __oplexeme as a lexeme if the char is not alpha and adds to the lexeme if alpha
-                if __oplexeme != "":
-                    if not char.isalpha():
-                        self.lexeme_list.append(__oplexeme)
-                        __oplexeme = ""
-                   
-                    else:
-                        __lexeme += __oplexeme
-                        __oplexeme = ""
+                if __oplexeme != "" and __lexeme != "":
+                    self.lexeme_list.append(__lexeme)
+                    self.lexeme_list.append(__oplexeme)
+                    __lexeme = ""
+                    __oplexeme = ""
             
             # Checks if char is a special character
             elif char in SPECIAL_CHAR:

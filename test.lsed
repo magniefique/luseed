@@ -1,7 +1,7 @@
 display("Hello World");
 display("Hello");
 int hellow_var;
-int int&jd2k;
+int int_3*42k;
 float var = 10.5;
 
 if(3 < 5):
