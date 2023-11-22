@@ -1,2 +1,3 @@
-ask("Sino ka? ");
-display("Jerichaw");
+int test = ask("Insert Number: ");
+display(test);
++display(Hellow);

@@ -1,10 +1,8 @@
-
 from tokens import *
 from lexer import *
 from syntax import *
 import regex
 
-# Function that reads the file 
 def readfile(file_path: str):
     """
     This function reads the file and performs lexical analysis.
@@ -18,11 +16,8 @@ def readfile(file_path: str):
         # Create a Lexer object and tokenize the file content
         code = Lexer(file_content)
         token_list = code.returntokens()
+        #SyntacticAnalyzer(token_list)
         
-        # Create a SyntacticAnalyzer object and perform syntactic analysis
-        # analyzer = SyntacticAnalyzer(token_list)
-        # analyzer.analyze()
-
     else:
         print(f"\033[91mERROR: Unsupported File Extension.\033[0m")
    
