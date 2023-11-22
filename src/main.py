@@ -1,7 +1,6 @@
 from tokens import *
 from lexer import *
 from syntax import *
-import regex
 
 def readfile(file_path: str):
     """

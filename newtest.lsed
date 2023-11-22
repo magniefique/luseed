@@ -1,3 +1,5 @@
 int test = ask("Insert Number: ");
-display(test);
-+display(Hellow);
+int test1;
+/* display(test);
++display(Hellow);** 
+display(Hellow);

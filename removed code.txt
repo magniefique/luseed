@@ -1,0 +1,6 @@
+
+                    if __lexeme != "":
+                        __lexeme += char
+                        self.lexeme_list.append(__lexeme)
+                        self.tokenize(__lexeme)
+                        __lexeme = ""

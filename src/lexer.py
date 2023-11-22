@@ -10,6 +10,11 @@ class Lexer(object):
         self.source_code = source_code
         
         self.isString = False
+        self.singleComment = False
+        self.multiComment = False
+
+        self.line_count = 1
+        self.line_comment = None
 
         # Lexeme list refers to the lexemes found in the file
         self.lexeme_list = []
@@ -25,88 +30,113 @@ class Lexer(object):
         """
         __lexeme = ""
         __oplexeme = ""
-        __line_count = 1
+        self.line_count = 1
 
         for char in self.source_code:
-            
             # Checks if char is an alphanumeric character
             if char.isalnum():
-                __lexeme += char
+                if not self.singleComment and not self.multiComment:
+                    __lexeme += char
 
                 # Appends the current value of the __oplexeme if it is not empty 
                 if __oplexeme != "" and __lexeme != "":
-                    self.lexeme_list.append(__oplexeme)
                     self.tokenize(__oplexeme)
                     __oplexeme = ""
-            
+
             # Checks if char is a special character
             elif char in SPECIAL_CHAR:
                 
-                # Checks if character is double quote for strings
-                if char == "\"":
-                    __lexeme += char
+                # Checks if char is in DOUBLE OP for Operators and Comments 
+                if char in DOUBLE_OP and not self.isString:
+                    if not self.singleComment and not self.multiComment:
+                        __oplexeme += char
+                    elif self.multiComment:
+                        if len(__oplexeme) == 2:
+                            if __oplexeme != "*/":
+                                __oplexeme = ""
 
-                    if self.isString:
-                        self.isString = False
-                        SPECIAL_CHAR.remove(" ")
-                        self.lexeme_list.append(__lexeme)
-                        self.tokenize(__lexeme)
-                        __lexeme = ""
-                    
-                    # Appends " " for strings
-                    elif not self.isString:
-                        self.isString = True
-                        SPECIAL_CHAR.append(" ")
+                        if char == "*" or char == "/":
+                            __oplexeme += char
+                
+                    # Activates comment boolean if __oplexeme is in comments
+                    if __oplexeme in COMMENTS:
+                        if __oplexeme == "//":
+                            self.singleComment = True
 
-                # Checks if char is single quote for char literals and spaces for string values
-                elif char == "\'" or char == "_" or char == " ":
-                    __lexeme += char
+                        elif __oplexeme == "/*":
+                            self.multiComment = True
+                            self.line_comment = self.line_count
 
-                # Checks if char is in DOUBLE OP for Operators such as logical and assignment
-                elif char in DOUBLE_OP and not self.isString:
-                    __oplexeme += char
+                        elif __oplexeme == "*/":
+                            self.multiComment = False
+                            self.line_comment = None
 
-                # Checks if char is a period and 
-                elif char == "." and not self.isString:
-                    if __lexeme.isnumeric():
-                        __lexeme += char
-
-                # Adds the char to __lexeme if isString is active 
-                elif self.isString:
-                    __lexeme += char
-
-                else:
-                    # Parses the string that was formulated
-                    if __lexeme != "" and __lexeme != "\"":
-                        self.lexeme_list.append(__lexeme)
-                        self.tokenize(__lexeme)
-                        __lexeme = ""
-                    
-                    if __lexeme != "":
-                        __lexeme += char
-                        self.lexeme_list.append(__lexeme)
-                        self.tokenize(__lexeme)
-                        __lexeme = ""
-
-                    # Parses the operator present in __oplexeme
-                    if __oplexeme != "":
-                        self.lexeme_list.append(__oplexeme)
-                        self.tokenize(__oplexeme)
                         __oplexeme = ""
 
-                    # Sets the current char to __lexeme and turns it into a lexeme
-                    if char != "\"":
-                        __lexeme += char
-                        self.lexeme_list.append(__lexeme)
+                    # Tokenizes the lexemes present in the __lexeme
+                    if __lexeme != "":
                         self.tokenize(__lexeme)
                         __lexeme = ""
+                
+                elif not self.singleComment and not self.multiComment:
+                    # Checks if character is double quote for strings
+                    if char == "\"":
+                        __lexeme += char
+
+                        if self.isString:
+                            self.isString = False
+                            SPECIAL_CHAR.remove(" ")
+                            self.tokenize(__lexeme)
+                            __lexeme = ""
+                        
+                        # Appends " " for strings
+                        elif not self.isString:
+                            self.isString = True
+                            SPECIAL_CHAR.append(" ")
+
+                    # Checks if char is single quote for char literals and spaces for string values
+                    elif char == "\'" or char == "_" or char == " ":
+                        __lexeme += char
+
+                    # Checks if char is a period and 
+                    elif char == "." and not self.isString:
+                        if __lexeme.isnumeric():
+                            __lexeme += char
+
+                    # Adds the char to __lexeme if isString is active 
+                    elif self.isString:
+                        __lexeme += char
+
+                    else:
+                        # Parses the string that was formulated
+                        if __lexeme != "" and __lexeme != "\"":
+                            self.tokenize(__lexeme)
+                            __lexeme = ""
+
+                        # Parses the operator present in __oplexeme
+                        if __oplexeme != "":
+                            self.tokenize(__oplexeme)
+                            __oplexeme = ""
+
+                        # Sets the current char to __lexeme and turns it into a lexeme
+                        if char != "\"":
+                            __lexeme += char
+                            self.tokenize(__lexeme)
+                            __lexeme = ""
 
             else:
+                if char == "\n":
+                    self.singleComment = False
+                    self.line_count += 1
+
                 # Makes the string a lexeme if char is " " and not in SPECIAL CHARACTERS
                 if __lexeme != "":
-                    self.lexeme_list.append(__lexeme)
                     self.tokenize(__lexeme)
                     __lexeme = ""
+                
+        if self.multiComment:
+            print(f"\033[91mERROR: MultiLine Comment not concluded in line", self.line_comment, "\033[0m")
+            #exit(1)
         
         self.displaytokens()
 
@@ -151,9 +181,11 @@ class Lexer(object):
             self.token_list.append([lexeme, "char_literal"])
 
         else:
-            if len(lexeme) > 0 and lexeme.replace("_", "").isalnum():
+            if len(lexeme) > 0 and lexeme[0].isalpha() and lexeme.replace("_", "").isalnum():
                 self.token_list.append([lexeme, "identifier"])
-            else: 
+            else:
+                print(f"\033[91mERROR: Unknown Token in line", self.line_count, "\033[0m")
+                #exit(1)
                 self.token_list.append([lexeme, "unknown"])
 
     def isfloat(self, value: str):

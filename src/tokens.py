@@ -110,3 +110,6 @@ ESCAPE_SEQUENCES = {
 WHITESPACES = {
     " " : "whitespace"
 }
+
+# COMMENTS
+COMMENTS = ["//", "/*", "*/"]
