@@ -20,12 +20,9 @@ class SyntacticAnalyzer:
                 else:
                     self.isIdentifier = True
             elif self.isIdentifier:
-                if token[0][0].isalpha() and token[0].replace("_", "").isalnum():
-                    self.parsed_code += token[0]
-                    self.isIdentifier = False
-                    self.valueAdd = True
-                else:
-                    return
+                self.parsed_code += token[0]
+                self.isIdentifier = False
+                self.valueAdd = True
             else:
                 self.parsed_code += token[0]
         self.run()

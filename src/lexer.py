@@ -1,5 +1,4 @@
 from tokens import *
-import regex
 
 # Lexer class of luseed
 class Lexer(object):
@@ -9,6 +8,7 @@ class Lexer(object):
     def __init__(self, source_code: str):
         self.source_code = source_code
         
+        self.isChar = False
         self.isString = False
         self.singleComment = False
         self.multiComment = False
@@ -33,6 +33,7 @@ class Lexer(object):
         self.line_count = 1
 
         for char in self.source_code:
+            
             # Checks if char is an alphanumeric character
             if char.isalnum():
                 if not self.singleComment and not self.multiComment:
@@ -50,10 +51,11 @@ class Lexer(object):
                 if char in DOUBLE_OP and not self.isString:
                     if not self.singleComment and not self.multiComment:
                         __oplexeme += char
+
                     elif self.multiComment:
                         if len(__oplexeme) == 2:
                             if __oplexeme != "*/":
-                                __oplexeme = ""
+                                __oplexeme = __oplexeme[1:]
 
                         if char == "*" or char == "/":
                             __oplexeme += char
@@ -67,7 +69,7 @@ class Lexer(object):
                             self.multiComment = True
                             self.line_comment = self.line_count
 
-                        elif __oplexeme == "*/":
+                        elif __oplexeme == "*/" and self.multiComment:
                             self.multiComment = False
                             self.line_comment = None
 
@@ -94,17 +96,29 @@ class Lexer(object):
                             self.isString = True
                             SPECIAL_CHAR.append(" ")
 
-                    # Checks if char is single quote for char literals and spaces for string values
-                    elif char == "\'" or char == "_" or char == " ":
+                    # Adds the char to __lexeme if isString is active 
+                    elif self.isString:
                         __lexeme += char
+                    
+                    # Checks if char is a single quotation
+                    elif char == "\'":
+                        if not self.isChar:
+                            self.isChar = True
+                        else:
+                            self.isChar = False
 
-                    # Checks if char is a period and 
-                    elif char == "." and not self.isString:
+                    # Checks if char is a  period 
+                    elif char == ".":
                         if __lexeme.isnumeric():
                             __lexeme += char
 
-                    # Adds the char to __lexeme if isString is active 
-                    elif self.isString:
+                        elif __lexeme.replace("_", "").isalnum() and __lexeme != "":
+                            self.tokenize(__lexeme)
+                            self.tokenize(char) 
+                            __lexeme = ""                         
+
+                    # Checks if char is single quote for char literals and spaces for string values
+                    elif char == "_" or char == " ":
                         __lexeme += char
 
                     else:
@@ -138,6 +152,14 @@ class Lexer(object):
             print(f"\033[91mERROR: MultiLine Comment not concluded in line", self.line_comment, "\033[0m")
             #exit(1)
         
+        if self.isChar:
+            print(f"\033[91mERROR: Char literal is not terminated", self.line_comment, "\033[0m")
+
+        if self.isString:
+            print(f"\033[91mERROR: String literal is not terminated", self.line_comment, "\033[0m")
+
+        
+
         self.displaytokens()
 
     def tokenize(self, lexeme: str):
@@ -171,8 +193,11 @@ class Lexer(object):
         elif lexeme.isnumeric():
             self.token_list.append([lexeme, "int_literal"])
 
-        elif self.isfloat(lexeme):
+        elif lexeme[-1] == "f" and self.isfloat(lexeme.replace("f", "")):
             self.token_list.append([lexeme, "float_literal"])
+
+        elif self.isfloat(lexeme):
+            self.token_list.append([lexeme, "double_literal"])
 
         elif "\"" in lexeme:
             self.token_list.append([lexeme, "string_literal"])
@@ -188,13 +213,14 @@ class Lexer(object):
                 #exit(1)
                 self.token_list.append([lexeme, "unknown"])
 
-    def isfloat(self, value: str):
+    def isfloat(self, value):
         """
-        Checks if the passed value is a float.
+        Tests a value if it is a valid float
         """
         try:
             float(value)
             return True
+        
         except ValueError:
             return False
 

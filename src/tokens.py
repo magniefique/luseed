@@ -94,7 +94,8 @@ DELIMITERS = {
     "]" : "close_square_bracket",
     "(" : "open_parenthesis",
     ")" : "close_parenthesis",
-    "\"" : "string_delimiter"
+    "\"" : "string_delimiter",
+    "." : "object_delimiter"
 }
 
 # ESCAPE SEQUENCES
