@@ -10,6 +10,7 @@ class Lexer(object):
         
         self.isChar = False
         self.isString = False
+        self.isProperty = False
         self.singleComment = False
         self.multiComment = False
 
@@ -115,7 +116,8 @@ class Lexer(object):
                         elif __lexeme.replace("_", "").isalnum() and __lexeme != "":
                             self.tokenize(__lexeme)
                             self.tokenize(char) 
-                            __lexeme = ""                         
+                            __lexeme = ""
+                            self.isProperty = True                         
 
                     # Checks if char is single quote for char literals and spaces for string values
                     elif char == "_" or char == " ":
@@ -127,6 +129,9 @@ class Lexer(object):
                             self.tokenize(__lexeme)
                             __lexeme = ""
 
+                            if self.isProperty:
+                                self.isProperty = False
+
                         # Parses the operator present in __oplexeme
                         if __oplexeme != "":
                             self.tokenize(__oplexeme)
@@ -134,9 +139,7 @@ class Lexer(object):
 
                         # Sets the current char to __lexeme and turns it into a lexeme
                         if char != "\"":
-                            __lexeme += char
-                            self.tokenize(__lexeme)
-                            __lexeme = ""
+                            self.tokenize(char)
 
             else:
                 if char == "\n":
@@ -190,13 +193,13 @@ class Lexer(object):
         elif lexeme in ESCAPE_SEQUENCES:
             self.token_list.append([lexeme, ESCAPE_SEQUENCES[lexeme]])
 
-        elif lexeme.isnumeric():
+        elif lexeme.isnumeric() and not self.isProperty:
             self.token_list.append([lexeme, "int_literal"])
 
         elif lexeme[-1] == "f" and self.isfloat(lexeme.replace("f", "")):
             self.token_list.append([lexeme, "float_literal"])
 
-        elif self.isfloat(lexeme):
+        elif self.isfloat(lexeme) and "." in lexeme:
             self.token_list.append([lexeme, "double_literal"])
 
         elif "\"" in lexeme:

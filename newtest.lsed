@@ -19,6 +19,8 @@ class NewClass:
 
 obj class1 = NewClass();
 display(class1.num1);
+int newNum = class1.000;
+float varAgain = 1.000f;
 
 if (char == 'c') then:
 {
