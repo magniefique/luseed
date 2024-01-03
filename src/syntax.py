@@ -1,5 +1,6 @@
 from python_rep import *
 
+# Not yet sure about this one
 class SyntacticAnalyzer:
     def __init__(self, tokens: list):
         self.tokens = tokens

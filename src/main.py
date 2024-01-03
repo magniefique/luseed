@@ -13,7 +13,7 @@ def readfile(file_path: str):
             file_content = file.read()
         
         # Create a Lexer object and tokenize the file content
-        code = Lexer(file_content)
+        code = Lexer(file_content, file_path)
         token_list = code.returntokens()
         #SyntacticAnalyzer(token_list)
         

@@ -1,115 +1,123 @@
-import regex
 UPPERC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 LOWERC = "abcdefghijklmnopqrstuvwxyz"
 DIGITS = "0123456789"
-SPECIAL_CHAR = [".", "+", "-", "*", "/", "%", "<", ">", "=", "\"", "\'", ",", ";", "|", "!", "(", ")", "[", "]", "{", "}", "_", "^", "~", "&", ":", "?", "^", "#", "@", "-", "`"]
+SPECIAL_CHAR = [".", "+", "-", "*", "/", "%", "<", ">", "=", "\\", "\"", "\'", ",", ";", "|", "!", "(", ")", "[", "]", "{", "}", "_", "^", "~", "&", ":", "?", "^", "#", "@", "-", "`"]
 DOUBLE_OP = ["+", "-", "*", "/", "%", "~", "=", "!", "<", ">"]
 
 # KEYWORD DICTIONARY
 KEYWORDS = {
-    "ask" : "keyword",
-    "bool" : "keyword",
-    "break" : "keyword",
-    "char" : "keyword",
-    "class" : "keyword",
-    "const" : "keyword",
-    "continue" : "keyword",
-    "display" : "keyword",
-    "do" : "keyword",
-    "double" : "keyword",
-    "elif" : "keyword",
-    "else" : "keyword",
-    "false" : "keyword",
-    "float" : "keyword",
-    "for" : "keyword",
-    "func" : "keyword",
-    "if" : "keyword",
-    "init" : "keyword",
-    "int" : "keyword",
-    "list" : "keyword",
-    "obj" : "keyword",
-    "private" : "keyword",
-    "protected" : "keyword",
-    "public" : "keyword",
-    "repeat" : "keyword",
-    "return" : "keyword",
-    "str" : "keyword",
-    "then" : "keyword",
-    "this" : "keyword",
-    "true" : "keyword",
-    "until" : "keyword",
-    "while" : "keyword"
+    "ask" : "KEYWORD",
+    "bool" : "KEYWORD",
+    "break" : "KEYWORD",
+    "char" : "KEYWORD",
+    "class" : "KEYWORD",
+    "const" : "KEYWORD",
+    "continue" : "KEYWORD",
+    "display" : "KEYWORD",
+    "do" : "KEYWORD",
+    "double" : "KEYWORD",
+    "elif" : "KEYWORD",
+    "else" : "KEYWORD",
+    "false" : "KEYWORD",
+    "float" : "KEYWORD",
+    "for" : "KEYWORD",
+    "foreach" : "KEYWORD",
+    "func" : "KEYWORD",
+    "help" : "KEYWORD",
+    "if" : "KEYWORD",
+    "info" : "KEYWORD",
+    "init" : "KEYWORD",
+    "inheritall" : "KEYWORD",
+    "in" : "KEYWORD",
+    "int" : "KEYWORD",
+    "list" : "KEYWORD",
+    "main" : "KEYWORD",
+    "null" : "KEYWORD",
+    "obj" : "KEYWORD",
+    "private" : "KEYWORD",
+    "protected" : "KEYWORD",
+    "public" : "KEYWORD",
+    "quit" : "KEYWORD",
+    "repeat" : "KEYWORD",
+    "return" : "KEYWORD",
+    "str" : "KEYWORD",
+    "then" : "KEYWORD",
+    "this" : "KEYWORD",
+    "true" : "KEYWORD",
+    "until" : "KEYWORD",
+    "while" : "KEYWORD"
 }
 
 # OPERATORS
 OP_ASSIGNMENT = {
-    "=" : "assignment_op",
-    "+=" : "addition_assignment_op",
-    "-=" : "subtraction_assignment_op",
-    "*=" : "multiplication_assignment_op",
-    "/=" : "division_assignment_op",
-    "%=" : "modulo_assignment_op",
-    "~=" : "floor_division_assignment_op"
+    "=" : "ASSIGNMENT_OP",
+    "+=" : "ADDITION_ASSIGNMENT_OP",
+    "-=" : "SUBTRACTION_ASSIGNMENT_OP",
+    "*=" : "MULTIPLICATION_ASSIGNMENT_OP",
+    "/=" : "DIVISION_ASSIGNMENT_OP",
+    "%=" : "MODULO_ASSIGNMENT_OP",
+    "~=" : "FLRDIVISION_ASSIGNMENT_OP"
 }
 
 OP_ARITHMETIC = {
-    "+" : "addition_op",
-    "-" : "subtraction_op",
-    "*" : "multiplication_op",
-    "/" : "division_op",
-    "%" : "modulo_op",
-    "~" : "floor_division_op",
-    "**" : "exponentiate_op"
+    "+" : "ADDITION_OP",
+    "-" : "SUBTRACTION_OP",
+    "*" : "MULTIPLICATION_OP",
+    "/" : "DIVISION_OP",
+    "%" : "MODULO_OP",
+    "~" : "FLRDIVISION_OP",
+    "**" : "EXPONENTIATE_OP"
 }
 
 OP_UNARY = {
-    "+" : "positive_op",
-    "-" : "negative_op", 
-    "++" : "increment_op",
-    "--" : "decrement_op",
+    "+" : "POSITIVE_OP",
+    "-" : "NEGATIVE_OP", 
+    "++" : "INCREMENT_OP",
+    "--" : "DECREMENT_OP",
 }
 
 OP_LOGIC = {
-    "not" : "not_op",
-    "or" : "or_op",
-    "and" : "and_op"
+    "not" : "NOT_OP",
+    "or" : "OR_OP",
+    "and" : "AND_OP"
 }
 
 OP_RELATION = {
-    "==" : "equality_op",
-    "!=" : "inequality_op",
-    ">" : "greater_than_op",
-    "<" : "less_than_op",
-    ">=" : "greater_or_equal_op",
-    "<=" : "less_or_equal_op",
+    "==" : "EQUALITY_OP",
+    "!=" : "INEQUALITY_OP",
+    ">" : "GREATER_THAN_OP",
+    "<" : "LESS_THAN_OP",
+    ">=" : "GREATER_OR_EQUAL_OP",
+    "<=" : "LESS_OR_EQUAL_OP",
 }
 
 # DELIMITERS
 DELIMITERS = {
-    ";" : "statement_terminator",
-    ":" : "code_block_indicator",
-    "{" : "open_curly_bracket",
-    "}" : "close_curly_bracket",
-    "[" : "open_square_bracket",
-    "]" : "close_square_bracket",
-    "(" : "open_parenthesis",
-    ")" : "close_parenthesis",
-    "\"" : "string_delimiter",
-    "." : "object_delimiter"
+    ";" : "STMT_TERMINATOR",
+    ":" : "CODEBLK_INDICATOR",
+    "{" : "OPEN_CURLY_BRACKET",
+    "}" : "CLOSE_CURLY_BRACKET",
+    "[" : "OPEN_SQUARE_BRACKET",
+    "]" : "CLOSE_SQUARE_BRACKET",
+    "(" : "OPEN_PARENTHESIS",
+    ")" : "CLOSE_PARENTHESIS",
+    "\"" : "STRING_DELIMITER",
+    "." : "OBJECT_DELIMITER"
 }
 
 # ESCAPE SEQUENCES
 ESCAPE_SEQUENCES = {
-    r"\n" : "new_line",
-    r"\t" : "horizontal_tab",
-    r"\v" : "vertical_tab",
-    r"\'" : "single_quote",
-    r"\"" : "double_quote",
+    r"\n" : "NEW_LINE",
+    r"\t" : "HORIZONTAL_TAB",
+    r"\v" : "VERTICAL_TAB",
+    r"\'" : "SINGLE_QUOTE",
+    r"\"" : "DOUBLE_QUOTE",
+    r"\\" : "BACKSLASH"
 }
 
 # WHITESPACES
 WHITESPACES = {
-    " " : "whitespace"
+    " " : "WHITESPACE"
 }
 
 # COMMENTS

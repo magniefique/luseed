@@ -1,23 +1,32 @@
-display("Hello World");
-display("Hello");
-int hellow_var;
-int int_3 * 42k;
-float var = 10.5;
-float var = 10 + 5;
+main(){
+    display("Hello Word!");
+    int intvar = 3;
+    float FloatVar = 4.0f;
+    double double_var = 1.54233;
 
-testvar = var + var;
-testvar = 10 + var;
+    char charVar = 'd';
+    str stringVariable = "Hello Everyone, this is Everyone!\n";
 
-if(3 < 5):
-{
-    ask("Insert Number: 5 * 3 ");
-}
+    if(intvar <= 3) then:
+    {
+        intvar = 5;
+    }
+    elif(intvar != 3):
+    {
+        intvar = 10;
+    }
+    else:
+    {
+        pass;
+    }
 
-for(i = 1; i < 5; i++):
-{
-    display("Testing this lorem ipsum");
-}
+    for(int i = 0, i < 5, i++):
+    {
+        display(i);
+    }
 
-loop testLoop: for(i = 5; i < 10; i++){
-    display("@&dsd Hellow");
+    while(int j < 5):
+    {
+        j++;
+    }
 }
