@@ -14,30 +14,27 @@ class Lexer(object):
         self.isChar = False
         self.isString = False
 
-        # Keeps count for the length of char 
-        self.char_len = 0
-
         # Used to tell the program that the next values are for escape sequences
         self.isEscape = False
-
-        # Used to tell the program that the chars next the "." char is a propperty
-        self.isProperty = False
 
         # Enables the comment functionality
         self.singleComment = False
         self.multiComment = False
 
         # Keeps count of the lines for error handling
-        self.line_count = 1
+        self.line_count = 0
+
+        # Keeps count of the character count
+        self.char_count = 0
 
         # Variable that holds the line that started the multi-line comment
-        self.line_comment = None
+        self.line_comment = 0
 
         # Variable that holds the line where the char started
-        self.char_start = None
+        self.char_start = 0
 
         # Variable that holds the line where the string started
-        self.string_start = None
+        self.string_start = 0
 
         # Lexeme list refers to the lexemes found in the file
         self.lexeme_list = []
@@ -57,28 +54,22 @@ class Lexer(object):
 
         for char in self.source_code:
             # Checks if char is an alphanumeric character
-            
             if char.isalnum():
-                if self.isEscape:
+                self.char_count += 1
+                # Checks if escape sequence is being formulated
+                if self.isEscape and self.isString:
                     __oplexeme += char
                     self.isEscape = False
-                    
-                    if __oplexeme in ESCAPE_SEQUENCES:
-                        __lexeme += __oplexeme
-                            
-                    else:
-                        print(f"\033[91mERROR: Invalid Escape Sequence at line ", self.line_count, "\033[0m")
+                    # Checks if value in __oplexeme is a valid Escape Sequence
+                    if __oplexeme not in ESCAPE_SEQUENCES:
+                        print(f"\033[91mERROR: Invalid Escape Sequence at character {self.char_count}, line {self.line_count}.\033[0m")
 
+                    __lexeme += __oplexeme
                     __oplexeme = ""
 
                 else:
-
+                    # Checks if the next inputs are not comments
                     if not self.singleComment and not self.multiComment:
-                        if self.isChar and self.char_len == 0:
-                            self.char_len += 1
-
-                        elif self.isChar and self.char_len == 1:
-                            print(f"\033[91mERROR: Invalid Character Literal at line ", self.line_count, "\033[0m")
 
                         __lexeme += char
 
@@ -89,7 +80,7 @@ class Lexer(object):
 
             # Checks if char is a special character
             elif char in SPECIAL_CHAR:
-                
+                self.char_count += 1
                 # Checks if char is in DOUBLE OP for Operators and Comments 
                 if char in DOUBLE_OP and not self.isString:
                     if not self.singleComment and not self.multiComment:
@@ -114,7 +105,7 @@ class Lexer(object):
 
                         elif __oplexeme == "*/" and self.multiComment:
                             self.multiComment = False
-                            self.line_comment = None
+                            self.line_comment = 0
 
                         __oplexeme = ""
 
@@ -148,12 +139,10 @@ class Lexer(object):
                             if self.isEscape:
                                 self.isEscape = False
                                 
-                                if __oplexeme in ESCAPE_SEQUENCES:
-                                    __lexeme += __oplexeme
+                                if __oplexeme not in ESCAPE_SEQUENCES:
+                                    print(f"\033[91mERROR: Invalid Escape Sequence at character {self.char_count}, line {self.line_count}.\033[0m")
                                 
-                                else:
-                                    print(f"\033[91mERROR: Invalid Escape Sequence at line ", self.line_count, "\033[0m")
-
+                                __lexeme += __oplexeme
                                 __oplexeme = ""
                                     
                             else:
@@ -181,10 +170,9 @@ class Lexer(object):
                         elif __lexeme.replace("_", "").isalnum() and __lexeme != "":
                             self.tokenize(__lexeme)
                             self.tokenize(char) 
-                            __lexeme = ""
-                            self.isProperty = True                         
+                            __lexeme = ""                      
 
-                    # Checks if char is single quote for char literals and spaces for string values
+                    # Checks if char is an underscore or space (For strings)
                     elif char == "_" or char == " ":
                         __lexeme += char
 
@@ -193,9 +181,6 @@ class Lexer(object):
                         if __lexeme != "" and __lexeme != "\"":
                             self.tokenize(__lexeme)
                             __lexeme = ""
-
-                            if self.isProperty:
-                                self.isProperty = False
 
                         # Parses the operator present in __oplexeme
                         if __oplexeme != "":
@@ -207,12 +192,14 @@ class Lexer(object):
                             self.tokenize(char)
 
             else:
+                # Resets essential values when met with newline "\n"
                 if char == "\n":
                     self.singleComment = False
                     self.line_count += 1
+                    self.char_count = 0
 
                 if not self.isChar and not self.isString:
-                    # Makes the string a lexeme if char is " " and not in SPECIAL CHARACTERS
+                    # tokenizes remaining lexemes
                     if __lexeme != "":
                         self.tokenize(__lexeme)
                         __lexeme = ""
@@ -256,7 +243,7 @@ class Lexer(object):
         elif lexeme in ESCAPE_SEQUENCES:
             self.token_list.append([lexeme, ESCAPE_SEQUENCES[lexeme]])
 
-        elif lexeme.isnumeric() and not self.isProperty:
+        elif lexeme.isnumeric():
             self.token_list.append([lexeme, "INT_LITERAL"])
 
         elif len(lexeme) > 1 and (lexeme[-1] == "f") and (lexeme[-2] != ".") and self.isfloat(lexeme.replace("f", "")):
@@ -265,18 +252,20 @@ class Lexer(object):
         elif len(lexeme) > 1 and ("." in lexeme) and (lexeme[-1] != ".") and self.isfloat(lexeme):
             self.token_list.append([lexeme, "DOUBLE_LITERAL"])
 
-        elif "\"" in lexeme:
+        elif lexeme[0] == "\"" and lexeme[-1] == "\"":
             self.token_list.append([lexeme, "STRING_LITERAL"])
 
-        elif len(lexeme.replace("\'", "")) == 1:
-            self.token_list.append([lexeme, "CHAR_LITERAL"])
-
+        elif lexeme[0] == "\'" and lexeme[-1] == "\'":
+            if len(lexeme.replace("\'", "")) == 1: 
+                self.token_list.append([lexeme, "CHAR_LITERAL"])
+            else:
+                print(f"\033[91mERROR: Invalid Character Literal at character {self.char_count}, line {self.line_count}.\033[0m")
+                self.token_list.append([lexeme, "INVALID_CHAR_LITERAL"])
         else:
             if len(lexeme) > 0 and lexeme[0].isalpha() and lexeme.replace("_", "").isalnum():
                 self.token_list.append([lexeme, "IDENTIFIER"])
             else:
-                print(f"\033[91mERROR: Unknown Token in line", self.line_count, "\033[0m")
-                #exit(1)
+                print(f"\033[91mERROR: Unknown Token in line {self.line_count}.\033[0m")
                 self.token_list.append([lexeme, "UNKNOWN_TOKEN"])
 
     def isfloat(self, value):

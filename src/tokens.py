@@ -3,6 +3,7 @@ LOWERC = "abcdefghijklmnopqrstuvwxyz"
 DIGITS = "0123456789"
 SPECIAL_CHAR = [".", "+", "-", "*", "/", "%", "<", ">", "=", "\\", "\"", "\'", ",", ";", "|", "!", "(", ")", "[", "]", "{", "}", "_", "^", "~", "&", ":", "?", "^", "#", "@", "-", "`"]
 DOUBLE_OP = ["+", "-", "*", "/", "%", "~", "=", "!", "<", ">"]
+ESCAPE_CHAR = ["n", "t", "v", "\'", "\"", "\\"]
 
 # KEYWORD DICTIONARY
 KEYWORDS = {
@@ -34,6 +35,7 @@ KEYWORDS = {
     "main" : "KEYWORD",
     "null" : "KEYWORD",
     "obj" : "KEYWORD",
+    "pass" : "KEYWORD",
     "private" : "KEYWORD",
     "protected" : "KEYWORD",
     "public" : "KEYWORD",
@@ -102,6 +104,7 @@ DELIMITERS = {
     "(" : "OPEN_PARENTHESIS",
     ")" : "CLOSE_PARENTHESIS",
     "\"" : "STRING_DELIMITER",
+    "," : "SEPARATOR",
     "." : "OBJECT_DELIMITER"
 }
 
