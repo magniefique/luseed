@@ -63,16 +63,14 @@ class Lexer(object):
                 self.singleComment = False
 
                 if self.isChar:
-                    if char == "\n":
-                        self.tokenize(__lexeme)
-                        self.isChar = False
-                        __lexeme = ""
+                    self.tokenize(__lexeme)
+                    self.isChar = False
+                    __lexeme = ""
                 
                 if self.isString:
-                    if char == "\n":
-                        self.tokenize(__lexeme)
-                        self.isString = False
-                        __lexeme = ""
+                    self.tokenize(__lexeme)
+                    self.isString = False
+                    __lexeme = ""
 
                 self.line_count += 1
                 self.char_count = 0
