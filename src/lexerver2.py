@@ -14,9 +14,6 @@ class Lexer(object):
         self.isChar = False
         self.isString = False
 
-        # Keeps count for the length of char 
-        self.char_len = 0
-
         # Used to tell the program that the next values are for escape sequences
         self.isEscape = False
 
@@ -39,7 +36,8 @@ class Lexer(object):
         self.string_start = 0
 
         # Variable that holds the line that started the multi-line comment
-        self.line_comment = 0
+        self.comment_line = 0
+        self.comment_start = 0
 
         # Lexeme list refers to the lexemes found in the file
         self.lexeme_list = []
@@ -59,23 +57,29 @@ class Lexer(object):
 
         # Loop that takes care of the formulation of lexemes
         for char in self.source_code:
+            self.char_count += 1
             # Checks if the current character is a new line character
             if char == "\n":
                 self.singleComment = False
+
+                if self.isChar:
+                    if char == "\n":
+                        self.tokenize(__lexeme)
+                        self.isChar = False
+                        __lexeme = ""
+                
+                if self.isString:
+                    if char == "\n":
+                        self.tokenize(__lexeme)
+                        self.isString = False
+                        __lexeme = ""
+
                 self.line_count += 1
                 self.char_count = 0
 
-            # Checks if the current character is an empty space and tokenize current lexemes
-            if char == " " and not self.isString and not self.isChar:
-                # tokenizes remaining lexemes
-                if __lexeme != "":
-                    self.tokenize(__lexeme)
-                    __lexeme = ""
-
             # Checks if the following character/s is not a part of a comment
             if not self.singleComment and not self.multiComment:
-                self.char_count += 1
-                
+                print(self.char_count)
                 # Checks if the next character/s is not a part of a char value or str value
                 if not self.isString and not self.isChar:
                     # Checks if char is an alphanumeric value
@@ -100,11 +104,13 @@ class Lexer(object):
 
                                 elif __oplexeme == "/*":
                                     self.multiComment = True
-                                    self.line_comment = self.line_count
+                                    self.comment_line = self.line_count
+                                    self.comment_start = self.char_count
 
                                 elif __oplexeme == "*/" and self.multiComment:
                                     self.multiComment = False
-                                    self.line_comment = 0
+                                    self.comment_line = 0
+                                    self.comment_start = 0
 
                                 __oplexeme = ""
                             
@@ -112,49 +118,61 @@ class Lexer(object):
                             if __lexeme != "":
                                 self.tokenize(__lexeme)
                                 __lexeme = ""
-
-                        # Checks if character is a double quotation for str literals
-                        elif char == "\"":
-                            self.string_line = self.line_count
-                            __lexeme += char
-                            self.isString = True
-
-                        # Checks if character is a single quotation for char literals
-                        elif char == "\'":
-                            self.char_line = self.line_count
-                            __lexeme += char
-                            self.isChar = True
-
-                        # Checks if char is a period 
-                        elif char == ".":
-                            # Checks if the contents of the __lexeme is numeric for floating-point values
-                            if __lexeme.isnumeric():
-                                __lexeme += char
-
-                            # Checks if the current value of the __lexeme is a valid Identifier for property
-                            elif __lexeme.replace("_", "").isalnum() and __lexeme != "":
-                                self.tokenize(__lexeme)
-                                self.tokenize(char) 
-                                __lexeme = ""
-                        
-                        # Append char to __lexeme if it is an underscore
-                        elif char == "_":
-                            __lexeme += char
-                        
                         else:
-                            # Parses the string that was formulated
-                            if __lexeme != "":
-                                self.tokenize(__lexeme)
-                                __lexeme = ""
-
-                            # Parses the operator present in __oplexeme
+                            # Appends the current value of the __oplexeme if it is not empty 
                             if __oplexeme != "":
                                 self.tokenize(__oplexeme)
                                 __oplexeme = ""
 
-                            # Sets the current char to __lexeme and turns it into a lexeme
-                            if char != "\"":
-                                self.tokenize(char)
+                            # Checks if character is a double quotation for str literals
+                            if char == "\"":
+                                self.string_line = self.line_count
+                                __lexeme += char
+                                self.isString = True
+
+                            # Checks if character is a single quotation for char literals
+                            elif char == "\'":
+                                self.char_line = self.line_count
+                                __lexeme += char
+                                self.isChar = True
+
+                            # Checks if char is a period 
+                            elif char == ".":
+                                # Checks if the contents of the __lexeme is numeric for floating-point values
+                                if __lexeme.isnumeric():
+                                    __lexeme += char
+
+                                # Checks if the current value of the __lexeme is a valid Identifier for property
+                                elif __lexeme.replace("_", "").isalnum() and __lexeme != "":
+                                    self.tokenize(__lexeme)
+                                    self.tokenize(char) 
+                                    __lexeme = ""
+                            
+                            # Append char to __lexeme if it is an underscore
+                            elif char == "_":
+                                __lexeme += char
+                            
+                            else:
+                                # Parses the string that was formulated
+                                if __lexeme != "":
+                                    self.tokenize(__lexeme)
+                                    __lexeme = ""
+
+                                # Parses the operator present in __oplexeme
+                                if __oplexeme != "":
+                                    self.tokenize(__oplexeme)
+                                    __oplexeme = ""
+
+                                # Sets the current char to __lexeme and turns it into a lexeme
+                                if char != "\"":
+                                    self.tokenize(char)
+
+                    # Checks if the current character is an empty space and tokenize current lexemes
+                    if char == " ":
+                        # tokenizes remaining lexemes
+                        if __lexeme != "":
+                            self.tokenize(__lexeme)
+                            __lexeme = ""
 
                 # Checks if the following character/s is a part of string
                 elif self.isString:
@@ -181,7 +199,7 @@ class Lexer(object):
                         elif char == "\\":
                             __oplexeme += char
                             self.isEscape = True
-                            
+                        
                         else:
                             __lexeme += char
                 
@@ -192,7 +210,6 @@ class Lexer(object):
                         __lexeme += char
                         self.tokenize(__lexeme)
                         self.isChar = False
-                        self.char_len = 0
                         __lexeme = ""
 
                     else:
@@ -218,13 +235,13 @@ class Lexer(object):
 
         # Checks whether there is an unterminated multi-line comment, character, and string
         if self.multiComment:
-            print(f"\033[91mERROR: MultiLine Comment not concluded in line", self.line_comment, "\033[0m")
+            print(f"\033[91mERROR: MultiLine Comment not concluded in character {self.comment_start}, line {self.comment_line}.\033[0m")
         
         if self.isChar:
-            print(f"\033[91mERROR: Char literal is not terminated", self.char_line, "\033[0m")
+            print(f"\033[91mERROR: Char literal is not terminated in character {self.char_start}, line {self.char_line}.\033[0m")
 
         if self.isString:
-            print(f"\033[91mERROR: String literal is not terminated", self.string_line, "\033[0m")
+            print(f"\033[91mERROR: String literal is not terminated in character {self.string_start}, line {self.string_line}.\033[0m")
 
         self.displaytokens()
 
@@ -272,14 +289,14 @@ class Lexer(object):
             if len(lexeme.replace("\'", "")) == 1:
                 self.token_list.append([lexeme, "CHAR_LITERAL"])
             else:
-                print(f"\033[91mERROR: Invalid Character Literal at character {self.char_count} line {self.line_count}.\033[0m")
+                print(f"\033[91mERROR: Invalid Character Literal at character {self.char_count-1} line {self.line_count}.\033[0m")
                 self.token_list.append([lexeme, "INVALID_CHAR_LITERAL"])
 
         else:
             if len(lexeme) > 0 and lexeme[0].isalpha() and lexeme.replace("_", "").isalnum():
                 self.token_list.append([lexeme, "IDENTIFIER"])
             else:
-                print(f"\033[91mERROR: Unknown Token in line {self.line_count}.\033[0m")
+                print(f"\033[91mERROR: Unknown Token at character {self.char_count-1}, line {self.line_count}.\033[0m")
                 self.token_list.append([lexeme, "UNKNOWN_TOKEN"])
 
     def isfloat(self, value):

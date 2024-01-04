@@ -5,7 +5,7 @@ main(){
     double double_var = 1.54233;
 
     char char_Va_r = 'd';
-    str stringVariable = "Hello Everyone, this is Everyone\n!+++";
+    str stringVariable = "Hello Everyone, this is Everyone\b!+++";
 
     if(intvar <= 3) then:
     {
