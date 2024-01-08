@@ -1,5 +1,5 @@
 from tokens import *
-from lexerver2 import *
+from lexer import *
 from syntax import *
 
 def readfile(file_path: str):

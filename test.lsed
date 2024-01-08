@@ -1,3 +1,22 @@
+public class testClass:
+{
+    init(this, int num):
+    {
+        this.property_2_1 = 5;
+        display(num);
+    }
+
+    public func TestMethod():
+    {
+        display("Hi Word");
+    }
+
+    public func TestMethod3(str val1):
+    {
+        display(val1);
+    }
+}
+
 main(){
     display("Hello Word!");
     int intvar = 3;
@@ -29,13 +48,5 @@ main(){
     {
         j++;
     }
-}
+}   
 
-public class testClass:
-{
-    init(this, int num):
-    {
-        this.property_2_1 = 5;
-        display(num);
-    }
-}
