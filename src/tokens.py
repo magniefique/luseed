@@ -1,6 +1,3 @@
-UPPERC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-LOWERC = "abcdefghijklmnopqrstuvwxyz"
-DIGITS = "0123456789"
 SPECIAL_CHAR = [".", "+", "-", "*", "/", "%", "<", ">", "=", "\\", "\"", "\'", ",", ";", "|", "!", "(", ")", "[", "]", "{", "}", "_", "^", "~", "&", ":", "?", "^", "#", "@", "-", "`"]
 DOUBLE_OP = ["+", "-", "*", "/", "%", "~", "=", "!", "<", ">"]
 ESCAPE_CHAR = ["n", "t", "v", "\'", "\"", "\\"]
@@ -48,6 +45,18 @@ KEYWORDS = {
     "true" : "KEYWORD",
     "until" : "KEYWORD",
     "while" : "KEYWORD"
+}
+
+# NOISEWORDS
+NOISEWORDS = {
+    "boolean" : "KEYWORD",
+    "character" : "KEYWORD",
+    "constant" : "KEYWORD",
+    "integer" : "KEYWORD",
+    "information" : "KEYWORD",
+    "initialize" : "KEYWORD",
+    "object" : "KEYWORD",
+    "string" : "KEYWORD"
 }
 
 # OPERATORS

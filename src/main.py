@@ -1,12 +1,12 @@
 from tokens import *
 from lexer import *
-from syntax import *
+from pathlib import Path
 
 def readfile(file_path: str):
     """
     This function reads the file and performs lexical analysis.
     """
-    if file_path.endswith('.lsed'):
+    if Path(file_path).suffix == ".lsed":
         # Read the file content
         file_content = ""
         with open(file_path, 'r') as file:
@@ -15,10 +15,10 @@ def readfile(file_path: str):
         # Create a Lexer object and tokenize the file content
         code = Lexer(file_content, file_path)
         token_list = code.returntokens()
-        #SyntacticAnalyzer(token_list)
         
     else:
-        print(f"\033[91mERROR: Unsupported File Extension.\033[0m")
+        # Print error message if the file ends with other file extension
+        print(f"\033[91mERROR: Unsupported File Extension ({Path(file_path).suffix}).\033[0m")
    
 if __name__ == "__main__":
     # Get the file path from the user

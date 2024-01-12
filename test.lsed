@@ -4,6 +4,7 @@ public class testClass:
     {
         this.property_2_1 = 5;
         display(num);
+        this.property_2_1+++;
     }
 
     public func TestMethod():
@@ -19,12 +20,12 @@ public class testClass:
 
 main(){
     display("Hello Word!");
-    int intvar = 3;
+    integer intvar = 3;
     float FloatVar = 4.0f;
     double double_var = 1.54233;
 
     char char_Va_r = 'd';
-    str stringVariable = "Hello Everyone, this is Everyone\b!+++";
+    str stringVariable = "Hello Everyone, this is Everyone!+++";
 
     if(intvar <= 3) then:
     {
@@ -49,4 +50,3 @@ main(){
         j++;
     }
 }   
-

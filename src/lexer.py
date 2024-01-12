@@ -1,4 +1,6 @@
 from tokens import *
+from tabulate import tabulate
+from fpdf import FPDF
 
 # Lexer class of luseed
 class Lexer(object):
@@ -77,7 +79,6 @@ class Lexer(object):
 
             # Checks if the following character/s is not a part of a comment
             if not self.singleComment and not self.multiComment:
-                print(self.char_count)
                 # Checks if the next character/s is not a part of a char value or str value
                 if not self.isString and not self.isChar:
                     # Checks if char is an alphanumeric value
@@ -248,54 +249,57 @@ class Lexer(object):
         Determines the token of each lexeme.
         """
         if lexeme in KEYWORDS:
-            self.token_list.append([lexeme, KEYWORDS[lexeme]])
+            self.token_list.append([self.line_count, lexeme, KEYWORDS[lexeme]])
+        
+        elif lexeme in NOISEWORDS:
+            self.token_list.append([self.line_count, lexeme, NOISEWORDS[lexeme]])
 
         elif lexeme in OP_ASSIGNMENT:
-            self.token_list.append([lexeme, OP_ASSIGNMENT[lexeme]])
+            self.token_list.append([self.line_count, lexeme, OP_ASSIGNMENT[lexeme]])
 
         elif lexeme in OP_ARITHMETIC:
-            self.token_list.append([lexeme, OP_ARITHMETIC[lexeme]])
+            self.token_list.append([self.line_count, lexeme, OP_ARITHMETIC[lexeme]])
 
         elif lexeme in OP_UNARY:
-            self.token_list.append([lexeme, OP_UNARY[lexeme]])
+            self.token_list.append([self.line_count, lexeme, OP_UNARY[lexeme]])
 
         elif lexeme in OP_LOGIC:
-            self.token_list.append([lexeme, OP_LOGIC[lexeme]])
+            self.token_list.append([self.line_count, lexeme, OP_LOGIC[lexeme]])
 
         elif lexeme in OP_RELATION:
-            self.token_list.append([lexeme, OP_RELATION[lexeme]])
+            self.token_list.append([self.line_count, lexeme, OP_RELATION[lexeme]])
 
         elif lexeme in DELIMITERS:
-            self.token_list.append([lexeme, DELIMITERS[lexeme]])
+            self.token_list.append([self.line_count, lexeme, DELIMITERS[lexeme]])
 
         elif lexeme in ESCAPE_SEQUENCES:
-            self.token_list.append([lexeme, ESCAPE_SEQUENCES[lexeme]])
+            self.token_list.append([self.line_count, lexeme, ESCAPE_SEQUENCES[lexeme]])
 
         elif lexeme.isnumeric():
-            self.token_list.append([lexeme, "INT_LITERAL"])
+            self.token_list.append([self.line_count, lexeme, "INT_LITERAL"])
 
         elif len(lexeme) > 1 and (lexeme[-1] == "f") and (lexeme[-2] != ".") and self.isfloat(lexeme.replace("f", "")):
-            self.token_list.append([lexeme, "FLOAT_LITERAL"])
+            self.token_list.append([self.line_count, lexeme, "FLOAT_LITERAL"])
 
         elif len(lexeme) > 1 and ("." in lexeme) and (lexeme[-1] != ".") and self.isfloat(lexeme):
-            self.token_list.append([lexeme, "DOUBLE_LITERAL"])
+            self.token_list.append([self.line_count, lexeme, "DOUBLE_LITERAL"])
 
         elif lexeme[0] == "\"" and lexeme[-1] == "\"":
-            self.token_list.append([lexeme, "STRING_LITERAL"])
+            self.token_list.append([self.line_count, lexeme, "STRING_LITERAL"])
 
         elif lexeme[0] == "\'" and lexeme[-1] == "\'":
             if len(lexeme.replace("\'", "")) == 1:
-                self.token_list.append([lexeme, "CHAR_LITERAL"])
+                self.token_list.append([self.line_count, lexeme, "CHAR_LITERAL"])
             else:
                 print(f"\033[91mERROR: Invalid Character Literal at character {self.char_count-1} line {self.line_count}.\033[0m")
-                self.token_list.append([lexeme, "INVALID_CHAR_LITERAL"])
+                self.token_list.append([self.line_count, lexeme, "UNKNOWN_TOKEN"])
 
         else:
             if len(lexeme) > 0 and lexeme[0].isalpha() and lexeme.replace("_", "").isalnum():
-                self.token_list.append([lexeme, "IDENTIFIER"])
+                self.token_list.append([self.line_count, lexeme, "IDENTIFIER"])
             else:
                 print(f"\033[91mERROR: Unknown Token at character {self.char_count-1}, line {self.line_count}.\033[0m")
-                self.token_list.append([lexeme, "UNKNOWN_TOKEN"])
+                self.token_list.append([self.line_count, lexeme, "UNKNOWN_TOKEN"])
 
     def isfloat(self, value):
         """
@@ -312,10 +316,17 @@ class Lexer(object):
         """
         Displays the tokens found in the file.
         """
+        print(f"\n| - SYMBOL TABLE for {self.file_path} - |\n")
+        print(tabulate(self.token_list, headers=["Line", "Lexeme", "Token"], stralign = "left", numalign = "left"), "\n")
 
-        print()
-        for token in self.token_list:
-            print(token)
+    def generatefile(self):
+        """
+        Generates the symbol table of the source code
+        """
+        sym_pdf = FPDF
+        sym_pdf.add_page()
+
+        pass
 
     def returntokens(self):
         """
