@@ -1,6 +1,6 @@
 from tokens import *
-from tabulate import tabulate
 from fpdf import FPDF
+import time
 
 # Lexer class of luseed
 class Lexer(object):
@@ -40,15 +40,24 @@ class Lexer(object):
         # Variable that holds the line that started the multi-line comment
         self.comment_line = 0
         self.comment_start = 0
-
-        # Lexeme list refers to the lexemes found in the file
-        self.lexeme_list = []
         
-        # Token list refers to the list of tokens found in the file
-        self.token_list = []
+        # Token list refers to the list of tokenized lexemes found in the file
+        self.tokenized_list = []
 
+        # Parses the code
+        start = time.time()
         self.parse()
-        
+        end = time.time()
+
+        # Computes for the Elapsed Time
+        self.elapsed_time = str(end - start)
+
+        # Generates file for the Symbol Table
+        self.generatefile()
+
+        # Returns tokens
+        self.returntokens()
+
     def parse(self):
         """
         Parses each character in the .lsed file.
@@ -64,6 +73,7 @@ class Lexer(object):
             if char == "\n":
                 self.singleComment = False
 
+                # Resets both Char and String when new line is introduced
                 if self.isChar:
                     self.tokenize(__lexeme)
                     self.isChar = False
@@ -106,11 +116,7 @@ class Lexer(object):
                                     self.comment_line = self.line_count
                                     self.comment_start = self.char_count
 
-                                elif __oplexeme == "*/" and self.multiComment:
-                                    self.multiComment = False
-                                    self.comment_line = 0
-                                    self.comment_start = 0
-
+                                self.tokenize(__oplexeme)
                                 __oplexeme = ""
                             
                             # Tokenizes the lexemes present in the __lexeme
@@ -226,6 +232,8 @@ class Lexer(object):
                     # If it is, turn off the multi-comment
                     else:
                         self.multiComment = False
+                        self.comment_line = 0
+                        self.comment_start = 0
                         __oplexeme = ""
 
                 # Checks if character is a substring of the terminator of multiline comments
@@ -242,64 +250,62 @@ class Lexer(object):
         if self.isString:
             print(f"\033[91mERROR: String literal is not terminated in character {self.string_start}, line {self.string_line}.\033[0m")
 
-        self.displaytokens()
-
     def tokenize(self, lexeme: str):
         """
         Determines the token of each lexeme.
         """
         if lexeme in KEYWORDS:
-            self.token_list.append([self.line_count, lexeme, KEYWORDS[lexeme]])
+            self.tokenized_list.append([str(self.line_count), lexeme, KEYWORDS[lexeme]])
         
         elif lexeme in NOISEWORDS:
-            self.token_list.append([self.line_count, lexeme, NOISEWORDS[lexeme]])
+            self.tokenized_list.append([str(self.line_count), lexeme, NOISEWORDS[lexeme]])
 
         elif lexeme in OP_ASSIGNMENT:
-            self.token_list.append([self.line_count, lexeme, OP_ASSIGNMENT[lexeme]])
+            self.tokenized_list.append([str(self.line_count), lexeme, OP_ASSIGNMENT[lexeme]])
 
         elif lexeme in OP_ARITHMETIC:
-            self.token_list.append([self.line_count, lexeme, OP_ARITHMETIC[lexeme]])
+            self.tokenized_list.append([str(self.line_count), lexeme, OP_ARITHMETIC[lexeme]])
 
         elif lexeme in OP_UNARY:
-            self.token_list.append([self.line_count, lexeme, OP_UNARY[lexeme]])
-
-        elif lexeme in OP_LOGIC:
-            self.token_list.append([self.line_count, lexeme, OP_LOGIC[lexeme]])
+            self.tokenized_list.append([str(self.line_count), lexeme, OP_UNARY[lexeme]])
 
         elif lexeme in OP_RELATION:
-            self.token_list.append([self.line_count, lexeme, OP_RELATION[lexeme]])
+            self.tokenized_list.append([str(self.line_count), lexeme, OP_RELATION[lexeme]])
 
         elif lexeme in DELIMITERS:
-            self.token_list.append([self.line_count, lexeme, DELIMITERS[lexeme]])
+            self.tokenized_list.append([str(self.line_count), lexeme, DELIMITERS[lexeme]])
 
         elif lexeme in ESCAPE_SEQUENCES:
-            self.token_list.append([self.line_count, lexeme, ESCAPE_SEQUENCES[lexeme]])
+            self.tokenized_list.append([str(self.line_count), lexeme, ESCAPE_SEQUENCES[lexeme]])
 
+        elif lexeme in COMMENTS:
+            self.tokenized_list.append([str(self.line_count), lexeme, COMMENTS[lexeme]])
+        
         elif lexeme.isnumeric():
-            self.token_list.append([self.line_count, lexeme, "INT_LITERAL"])
+            self.tokenized_list.append([str(self.line_count), lexeme, "INT_LITERAL"])
 
         elif len(lexeme) > 1 and (lexeme[-1] == "f") and (lexeme[-2] != ".") and self.isfloat(lexeme.replace("f", "")):
-            self.token_list.append([self.line_count, lexeme, "FLOAT_LITERAL"])
+            self.tokenized_list.append([str(self.line_count), lexeme, "FLOAT_LITERAL"])
 
         elif len(lexeme) > 1 and ("." in lexeme) and (lexeme[-1] != ".") and self.isfloat(lexeme):
-            self.token_list.append([self.line_count, lexeme, "DOUBLE_LITERAL"])
+            self.tokenized_list.append([str(self.line_count), lexeme, "DOUBLE_LITERAL"])
 
         elif lexeme[0] == "\"" and lexeme[-1] == "\"":
-            self.token_list.append([self.line_count, lexeme, "STRING_LITERAL"])
+            self.tokenized_list.append([str(self.line_count), lexeme, "STRING_LITERAL"])
 
         elif lexeme[0] == "\'" and lexeme[-1] == "\'":
             if len(lexeme.replace("\'", "")) == 1:
-                self.token_list.append([self.line_count, lexeme, "CHAR_LITERAL"])
+                self.tokenized_list.append([str(self.line_count), lexeme, "CHAR_LITERAL"])
             else:
                 print(f"\033[91mERROR: Invalid Character Literal at character {self.char_count-1} line {self.line_count}.\033[0m")
-                self.token_list.append([self.line_count, lexeme, "UNKNOWN_TOKEN"])
+                self.tokenized_list.append([str(self.line_count), lexeme, "UNKNOWN_TOKEN"])
 
         else:
             if len(lexeme) > 0 and lexeme[0].isalpha() and lexeme.replace("_", "").isalnum():
-                self.token_list.append([self.line_count, lexeme, "IDENTIFIER"])
+                self.tokenized_list.append([str(self.line_count), lexeme, "IDENTIFIER"])
             else:
                 print(f"\033[91mERROR: Unknown Token at character {self.char_count-1}, line {self.line_count}.\033[0m")
-                self.token_list.append([self.line_count, lexeme, "UNKNOWN_TOKEN"])
+                self.tokenized_list.append([str(self.line_count), lexeme, "UNKNOWN_TOKEN"])
 
     def isfloat(self, value):
         """
@@ -312,25 +318,66 @@ class Lexer(object):
         except ValueError:
             return False
 
-    def displaytokens(self):
+    def display_console(self):
         """
-        Displays the tokens found in the file.
+        Displays the Symbol Table in the Terminal
         """
-        print(f"\n| - SYMBOL TABLE for {self.file_path} - |\n")
-        print(tabulate(self.token_list, headers=["Line", "Lexeme", "Token"], stralign = "left", numalign = "left"), "\n")
+        longest_1 = 0
+        longest_2 = 0
+
+        display_list = [["LINE", "LEXEME", "TOKEN"]]
+        display_list.extend(self.tokenized_list)
+
+        print(f"SYMBOL TABLE for {self.file_path}")
+        print(f"Total Tokenized Lexemes:\t{len(self.tokenized_list)}\n")
+
+        for lexeme in display_list:
+            length_1 = len(lexeme[0])
+            length_2 = len(lexeme[1])
+            if (length_1 > longest_1):
+                longest_1 = length_1
+            
+            if (length_2 > longest_2):
+                longest_2 = length_2
+
+        for lexeme in display_list:
+            spacing_1 = ((longest_1 - len(lexeme[0])) + 2) * " "
+            spacing_2 = ((longest_2 - len(lexeme[1])) + 20) * " "
+            print(lexeme[0], spacing_1 + "|", lexeme[1], spacing_2 + "|", lexeme[2])
 
     def generatefile(self):
         """
         Generates the symbol table of the source code
         """
-        sym_pdf = FPDF
-        sym_pdf.add_page()
+        PDF_TABLE = [["LINE", "LEXEME", "TOKEN"]]
+        PDF_TABLE.extend(self.tokenized_list)
 
-        pass
+        pdf = FPDF()
+        pdf.add_page()
+        pdf.add_font("Inconsolata", "",
+                     fname="C:\\Users\\xcharuzu\\Documents\\GitHub\\luseed\\font\\Inconsolata-Regular.ttf",
+                     uni=True)
+        
+        pdf.add_font("Inconsolata", "B",
+                     fname="C:\\Users\\xcharuzu\\Documents\\GitHub\\luseed\\font\\Inconsolata-Bold.ttf",
+                     uni=True)
+        
+        pdf.set_font("Inconsolata", "B", size=16)
+        pdf.cell(text="SYMBOL TABLE for " + self.file_path, ln=1, center=True)
+        pdf.set_font("Inconsolata", "", size=12)
+        pdf.cell(text=" ", ln=1)
+        pdf.cell(text="Total Tokenized Lexemes: " + str(len(self.tokenized_list)), ln=1)
+        pdf.cell(text="Elapsed Time:            " + self.elapsed_time, ln=1)
+        pdf.cell(text=" ", ln=1)
+        with pdf.table(col_widths=(15, 40, 40)) as table:
+            for data_row in PDF_TABLE:
+                row = table.row()
+                for datum in data_row:
+                    row.cell(datum)
+        pdf.output(name='src/symboltable/SYMBOL_TABLE_' + self.file_path + ".pdf", dest="F")
 
     def returntokens(self):
         """
         Returns the tokens found in the file.
         """
-        return self.token_list
-    
+        return self.tokenized_list

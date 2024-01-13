@@ -4,93 +4,93 @@ ESCAPE_CHAR = ["n", "t", "v", "\'", "\"", "\\"]
 
 # KEYWORD DICTIONARY
 KEYWORDS = {
-    "ask" : "KEYWORD",
-    "bool" : "KEYWORD",
-    "break" : "KEYWORD",
-    "char" : "KEYWORD",
-    "class" : "KEYWORD",
-    "const" : "KEYWORD",
-    "continue" : "KEYWORD",
-    "display" : "KEYWORD",
-    "do" : "KEYWORD",
-    "double" : "KEYWORD",
-    "elif" : "KEYWORD",
-    "else" : "KEYWORD",
-    "false" : "KEYWORD",
-    "float" : "KEYWORD",
-    "for" : "KEYWORD",
-    "foreach" : "KEYWORD",
-    "func" : "KEYWORD",
-    "help" : "KEYWORD",
-    "if" : "KEYWORD",
-    "info" : "KEYWORD",
-    "init" : "KEYWORD",
-    "inheritall" : "KEYWORD",
-    "in" : "KEYWORD",
-    "int" : "KEYWORD",
-    "list" : "KEYWORD",
-    "main" : "KEYWORD",
-    "null" : "KEYWORD",
-    "obj" : "KEYWORD",
-    "pass" : "KEYWORD",
-    "private" : "KEYWORD",
-    "protected" : "KEYWORD",
-    "public" : "KEYWORD",
-    "quit" : "KEYWORD",
-    "repeat" : "KEYWORD",
-    "return" : "KEYWORD",
-    "str" : "KEYWORD",
-    "then" : "KEYWORD",
-    "this" : "KEYWORD",
-    "true" : "KEYWORD",
-    "until" : "KEYWORD",
-    "while" : "KEYWORD"
+    "all" : "KEYWORD_ALL",
+    "and" : "KEYWORD_AND",
+    "ask" : "KEYWORD_ASK",
+    "bool" : "KEYWORD_BOOL",
+    "break" : "KEYWORD_BREAK",
+    "char" : "KEYWORD_CHAR",
+    "class" : "KEYWORD_CLASS",
+    "const" : "KEYWORD_CONST",
+    "continue" : "KEYWORD_CONTINUE",
+    "display" : "KEYWORD_DISPLAY",
+    "do" : "KEYWORD_DO",
+    "double" : "KEYWORD_DOUBLE",
+    "elif" : "KEYWORD_ELIF",
+    "else" : "KEYWORD_ELSE",
+    "false" : "KEYWORD_FALSE",
+    "float" : "KEYWORD_FLOAT",
+    "for" : "KEYWORD_FOR",
+    "foreach" : "KEYWORD_FOREACH",
+    "from" : "KEYWORD_FROM",
+    "func" : "KEYWORD_FUNC",
+    "help" : "KEYWORD_HELP",
+    "if" : "KEYWORD_IF",
+    "import" : "KEYWORD_IMPORT",
+    "info" : "KEYWORD_INFO",
+    "init" : "KEYWORD_INIT",
+    "inheritall" : "KEYWORD_INHERITALL",
+    "in" : "KEYWORD_IN",
+    "int" : "KEYWORD_INT",
+    "list" : "KEYWORD_LIST",
+    "main" : "KEYWORD_MAIN",
+    "not" : "KEYWORD_NOT",
+    "null" : "KEYWORD_NULL",
+    "obj" : "KEYWORD_OBJ",
+    "or" : "KEYWORD_OR",
+    "pass" : "KEYWORD_PASS",
+    "private" : "KEYWORD_PRIVATE",
+    "protected" : "KEYWORD_PROTECTED",
+    "public" : "KEYWORD_PUBLIC",
+    "quit" : "KEYWORD_QUIT",
+    "repeat" : "KEYWORD_REPEAT",
+    "return" : "KEYWORD_RETURN",
+    "str" : "KEYWORD_STR",
+    "then" : "KEYWORD_THEN",
+    "this" : "KEYWORD_THIS",
+    "true" : "KEYWORD_TRUE",
+    "until" : "KEYWORD_UNTIL",
+    "while" : "KEYWORD_WHILE"
 }
 
 # NOISEWORDS
 NOISEWORDS = {
-    "boolean" : "KEYWORD",
-    "character" : "KEYWORD",
-    "constant" : "KEYWORD",
-    "integer" : "KEYWORD",
-    "information" : "KEYWORD",
-    "initialize" : "KEYWORD",
-    "object" : "KEYWORD",
-    "string" : "KEYWORD"
+    "boolean" : "KEYWORD_BOOL",
+    "character" : "KEYWORD_CHAR",
+    "constant" : "KEYWORD_CONST",
+    "integer" : "KEYWORD_INT",
+    "information" : "KEYWORD_INFO",
+    "initialize" : "KEYWORD_INIT",
+    "object" : "KEYWORD_OBJ",
+    "string" : "KEYWORD_STR"
 }
 
 # OPERATORS
 OP_ASSIGNMENT = {
-    "=" : "ASSIGNMENT_OP",
-    "+=" : "ADDITION_ASSIGNMENT_OP",
-    "-=" : "SUBTRACTION_ASSIGNMENT_OP",
-    "*=" : "MULTIPLICATION_ASSIGNMENT_OP",
-    "/=" : "DIVISION_ASSIGNMENT_OP",
-    "%=" : "MODULO_ASSIGNMENT_OP",
-    "~=" : "FLRDIVISION_ASSIGNMENT_OP"
+    "=" : "OP_ASSIGNMENT",
+    "+=" : "OP_ADDITION_ASSIGNMENT",
+    "-=" : "OP_SUBTRACTION_ASSIGNMENT",
+    "*=" : "OP_MULTIPLICATION_ASSIGNMENT",
+    "/=" : "OP_DIVISION_ASSIGNMENT",
+    "%=" : "OP_MODULO_ASSIGNMENT",
+    "~=" : "OP_FLRDIVISION_ASSIGNMENT"
 }
 
 OP_ARITHMETIC = {
-    "+" : "ADDITION_OP",
-    "-" : "SUBTRACTION_OP",
-    "*" : "MULTIPLICATION_OP",
-    "/" : "DIVISION_OP",
-    "%" : "MODULO_OP",
-    "~" : "FLRDIVISION_OP",
-    "**" : "EXPONENTIATE_OP"
+    "+" : "OP_ADDITION",
+    "-" : "OP_SUBTRACTION",
+    "*" : "OP_MULTIPLICATION",
+    "/" : "OP_DIVISION",
+    "%" : "OP_MODULO",
+    "~" : "OP_FLRDIVISION",
+    "**" : "OP_EXPONENTIATE"
 }
 
 OP_UNARY = {
-    "+" : "POSITIVE_OP",
-    "-" : "NEGATIVE_OP", 
-    "++" : "INCREMENT_OP",
-    "--" : "DECREMENT_OP",
-}
-
-OP_LOGIC = {
-    "not" : "NOT_OP",
-    "or" : "OR_OP",
-    "and" : "AND_OP"
+    "+" : "OP_POSITIVE",
+    "-" : "OP_NEGATIVE", 
+    "++" : "OP_INCREMENT",
+    "--" : "OP_DECREMENT",
 }
 
 OP_RELATION = {
@@ -133,4 +133,8 @@ WHITESPACES = {
 }
 
 # COMMENTS
-COMMENTS = ["//", "/*", "*/"]
+COMMENTS = {
+    "//" : "COMMENT_SINGLE", 
+    "/*" : "COMMENT_MULTI_OPEN", 
+    "*/" : "COMMENT_MULTI_CLOSE"
+}

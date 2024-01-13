@@ -1,10 +1,12 @@
+import 
+
 public class testClass:
 {
     init(this, int num):
     {
         this.property_2_1 = 5;
         display(num);
-        this.property_2_1+++;
+        this.property_2_1;
     }
 
     public func TestMethod():
@@ -22,12 +24,12 @@ main(){
     display("Hello Word!");
     integer intvar = 3;
     float FloatVar = 4.0f;
-    double double_var = 1.54233;
+    //double double_var = 1.54233;
 
     char char_Va_r = 'd';
-    str stringVariable = "Hello Everyone, this is Everyone!+++";
+    str stringVariable = "Testds das  asddddddddddddddddddddddddddd adasdasdasdasdasdasdas";
 
-    if(intvar <= 3) then:
+    if(intvar <= 3 and not 5) then:
     {
         intvar = 5+3+9 + 7 / 2;
     }
