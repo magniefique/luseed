@@ -363,12 +363,12 @@ class Lexer(object):
                      uni=True)
         
         pdf.set_font("Inconsolata", "B", size=16)
-        pdf.cell(text="SYMBOL TABLE for " + self.file_path, ln=1, center=True)
+        pdf.cell(txt="SYMBOL TABLE for " + self.file_path, ln=1, center=True)
         pdf.set_font("Inconsolata", "", size=12)
-        pdf.cell(text=" ", ln=1)
-        pdf.cell(text="Total Tokenized Lexemes: " + str(len(self.tokenized_list)), ln=1)
-        pdf.cell(text="Elapsed Time:            " + self.elapsed_time, ln=1)
-        pdf.cell(text=" ", ln=1)
+        pdf.cell(txt=" ", ln=1)
+        pdf.cell(txt="Total Tokenized Lexemes: " + str(len(self.tokenized_list)), ln=1)
+        pdf.cell(txt="Elapsed Time:            " + self.elapsed_time, ln=1)
+        pdf.cell(txt=" ", ln=1)
         with pdf.table(col_widths=(15, 40, 40)) as table:
             for data_row in PDF_TABLE:
                 row = table.row()
