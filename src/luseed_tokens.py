@@ -129,7 +129,8 @@ ESCAPE_SEQUENCES = {
 
 # WHITESPACES
 WHITESPACES = {
-    " " : "WHITESPACE"
+    " " : "WHITESPACE",
+    "\n" : "NEWLINE"
 }
 
 # COMMENTS

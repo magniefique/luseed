@@ -22,12 +22,12 @@ public class testClass:
 
 main(){
     display("Hello Word!");
-    integer intvar = 3;
+    integer intvar = 3 + + 4;
     float FloatVar = 4.0f;
     //double double_var = 1.54233;
 
     char char_Va_r = 'd';
-    str stringVariable = "Testds das  asddddddddddddddddddddddddddd adasdasdasdasdasdasdas";
+    str stringVariable = "Testds das  asddddddddddddddddddddddddddd adasdasdasdasdasdasdas\n";
 
     if(intvar <= 3 and not 5) then:
     {
