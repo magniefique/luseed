@@ -8,8 +8,8 @@ class Lexer(object):
     The Lexer of luseed programming language.
     """
     def __init__(self, source_code: str, file_path: str):
-        self.source_code = source_code
-        self.file_path = file_path
+        self.source_code: str = source_code
+        self.file_path: str = file_path
 
         # Used to tell the program that the next values are char/strings if this persist at the end of the runtime of the lexer
         # it will return an error for the char/string is not terminated
