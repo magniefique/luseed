@@ -25,11 +25,11 @@ def readfile(file_path: str):
 
         except FileNotFoundError:
             # Print error message if file is not found
-            print(f"\033[91mERROR: File {file_path} Not Found.\033[0m")
+            print(f"\033[91mERROR: File {file_path} not Found.\033[0m")
 
     else:
         # Print error message if the file ends with other file extension
-        print(f"\033[Unsupported File Extension ({Path(file_path).suffix}). Must be .lsed file.\033[0m")
+        print(f"\033[91mERROR: Unsupported File. Must be .lsed file.\033[0m")
    
 if __name__ == "__main__":
     # Get the file path from the user
