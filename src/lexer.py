@@ -391,6 +391,8 @@ class Lexer(object):
         longest_1 = 0
         longest_2 = 0
 
+        display_str =''
+
         display_list = [["LINE", "LEXEME", "TOKEN"]]
         display_list.extend(self.tokenized_lexemes)
 
@@ -418,12 +420,14 @@ class Lexer(object):
             if i == 0:
                 spacing_1 = ((longest_1 - len(display_list[i][0])) + 4) * " "
                 spacing_2 = ((longest_2 - len(display_list[i][1])) + 20) * " "
-                print(f"\033[1m{display_list[i][0]}\033[0m{spacing_1}|\033[1m{display_list[i][1]}\033[0m{spacing_2}|\033[1m{display_list[i][2]}\033[0m")
+                display_str = f"\033[1m{display_list[i][0]}\033[0m{spacing_1}|\033[1m{display_list[i][1]}\033[0m{spacing_2}|\033[1m{display_list[i][2]}\033[0m"
 
             else:
                 spacing_1 = ((longest_1 - len(display_list[i].line)) + 4) * " "
                 spacing_2 = ((longest_2 - len(display_list[i].lexeme)) + 20) * " "
-                print(f"{display_list[i].line}{spacing_1}|{display_list[i].lexeme}{spacing_2}|{display_list[i].token}")
+                display_str = f"{display_list[i].line}{spacing_1}|{display_list[i].lexeme}{spacing_2}|{display_list[i].token}"
+            
+            print(display_str)
 
     def generatefile(self):
         """
@@ -457,7 +461,7 @@ class Lexer(object):
                 for datum in tkn_array:
                     row.cell(datum)
                 
-        pdf.output(name='src/symboltable/SYMBOL_TABLE_' + self.file_path + ".pdf", dest="F")
+        pdf.output(name='src/symboltable_pdf/SYMBOL_TABLE_' + self.file_path + ".pdf", dest="F")
 
     def returntokens(self):
         """
