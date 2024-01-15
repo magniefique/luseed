@@ -9,4 +9,6 @@ A beginner friendly programming language without sacrificing syntactical element
 
 # 💾 Installation
 In order to install luseed to your device you must do the following: <br />
-``pip install -r requirements.txt``
+```
+pip install -r requirements.txt
+```
