@@ -8,5 +8,5 @@ A beginner friendly programming language without sacrificing syntactical element
 - Loop Naming
 
 # 💾 Installation
-In order to install luseed to your device you must do the following:
+In order to install luseed to your device you must do the following:\n
 ``pip install -r requirements.txt``
