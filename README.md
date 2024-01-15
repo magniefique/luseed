@@ -14,3 +14,7 @@ In order to install luseed to your device you must do the following: <br />
 ```
 pip install -r requirements.txt
 ```
+
+# ⚠️ Take Note
+Before installing luseed and its requirements, you must take note of the following:
+- Uninstall FPDF library if it exists in your computer. This may cause collision with the FPDF2 library that causes errors in generating the symbol table of your source code.
