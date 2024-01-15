@@ -4,8 +4,10 @@ A beginner friendly programming language without sacrificing syntactical element
 
 ## 🤔 What's Unique?
 - Beginner-Friendly Syntax
+- Built-In Documentation
 - Swap Functionality
 - Loop Naming
+- Check Functionality (For Class Attributes)
 
 # 💾 Installation
 In order to install luseed to your device you must do the following: <br />
