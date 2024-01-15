@@ -1,4 +1,4 @@
-import 
+import TestLibrary;
 
 public class testClass:
 {
@@ -22,7 +22,7 @@ public class testClass:
 
 main(){
     display("Hello Word!");
-    integer intvar = 3 ++ 4;
+    integer intvar = 3 + 4;
     float FloatVar = 4.0f;
     //double double_var = 1.54233;
 

@@ -161,7 +161,7 @@ class Lexer(object):
                 self.char_start = self.char_count
                 self.lexeme += char
                 self.isChar = True
-
+            
             # Checks if char is a period 
             elif char == ".":
                 # Checks if the contents of the self.lexeme is numeric for floating-point values
