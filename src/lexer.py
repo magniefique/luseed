@@ -426,11 +426,11 @@ class Lexer(object):
         pdf = FPDF()
         pdf.add_page()
         pdf.add_font("Inconsolata", "",
-                     fname="C:\\Users\\xcharuzu\\Documents\\GitHub\\luseed\\font\\Inconsolata-Regular.ttf",
+                     fname="font\\Inconsolata-Regular.ttf",
                      uni=True)
         
         pdf.add_font("Inconsolata", "B",
-                     fname="C:\\Users\\xcharuzu\\Documents\\GitHub\\luseed\\font\\Inconsolata-Bold.ttf",
+                     fname="font\\Inconsolata-Bold.ttf",
                      uni=True)
         
         pdf.set_font("Inconsolata", "B", size=16)
