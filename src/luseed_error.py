@@ -20,7 +20,7 @@ class Error:
         UNTERMINATED_STR = "Unterminated String Literal is prohibited."
         UNTERMINATED_MULTICOMMENT = "Unterminated Multi-Line Comment is prohibited."
         
-        def __init__(self, lexeme_start: int = None, line_count: int = None, prompt: str = None):
+        def __init__(self, lexeme_start: int = None, line_count: int = None, prompt: str = None, isesc: bool = False):
             self.prompt: str = prompt 
             self.lexeme_start: int = lexeme_start
             self.line_count: int = line_count
@@ -29,7 +29,11 @@ class Error:
                 self.displayerror(1)
 
             else:
-                self.displayerror(2)
+                if isesc:
+                    self.displayerror(3)
+
+                else:
+                    self.displayerror(2)
     
         def displayerror(self, type: int = None):
             if type == 1:
@@ -37,6 +41,9 @@ class Error:
             
             elif type == 2:
                 print(f"\033[91m[TokenError]: Unterminated char/str/comment found in character {self.lexeme_start}, line {self.line_count}.\n\t{self.prompt}\033[0m") 
+
+            elif type == 3:
+                print(f"\033[91m[TokenError]: Error within string literal in character {self.lexeme_start}, line {self.line_count}.\n\t{self.prompt}\033[0m")
 
     class OutputError:
         INVALID_OUTPUT = "Invalid output method for the following symbol table."

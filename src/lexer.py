@@ -256,7 +256,7 @@ class Lexer(object):
         if self.isEscape:
             # Checks if character is not part of the ESCAPE_CHAR and return an error if true
             if char not in ESCAPE_CHAR:
-                Error.TokenError(self.char_count, self.line_count, Error.TokenError.INVALID_ESC)
+                Error.TokenError(self.char_count, self.line_count, Error.TokenError.INVALID_ESC, True)
 
             self.oplexeme += char
             self.lexeme += self.oplexeme
@@ -369,7 +369,7 @@ class Lexer(object):
                 self.tokenized_lexemes.append(Token(self.line_count, lexeme, 'UNKNOWN_TOKEN'))
 
         else:
-            if len(lexeme) > 0 and lexeme[0].isalpha() and lexeme.replace("_", "").isalnum() and lexeme[-1].isalnum:
+            if len(lexeme) > 0 and lexeme[0].isalpha() and lexeme.replace("_", "").isalnum() and lexeme[-1].isalnum():
                 self.tokenized_lexemes.append(Token(self.line_count, lexeme, 'IDENTIFIER'))
             else:
                 Error.TokenError(line_count= self.line_count, prompt=Error.TokenError.INVALID_TOKEN)

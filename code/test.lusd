@@ -21,14 +21,20 @@ public class testClass:
 }
 
 main(){
-    display("Hello Word!");
+    display("Hello Word!\b") i+++++;
     integer intvar = 3 + 4;
-    float FloatVar = 4.0f;
-    double double_var = 1.54233;
+    float FloatVar = 420.0f;
+    double double_var = 0.69;
 
     char char_Va_r = 'd';
-    str stringVariable = "Testds das  asddddddddddddddddddddddddddd adasdasdasdasdasdasdas\n";
-    list floatlist[3] = [1f, 2f, 3f];
+    str stringVariable = "Nico Nico niiiiii\n";
+    list Ex_Taylor[3] = ["Loki", "What happen bella", "Red Scarf"];
+
+    str 9d0fvm_3d = "Test";
+    char __Dienamayt = 'dc';
+    str Inabikari_sunawachi_eien_nari_;
+
+    str order_var = "Oratrice Mecanique d'Analyse Cardinale;
 
     if(intvar <= 3 and not 5) then:
     {
