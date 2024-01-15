@@ -326,7 +326,7 @@ class Lexer(object):
             self.tokenized_lexemes.append(Token(self.line_count, lexeme, KEYWORDS[lexeme]))
         
         elif lexeme in NOISEWORDS:
-            self.tokenized_lexemes.append(Token(self.line_count, lexeme, NOISEWORDS[lexeme]))
+            self.tokenized_lexemes.append(Token(self.line_count, lexeme, KEYWORDS[NOISEWORDS[lexeme]]))
 
         elif lexeme in OP_ASSIGNMENT:
             self.tokenized_lexemes.append(Token(self.line_count, lexeme, OP_ASSIGNMENT[lexeme]))

@@ -55,14 +55,14 @@ KEYWORDS = {
 
 # NOISEWORDS
 NOISEWORDS = {
-    "boolean" : "KEYWORD_BOOL",
-    "character" : "KEYWORD_CHAR",
-    "constant" : "KEYWORD_CONST",
-    "integer" : "KEYWORD_INT",
-    "information" : "KEYWORD_INFO",
-    "initialize" : "KEYWORD_INIT",
-    "object" : "KEYWORD_OBJ",
-    "string" : "KEYWORD_STR"
+    "boolean" : "bool",
+    "character" : "char",
+    "constant" : "const",
+    "integer" : "int",
+    "information" : "info",
+    "initialize" : "init",
+    "object" : "obj",
+    "string" : "str"
 }
 
 # OPERATORS
