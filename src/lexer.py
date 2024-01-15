@@ -213,6 +213,15 @@ class Lexer(object):
                 self.isString = False
                 self.lexeme = ""
 
+            if self.lexeme != "":
+                self.tokenize(self.lexeme)
+                self.lexeme = ""
+            
+            if self.oplexeme != "":
+                if (self.oplexeme != "*" or self.oplexeme != "/") and not self.multiComment:
+                    self.tokenize(self.oplexeme)
+                    self.oplexeme = ""
+
             self.line_count += 1
             self.char_count = 0
         
