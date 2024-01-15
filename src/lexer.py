@@ -1,5 +1,6 @@
 from luseed_tokens import *
 from luseed_token import *
+from luseed_error import *
 from fpdf import FPDF
 import time
 
@@ -65,7 +66,7 @@ class Lexer(object):
 
     def parsecode(self):
         """
-        Parses each character in the .lsed code.
+        Parses each character in the .lusd code.
         """
         self.line_count = 1
 
@@ -101,7 +102,9 @@ class Lexer(object):
             # Checks if the following character/s is a part of a multi-line comment
             elif self.multiComment:
                 self.parsecomment(char, "multi")
-                
+        
+        self.errorcheck(1)
+
     def parsealnum(self, char: str):
         """
         Responsible for parsing alphanumeric characters.
@@ -148,19 +151,21 @@ class Lexer(object):
             # Checks if character is a double quotation for str literals
             if char == "\"":
                 self.string_line = self.line_count
+                self.string_start = self.char_count
                 self.lexeme += char
                 self.isString = True
 
             # Checks if character is a single quotation for char literals
             elif char == "\'":
                 self.char_line = self.line_count
+                self.char_start = self.char_count
                 self.lexeme += char
                 self.isChar = True
 
             # Checks if char is a period 
             elif char == ".":
                 # Checks if the contents of the self.lexeme is numeric for floating-point values
-                if self.lexeme.isnumeric():
+                if self.lexeme.isnumeric() or self.lexeme == "":
                     self.lexeme += char
 
                 # Checks if the current value of the self.lexeme is a valid Identifier for property
@@ -198,11 +203,13 @@ class Lexer(object):
             # Resets both Char and String when new line is introduced
             if self.isChar:
                 self.tokenize(self.lexeme)
+                self.errorcheck(2)
                 self.isChar = False
                 self.lexeme = ""
             
             if self.isString:
                 self.tokenize(self.lexeme)
+                self.errorcheck(3)
                 self.isString = False
                 self.lexeme = ""
 
@@ -215,8 +222,9 @@ class Lexer(object):
                 self.lexeme = ""
             
             if self.oplexeme != "":
-                self.tokenize(self.oplexeme)
-                self.oplexeme = ""
+                if (self.oplexeme != "*" or self.oplexeme != "/") and not self.multiComment:
+                    self.tokenize(self.oplexeme)
+                    self.oplexeme = ""
 
     def parsechar(self, char: str):
         """
@@ -226,8 +234,9 @@ class Lexer(object):
         if char == "\'":
             self.lexeme += char
             self.tokenize(self.lexeme)
-            self.isChar = False
             self.lexeme = ""
+            self.char_start = 0
+            self.isChar = False
 
         else:
             self.lexeme += char
@@ -240,7 +249,7 @@ class Lexer(object):
         if self.isEscape:
             # Checks if character is not part of the ESCAPE_CHAR and return an error if true
             if char not in ESCAPE_CHAR:
-                print(f"\033[91mERROR: Invalid Escape Sequence at character {self.char_count}, line {self.line_count}.\033[0m")
+                Error.TokenError(self.char_count, self.line_count, Error.TokenError.INVALID_ESC)
 
             self.oplexeme += char
             self.lexeme += self.oplexeme
@@ -253,6 +262,7 @@ class Lexer(object):
                 self.lexeme += char
                 self.tokenize(self.lexeme)
                 self.lexeme = ""
+                self.string_start = 0
                 self.isString = False
 
             # Check if the current char is a backslash to create an escape character/sequence
@@ -279,11 +289,25 @@ class Lexer(object):
                     self.multiComment = False
                     self.comment_line = 0
                     self.comment_start = 0
+                    self.tokenize(self.oplexeme)
                     self.oplexeme = ""
 
             # Checks if character is a substring of the terminator of multiline comments
             if char == "*" or char == "/":
                 self.oplexeme += char
+
+    def errorcheck(self, type: int):
+        """
+        Checks for unconcluded char, string, and multi-line comments.
+        """
+        if type == 1 and self.multiComment:
+            Error.TokenError(self.comment_start, self.comment_line, Error.TokenError.UNCLOSED_MULTICOMMENT)
+        
+        elif type == 2:
+            Error.TokenError(self.char_start, self.char_line, Error.TokenError.UNCLOSED_CHAR)
+
+        elif type == 3:
+            Error.TokenError(self.string_start, self.string_line, Error.TokenError.UNCLOSED_STR)
 
     def tokenize(self, lexeme: str):
         """
@@ -310,9 +334,6 @@ class Lexer(object):
         elif lexeme in DELIMITERS:
             self.tokenized_lexemes.append(Token(self.line_count, lexeme, DELIMITERS[lexeme]))
 
-        elif lexeme in ESCAPE_SEQUENCES:
-            self.tokenized_lexemes.append(Token(self.line_count, lexeme, ESCAPE_SEQUENCES[lexeme]))
-
         elif lexeme in COMMENTS:
             self.tokenized_lexemes.append(Token(self.line_count, lexeme, COMMENTS[lexeme]))
         
@@ -331,15 +352,16 @@ class Lexer(object):
         elif lexeme[0] == "\'" and lexeme[-1] == "\'":
             if len(lexeme.replace("\'", "")) == 1:
                 self.tokenized_lexemes.append(Token(self.line_count, lexeme, 'CHAR_LITERAL'))
+
             else:
-                print(f"\033[91mERROR: Invalid Character Literal at character {self.char_count-1} line {self.line_count}.\033[0m")
+                Error.TokenError(line_count= self.line_count, prompt=Error.TokenError.INVALID_CHAR)
                 self.tokenized_lexemes.append(Token(self.line_count, lexeme, 'UNKNOWN_TOKEN'))
 
         else:
-            if len(lexeme) > 0 and lexeme[0].isalpha() and lexeme.replace("_", "").isalnum():
+            if len(lexeme) > 0 and lexeme[0].isalpha() and lexeme.replace("_", "").isalnum() and lexeme[-1].isalnum:
                 self.tokenized_lexemes.append(Token(self.line_count, lexeme, 'IDENTIFIER'))
             else:
-                print(f"\033[91mERROR: Unknown Token at character {self.char_count-1}, line {self.line_count}.\033[0m")
+                Error.TokenError(line_count= self.line_count, prompt=Error.TokenError.INVALID_TOKEN)
                 self.tokenized_lexemes.append(Token(self.line_count, lexeme, 'UNKNOWN_TOKEN'))
 
     def isfloat(self, value):

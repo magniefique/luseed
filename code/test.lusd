@@ -4,7 +4,7 @@ public class testClass:
 {
     init(this, int num):
     {
-        this.property_2_1 = 5;
+        this.property_2_1 = .5;
         display(num);
         this.property_2_1;
     }
@@ -22,7 +22,7 @@ public class testClass:
 
 main(){
     display("Hello Word!");
-    integer intvar = 3 + + 4;
+    integer intvar = 3 ++ 4;
     float FloatVar = 4.0f;
     //double double_var = 1.54233;
 
