@@ -16,7 +16,7 @@ public class testClass:
 
     public func TestMethod3(str val1):
     {
-        display(val1);
+        display(val1); display(val1);
     }
 }
 
