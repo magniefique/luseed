@@ -24,10 +24,11 @@ main(){
     display("Hello Word!");
     integer intvar = 3 + 4;
     float FloatVar = 4.0f;
-    //double double_var = 1.54233;
+    double double_var = 1.54233;
 
     char char_Va_r = 'd';
     str stringVariable = "Testds das  asddddddddddddddddddddddddddd adasdasdasdasdasdasdas\n";
+    list floatlist[3] = [1f, 2f, 3f];
 
     if(intvar <= 3 and not 5) then:
     {

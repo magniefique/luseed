@@ -1,0 +1,80 @@
+// Sample Luseed Program with Elements
+
+// Define a class named Calculator
+class Calculator {
+    // Define different types of constants
+    const float pi = 3.14f;                    // Floating-point constant
+    const double gravity = 9.8;                // Floating-point constant
+    const str appName = "Luseed Calculator"; // String constant
+    const int version = 1;                  // Integer constant
+
+    // Define a function to add two numbers
+    func add(float a, float b) {
+        return a + b;
+    }
+
+    // Main function
+    func calculate() {
+        // Display welcome message with string constant
+        display("Welcome to the " + appName + "!");
+
+        // Display constant values
+        display("Value of pi: " + pi);
+        display("Value of gravity: " + gravity);
+        display("Application Name: " + appName);
+        display("Version: " + version);
+
+        // Ask the user to enter two numbers
+        num1 = float(ask("Enter the first number: "));
+        num2 = float(ask("Enter the second number: "));
+
+        // Perform arithmetic operations
+        display("Sum: " + add(num1, num2));
+        display("Difference: " + (num1 - num2));
+        display("Product: " + (num1 * num2));
+        display("Quotient: " + (num1 / num2));
+        display("Remainder: " + (num1 % num2));
+        display("Power: " + (num1 ** num2));
+        display("Square Root of num1: " + (num1 ** 0.5f));
+        display("Increment num1: " + (num1 + 1f));
+        display("Decrement num2: " + (num2 - 1f));
+
+        // Perform boolean operations
+        bool resultAnd1 = (num1 > 0f) and (num2 < 10f);
+        bool resultAnd2 = (num1 == 0f) and (num2 != 0f);
+        bool resultOr1 = (num1 < 0f) or (num2 > 10f);
+        bool resultOr2 = (num1 <= 5f) or (num2 >= 5f);
+        bool resultNot1 = not (num1f == num2f);
+        bool resultNot2 = not (num1f >= num2f);
+        bool resultEqual = (num1f == num2f);
+        bool resultNotEqual = (num1f != num2f);
+        bool resultGreater = (num1f > num2f);
+        bool resultLess = (num1f < num2f);
+
+        // Display boolean results
+        display("Result of AND operation 1: " + resultAnd1);
+        display("Result of AND operation 2: " + resultAnd2);
+        display("Result of OR operation 1: " + resultOr1);
+        display("Result of OR operation 2: " + resultOr2);
+        display("Result of NOT operation 1: " + resultNot1);
+        display("Result of NOT operation 2: " + resultNot2);
+        display("Result of Equal operation: " + resultEqual);
+        display("Result of Not Equal operation: " + resultNotEqual);
+        display("Result of Greater operation: " + resultGreater);
+        display("Result of Less operation: " + resultLess);
+
+        // End of the program
+        display("End of the Luseed program.");
+    }
+}
+
+main(){
+    // Create an instance of the Calculator class
+    obj calcObj = Calculator();
+
+    // Call the main function of the Calculator class
+    calcObj.calculate();
+}
+
+
+

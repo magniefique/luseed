@@ -106,6 +106,7 @@ class Lexer(object):
         """
         Responsible for parsing alphanumeric characters.
         """
+        
         self.lexeme += char
                     
         # Appends the current value of the self.oplexeme if it is not empty 
