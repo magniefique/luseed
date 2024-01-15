@@ -58,9 +58,6 @@ class Lexer(object):
         # Computes for the Elapsed Time
         self.elapsed_time = str(end - start)
 
-        # Generates file for the Symbol Table
-        self.generatefile()
-
         # Returns tokens
         self.returntokens()
 
@@ -307,16 +304,20 @@ class Lexer(object):
 
     def errorcheck(self, type: int):
         """
-        Checks for unconcluded char, string, and multi-line comments.
+        Checks for unconcluded char, string, and multi-line comments.\n
+        type = 1 | 2 | 3\n
+        1 - Refers to Multi-Comment Errors\n
+        2 - Refers to Unterminated Character Value\n
+        3 - Referst to Unterminated String Value\n
         """
         if type == 1 and self.multiComment:
-            Error.TokenError(self.comment_start, self.comment_line, Error.TokenError.UNCLOSED_MULTICOMMENT)
+            Error.TokenError(self.comment_start, self.comment_line, Error.TokenError.UNTERMINATED_MULTICOMMENT)
         
         elif type == 2:
-            Error.TokenError(self.char_start, self.char_line, Error.TokenError.UNCLOSED_CHAR)
+            Error.TokenError(self.char_start, self.char_line, Error.TokenError.UNTERMINATED_CHAR)
 
         elif type == 3:
-            Error.TokenError(self.string_start, self.string_line, Error.TokenError.UNCLOSED_STR)
+            Error.TokenError(self.string_start, self.string_line, Error.TokenError.UNTERMINATED_STR)
 
     def tokenize(self, lexeme: str):
         """
@@ -384,10 +385,41 @@ class Lexer(object):
         except ValueError:
             return False
 
-    def display_console(self):
+    def display_table(self, type: str = "console"):
         """
-        Displays the Symbol Table in the Terminal
+        Displays the Symbol Table in the Terminal\n
+        type = "console" | "txt"\n
+        "console" = Prints values in console.\n
+        "txt" = Prints values in .txt file.\n
+        "pdf" = Prints values in .pdf file.\n
+        "all" = Prints values in all formats.
         """
+
+        if type == "console":
+            print(f"\n\033[1mSYMBOL TABLE for {self.file_path}\033[0m")
+            print(f"Total Tokenized Lexemes\t\t: {len(self.tokenized_lexemes)}")
+            print(f"Elapsed Time\t\t\t: {self.elapsed_time}\n")
+        
+        elif type == "txt":
+            file = open(f'src\symboltable_txt\SYMBOL_TABLE_{self.file_path}', 'w')
+            file.write(f"\nSYMBOL TABLE for {self.file_path}" + "\n")
+            file.write(f"Total Tokenized Lexemes\t\t: {len(self.tokenized_lexemes)}" + "\n")
+            file.write(f"Elapsed Time\t\t\t\t: {self.elapsed_time}" + "\n")
+        
+        elif type == "pdf":
+            self.generatefile()
+            return
+        
+        elif type == "all":
+            self.display_table("console")
+            self.display_table("txt")
+            self.generatefile()
+            return
+
+        else:
+            Error.OutputError(type, Error.OutputError.INVALID_OUTPUT).displayerror()
+            return
+
         longest_1 = 0
         longest_2 = 0
 
@@ -395,9 +427,6 @@ class Lexer(object):
 
         display_list = [["LINE", "LEXEME", "TOKEN"]]
         display_list.extend(self.tokenized_lexemes)
-
-        print(f"\n\033[1mSYMBOL TABLE for {self.file_path}\033[0m")
-        print(f"Total Tokenized Lexemes:\t{len(self.tokenized_lexemes)}\n")
 
         # Calculates length of space
         for i in range(len(display_list)):
@@ -420,14 +449,28 @@ class Lexer(object):
             if i == 0:
                 spacing_1 = ((longest_1 - len(display_list[i][0])) + 4) * " "
                 spacing_2 = ((longest_2 - len(display_list[i][1])) + 20) * " "
-                display_str = f"\033[1m{display_list[i][0]}\033[0m{spacing_1}|\033[1m{display_list[i][1]}\033[0m{spacing_2}|\033[1m{display_list[i][2]}\033[0m"
+
+                if type == "console":
+                    display_str = f"\033[1m{display_list[i][0]}\033[0m{spacing_1}|\033[1m{display_list[i][1]}\033[0m{spacing_2}|\033[1m{display_list[i][2]}\033[0m"
+
+                elif type == "txt":
+                    display_str = f"{display_list[i][0]}{spacing_1}|{display_list[i][1]}{spacing_2}|{display_list[i][2]}"
 
             else:
                 spacing_1 = ((longest_1 - len(display_list[i].line)) + 4) * " "
                 spacing_2 = ((longest_2 - len(display_list[i].lexeme)) + 20) * " "
                 display_str = f"{display_list[i].line}{spacing_1}|{display_list[i].lexeme}{spacing_2}|{display_list[i].token}"
             
-            print(display_str)
+            if type == "console":
+                print(display_str)
+            
+            elif type == "txt":
+                file.write(display_str + '\n')
+
+        if type == "txt":
+            print(f"The SYMBOL_TABLE_{self.file_path}.txt has been generated.")
+        
+        return
 
     def generatefile(self):
         """
@@ -450,8 +493,8 @@ class Lexer(object):
         pdf.cell(txt="SYMBOL TABLE for " + self.file_path, ln=1, center=True)
         pdf.set_font("Inconsolata", "", size=12)
         pdf.cell(txt=" ", ln=1)
-        pdf.cell(txt="Total Tokenized Lexemes: " + str(len(self.tokenized_lexemes)), ln=1)
-        pdf.cell(txt="Elapsed Time:            " + self.elapsed_time, ln=1)
+        pdf.cell(txt="Total Tokenized Lexemes :" + str(len(self.tokenized_lexemes)), ln=1)
+        pdf.cell(txt="Elapsed Time            :" + self.elapsed_time, ln=1)
         pdf.cell(txt=" ", ln=1)
         with pdf.table(col_widths=(15, 40, 40)) as table:
             for i in range(len(PDF_TABLE)):
@@ -462,6 +505,7 @@ class Lexer(object):
                     row.cell(datum)
                 
         pdf.output(name='src/symboltable_pdf/SYMBOL_TABLE_' + self.file_path + ".pdf", dest="F")
+        print(f"The SYMBOL_TABLE_{self.file_path}.pdf has been generated.")
 
     def returntokens(self):
         """

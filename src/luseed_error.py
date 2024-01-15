@@ -16,9 +16,9 @@ class Error:
         INVALID_TOKEN = "Token for lexeme cannot be found."
         INVALID_CHAR = "Invalid Character Literal found."
         INVALID_ESC = "Invalid Escape Sequence found."
-        UNCLOSED_CHAR = "Unclosed Char Literal is prohibited."
-        UNCLOSED_STR = "Unclosed String Literal is prohibited."
-        UNCLOSED_MULTICOMMENT = "Unclosed Multi-Line Comment is prohibited."
+        UNTERMINATED_CHAR = "Unterminated Char Literal is prohibited."
+        UNTERMINATED_STR = "Unterminated String Literal is prohibited."
+        UNTERMINATED_MULTICOMMENT = "Unterminated Multi-Line Comment is prohibited."
         
         def __init__(self, lexeme_start: int = None, line_count: int = None, prompt: str = None):
             self.prompt: str = prompt 
@@ -36,4 +36,14 @@ class Error:
                 print(f"\033[91m[TokenError]: Invalid lexeme found in line {self.line_count}.\n\t{self.prompt}\033[0m")
             
             elif type == 2:
-                print(f"\033[91m[TokenError]: Unclosed char/str/comment found in character {self.lexeme_start}, line {self.line_count}.\n\t{self.prompt}\033[0m")    
+                print(f"\033[91m[TokenError]: Unterminated char/str/comment found in character {self.lexeme_start}, line {self.line_count}.\n\t{self.prompt}\033[0m") 
+
+    class OutputError:
+        INVALID_OUTPUT = "Invalid output method for the following symbol table."
+
+        def __init__(self, output_style: str = None, prompt: str = None):
+            self.output_style: str = output_style
+            self.prompt: str = prompt
+        
+        def displayerror(self):
+            print(f"\033[91m[OutputError]: Symbol Table cannot be presented.\n\t{self.prompt}\033[0m")

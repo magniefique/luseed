@@ -41,7 +41,7 @@ main(){
     {
         pass;
     }
-
+    
     for(int i = 0; i < 5; i++):
     {
         display(testClass.property_2_1);
