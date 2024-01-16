@@ -1,12 +1,12 @@
 // Sample Luseed Program with Elements
 
-// Define a class named Calculator
-public class Calculator {
+/*Define a class named Calculator
+public class Calculator*/ {
     // Define different types of constants
-    const float pi = 3.14f;                    // Floating-point constant
-    const double gravity = 9.8;                // Double constant
-    const str appName = "Luseed Calculator"; // String constant
-    constant int version = 1;                  // Integer constant
+    const float pi = 3f;                     // Floating-point constant
+    const double gravity = 9;                 // Double constant
+    const str appName = "Luseed Calculator";    // String constant
+    constant int version = 1;                   // Integer constant
     constant bool isOn = true                   // Bool Constant
 
     public integer testvar1 = 1;                // INT NOISE WORD
@@ -34,8 +34,9 @@ public class Calculator {
         display("Version: " + version);
 
         // Ask the user to enter two numbers
-        num1 = float(ask("Enter the first number: "));
-        num2 = float(ask("Enter the second number: "));
+        float num1 = float(ask("Enter the first number: "));
+        float num2 = float(ask("Enter the second number: "));
+        int i = 1;
 
         // Perform arithmetic operations
         display("Sum: " + add(num1, num2));
@@ -45,8 +46,8 @@ public class Calculator {
         display("Remainder: ", (num1 % num2));
         display("Power: ", (num1 ** num2));
         display("Square Root of num1: ", (num1 ** 0.5f));
-        display("Increment num1: ", (num1 + 1f));
-        display("Decrement num2: ", (num2 - 1f));
+        display("Increment value: ", (i++));
+        display("Decrement value: ", (i--));
 
         // Perform boolean operations
         bool resultAnd1 = (num1 > 0f) and (num2 < 10f);
@@ -89,4 +90,9 @@ main(){
 
     // Call the main function of the Calculator class
     calcObj1.calculate();
+
+    repeat(10):
+    {
+        display("Hi Ebriwan");
+    }
 }

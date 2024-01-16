@@ -32,7 +32,7 @@ KEYWORDS = {
     "import" : "KEYWORD_IMPORT",
     "info" : "KEYWORD_INFO",
     "init" : "KEYWORD_INIT",
-    "inheritall" : "KEYWORD_INHERITALL",
+    "inheritall" : "KEYWORD_INHRTALL",
     "in" : "KEYWORD_IN",
     "int" : "KEYWORD_INT",
     "list" : "KEYWORD_LIST",
@@ -99,27 +99,26 @@ OP_UNARY = {
 }
 
 OP_RELATION = {
-    "==" : "EQUALITY_OP",
-    "!=" : "INEQUALITY_OP",
-    ">" : "GREATER_THAN_OP",
-    "<" : "LESS_THAN_OP",
-    ">=" : "GREATER_OR_EQUAL_OP",
-    "<=" : "LESS_OR_EQUAL_OP",
+    "==" : "OP_EQUALITY",
+    "!=" : "OP_INEQUALITY",
+    ">" : "OP_GREATER_THAN",
+    "<" : "OP_LESS_THAN",
+    ">=" : "OP_GREATER_OR_EQUAL",
+    "<=" : "OP_LESS_OR_EQUAL",
 }
 
 # DELIMITERS
 DELIMITERS = {
-    ";" : "STMT_TERMINATOR",
-    ":" : "CODEBLK_INDICATOR",
-    "{" : "OPEN_CURLY_BRACKET",
-    "}" : "CLOSE_CURLY_BRACKET",
-    "[" : "OPEN_SQUARE_BRACKET",
-    "]" : "CLOSE_SQUARE_BRACKET",
-    "(" : "OPEN_PARENTHESIS",
-    ")" : "CLOSE_PARENTHESIS",
-    "\"" : "STRING_DELIMITER",
-    "," : "SEPARATOR",
-    "." : "OBJECT_DELIMITER"
+    ";" : "DELIM_STMT_TERMINATOR",
+    ":" : "DELIM_CODEBLK_INDICATOR",
+    "{" : "DELIM_OPEN_CURLY_BRACKET",
+    "}" : "DELIM_CLOSE_CURLY_BRACKET",
+    "[" : "DELIM_OPEN_SQUARE_BRACKET",
+    "]" : "DELIM_CLOSE_SQUARE_BRACKET",
+    "(" : "DELIM_OPEN_PARENTHESIS",
+    ")" : "DELIM_CLOSE_PARENTHESIS",
+    "," : "DELIM_SEPARATOR",
+    "." : "DELIM_OBJECT"
 }
 
 # ESCAPE SEQUENCES
