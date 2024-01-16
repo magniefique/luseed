@@ -52,16 +52,16 @@ class Lexer(object):
 
         # Parses the code
         start = time.time()
-        self.parsecode()
+        self.parse_code()
         end = time.time()
 
         # Computes for the Elapsed Time
         self.elapsed_time = str(end - start)
 
         # Returns tokens
-        self.returntokens()
+        self.return_tokens()
 
-    def parsecode(self):
+    def parse_code(self):
         """
         Parses each character in the .lusd code.
         """
@@ -72,37 +72,39 @@ class Lexer(object):
 
             # Checks for whitespace characters
             if char in WHITESPACES:
-                self.parsewhite(char)
+                self.parse_white(char)
             
             # Checks if next character/s are not part of a comment
             if not self.singleComment and not self.multiComment:
                 # Checks if next character/s are not part of a String literal or Char literal
                 if not self.isString and not self.isChar:
                     if char.isalnum():
-                        self.parsealnum(char)
+                        self.parse_alnum(char)
 
                     elif char in SPECIAL_CHAR:
-                        self.parsespec(char)
+                        self.parse_spec(char)
                 
                 # Checks if next character is part of a Char literal
                 elif self.isChar:
-                    self.parsechar(char)
+                    self.parse_char(char)
 
                 # Checks if next character/s are not part of a String literal
                 elif self.isString:
-                    self.parsestring(char)
+                    self.parse_string(char)
 
             # Checks if the following character/s is a part of a single-line comment
             elif self.singleComment:
-                self.parsecomment(char, "single")
+                self.parse_comment(char, "single")
 
             # Checks if the following character/s is a part of a multi-line comment
             elif self.multiComment:
-                self.parsecomment(char, "multi")
+                self.parse_comment(char, "multi")
         
-        self.errorcheck(1)
+        self.reset_buffers("lexeme")
+        self.reset_buffers("oplexeme_2")
+        self.error_check(1)
 
-    def parsealnum(self, char: str):
+    def parse_alnum(self, char: str):
         """
         Responsible for parsing alphanumeric characters.
         """
@@ -114,13 +116,26 @@ class Lexer(object):
             self.tokenize(self.oplexeme)
             self.oplexeme = ""
 
-    def parsespec(self, char: str):
+    def parse_spec(self, char: str):
         """
         Responsible for parsing special characters
         """
         # Checks if char is part of an operator that contains 2 characters
         if char in DOUBLE_OP:
-            self.oplexeme += char
+        
+            if self.oplexeme != "":
+                if self.oplexeme + char not in OP_ASSIGNMENT and self.oplexeme + char not in OP_ARITHMETIC and self.oplexeme + char not in OP_UNARY and self.oplexeme + char not in OP_RELATION and self.oplexeme + char not in COMMENTS:
+                    self.reset_buffers("oplexeme_1")
+                    self.tokenize(char)
+
+                elif self.oplexeme + char in COMMENTS:
+                    self.oplexeme += char
+                
+                else:
+                    self.oplexeme += char
+                    self.reset_buffers("oplexeme_1")
+            else:
+                self.oplexeme += char
 
             # Activates comment boolean if self.oplexeme is in comments
             if self.oplexeme in COMMENTS:
@@ -136,15 +151,11 @@ class Lexer(object):
                 self.oplexeme = ""
             
             # Tokenizes the lexemes present in the self.lexeme
-            if self.lexeme != "":
-                self.tokenize(self.lexeme)
-                self.lexeme = ""
+            self.reset_buffers("lexeme")
                 
         else:
             # Appends the current value of the self.oplexeme if it is not empty 
-            if self.oplexeme != "":
-                self.tokenize(self.oplexeme)
-                self.oplexeme = ""
+            self.reset_buffers("oplexeme_1")
 
             # Checks if character is a double quotation for str literals
             if char == "\"":
@@ -178,19 +189,15 @@ class Lexer(object):
             
             else:
                 # Parses the string that was formulated
-                if self.lexeme != "":
-                    self.tokenize(self.lexeme)
-                    self.lexeme = ""
+                self.reset_buffers("lexeme")
 
                 # Parses the operator present in self.oplexeme
-                if self.oplexeme != "":
-                    self.tokenize(self.oplexeme)
-                    self.oplexeme = ""
+                self.reset_buffers("oplexeme_1")
 
                 # Sets the current char to self.lexeme and turns it into a lexeme
                 self.tokenize(char)
 
-    def parsewhite(self, char: str):
+    def parse_white(self, char: str):
         """
         Responsible for parsing whitespaces
         """
@@ -201,39 +208,32 @@ class Lexer(object):
             # Resets both Char and String when new line is introduced
             if self.isChar:
                 self.tokenize(self.lexeme)
-                self.errorcheck(2)
+                self.error_check(2)
                 self.isChar = False
                 self.lexeme = ""
             
             if self.isString:
                 self.tokenize(self.lexeme)
-                self.errorcheck(3)
+                self.error_check(3)
                 self.isString = False
                 self.lexeme = ""
 
-            if self.lexeme != "":
-                self.tokenize(self.lexeme)
-                self.lexeme = ""
+            # Tokenizes lexemes if they are not empty
+            self.reset_buffers("lexeme")
             
-            if self.oplexeme != "":
-                if (self.oplexeme != "*" or self.oplexeme != "/") and not self.multiComment:
-                    self.tokenize(self.oplexeme)
-                    self.oplexeme = ""
+            self.reset_buffers("oplexeme_2")
 
+            # Increments line count for new line and resets char cout
             self.line_count += 1
             self.char_count = 0
         
         elif char == " " and not self.isString:
-            if self.lexeme != "":
-                self.tokenize(self.lexeme)
-                self.lexeme = ""
+            # Tokenizes lexemes if they are not empty
+            self.reset_buffers("lexeme")
             
-            if self.oplexeme != "":
-                if (self.oplexeme != "*" or self.oplexeme != "/") and not self.multiComment:
-                    self.tokenize(self.oplexeme)
-                    self.oplexeme = ""
+            self.reset_buffers("oplexeme_2")
 
-    def parsechar(self, char: str):
+    def parse_char(self, char: str):
         """
         Handles character literal values.
         """
@@ -248,7 +248,7 @@ class Lexer(object):
         else:
             self.lexeme += char
     
-    def parsestring(self, char: str):
+    def parse_string(self, char: str):
         """
         Handles string literal values.
         """
@@ -280,7 +280,7 @@ class Lexer(object):
             else:
                 self.lexeme += char
 
-    def parsecomment(self, char: str, type: str):
+    def parse_comment(self, char: str, type: str):
         if type == "single":
             pass
 
@@ -303,7 +303,7 @@ class Lexer(object):
             if char == "*" or char == "/":
                 self.oplexeme += char
 
-    def errorcheck(self, type: int):
+    def error_check(self, type: int):
         """
         Checks for unconcluded char, string, and multi-line comments.\n
         type = 1 | 2 | 3\n
@@ -319,6 +319,26 @@ class Lexer(object):
 
         elif type == 3:
             Error.TokenError(self.string_start, self.string_line, Error.TokenError.UNTERMINATED_STR)
+
+    def reset_buffers(self, type: str):
+        """
+        Resets both lexeme and oplexeme.
+        """
+        if type == "lexeme":
+            if self.lexeme != "":
+                self.tokenize(self.lexeme)
+                self.lexeme = ""
+        
+        elif type == "oplexeme_1":
+            if self.oplexeme != "":
+                self.tokenize(self.oplexeme)
+                self.oplexeme = ""
+        
+        elif type == "oplexeme_2":
+            if self.oplexeme != "":
+                if (self.oplexeme != "*" or self.oplexeme != "/") and not self.multiComment:
+                    self.tokenize(self.oplexeme)
+                    self.oplexeme = ""
 
     def tokenize(self, lexeme: str):
         """
@@ -351,10 +371,10 @@ class Lexer(object):
         elif lexeme.isnumeric():
             self.tokenized_lexemes.append(Token(self.line_count, lexeme, 'INT_LITERAL'))
 
-        elif len(lexeme) > 1 and (lexeme[-1] == "f") and (lexeme[-2] != ".") and self.isfloat(lexeme.replace("f", "")):
+        elif len(lexeme) > 1 and (lexeme[-1] == "f") and (lexeme[-2] != ".") and self.is_float(lexeme.replace("f", "")):
             self.tokenized_lexemes.append(Token(self.line_count, lexeme, 'FLOAT_LITERAL'))
 
-        elif len(lexeme) > 1 and ("." in lexeme) and (lexeme[-1] != ".") and self.isfloat(lexeme):
+        elif len(lexeme) > 1 and ("." in lexeme) and (lexeme[-1] != ".") and self.is_float(lexeme):
             self.tokenized_lexemes.append(Token(self.line_count, lexeme, 'DOUBLE_LITERAL'))
 
         elif lexeme[0] == "\"" and lexeme[-1] == "\"":
@@ -371,11 +391,12 @@ class Lexer(object):
         else:
             if len(lexeme) > 0 and lexeme[0].isalpha() and lexeme.replace("_", "").isalnum() and lexeme[-1].isalnum():
                 self.tokenized_lexemes.append(Token(self.line_count, lexeme, 'IDENTIFIER'))
+
             else:
                 Error.TokenError(line_count= self.line_count, prompt=Error.TokenError.INVALID_TOKEN)
                 self.tokenized_lexemes.append(Token(self.line_count, lexeme, 'UNKNOWN_TOKEN'))
 
-    def isfloat(self, value):
+    def is_float(self, value):
         """
         Tests a value if it is a valid float
         """
@@ -408,13 +429,13 @@ class Lexer(object):
             file.write(f"Elapsed Time\t\t\t\t: {self.elapsed_time}" + "\n")
         
         elif type == "pdf":
-            self.generatefile()
+            self.generate_file()
             return
         
         elif type == "all":
             self.display_table("console")
             self.display_table("txt")
-            self.generatefile()
+            self.generate_file()
             return
 
         else:
@@ -473,7 +494,7 @@ class Lexer(object):
         
         return
 
-    def generatefile(self):
+    def generate_file(self):
         """
         Generates the symbol table of the source code
         """
@@ -508,7 +529,7 @@ class Lexer(object):
         pdf.output(name='src/symboltable_pdf/SYMBOL_TABLE_' + self.file_path + ".pdf", dest="F")
         print(f"The SYMBOL_TABLE_{self.file_path}.pdf has been generated.")
 
-    def returntokens(self):
+    def return_tokens(self):
         """
         Returns the tokens found in the file.
         """

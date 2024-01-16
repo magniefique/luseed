@@ -4,9 +4,8 @@ public class testClass:
 {
     init(this, int num):
     {
-        this.property_2_1 = .5;
+        this.property_2_1 = num;
         display(num);
-        this.property_2_1;
     }
 
     public func TestMethod():
@@ -20,11 +19,28 @@ public class testClass:
     }
 }
 
+private class testClass2:
+{
+    initialize(this, int num):
+    {
+        display(num/2);
+    }
+}
+
 main(){
-    display("Hello Word!\b") i+++++;
-    integer intvar = 3 + 4;
+    info();
+    information();
+    
+    int intvar_fiRst = 3;
+    integer intvar = 3+4;
+
+    private obj SecretClass = testClass(3);
+    public object object2 = testClass2(5);
+
+    display("Hello Word!\b");
+    
     float FloatVar = 420.0f;
-    double double_var = 0.69;
+    double double_var = 0.69; 
 
     char char_Va_r = 'd';
     str stringVariable = "Nico Nico niiiiii\n";
@@ -35,14 +51,14 @@ main(){
     str Inabikari_sunawachi_eien_nari_;
 
     str order_var = "Oratrice Mecanique d'Analyse Cardinale;
-
+    
     if(intvar <= 3 and not 5) then:
     {
         intvar = 5+3+9 + 7 / 2;
     }
     elif(intvar != 3):
     {
-        intvar = 10;
+        intvar = -10;
     }
     else:
     {

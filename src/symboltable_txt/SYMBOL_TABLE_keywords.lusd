@@ -1,7 +1,7 @@
 
 SYMBOL TABLE for keywords.lusd
-Total Tokenized Lexemes		: 50
-Elapsed Time				: 0.0009999275207519531
+Total Tokenized Lexemes		: 51
+Elapsed Time				: 0.0010004043579101562
 LINE    |LEXEME                        |TOKEN
 1       |all                           |KEYWORD_ALL
 2       |and                           |KEYWORD_AND
@@ -53,3 +53,4 @@ LINE    |LEXEME                        |TOKEN
 48      |try                           |IDENTIFIER
 49      |until                         |KEYWORD_UNTIL
 50      |while                         |KEYWORD_WHILE
+51      |/*                            |COMMENT_MULTI_OPEN

@@ -22,23 +22,23 @@ func calculateTriangleArea(float base, float height): {
 main() {
     # Ask the user to choose a shape
     display("Choose a shape:\n1. Rectangle\n2. Square\n3. Triangle");
-    int shapeChoice = toInt(ask());
+    int shapeChoice = int(ask());
 
     # Perform calculations based on the user's choice
     if (shapeChoice == 1) then: {
-        float length = ask("Enter the length of the rectangle: ");
-        float width = ask("Enter the width of the rectangle: ");
+        float length = float(ask("Enter the length of the rectangle: "));
+        float width = float(ask("Enter the width of the rectangle: "));
         
         float area = calculateRectangleArea(length, width);
         display("The area of the rectangle is: ", area);
-    } else if (shapeChoice == 2) then: {
-        float side = ask("Enter the side length of the square: ");
+    } elif (shapeChoice == 2) then: {
+        float side = float(ask("Enter the side length of the square: "));
         
         float area = calculateSquareArea(side);
         display("The area of the square is: ", area);
-    } else if (shapeChoice == 3) then: {
-        float base = ask("Enter the base length of the triangle: ");
-        float height = ask("Enter the height of the triangle: ");
+    } elif (shapeChoice == 3) then: {
+        float base = float(ask("Enter the base length of the triangle: "));
+        float height = float(ask("Enter the height of the triangle: "));
         
         float area = calculateTriangleArea(base, height);
         display("The area of the triangle is: ", area);

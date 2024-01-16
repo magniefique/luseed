@@ -29,7 +29,7 @@ def readfile(file_path: str):
             # Create a Lexer object and tokenize the file content
             code = Lexer(file_content, file_name)
             code.display_table("all")
-            token_list = code.returntokens()
+            token_list = code.return_tokens()
 
         except FileNotFoundError:
             # Print error message if file is not found

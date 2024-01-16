@@ -1,0 +1,39 @@
+public class Money:
+{
+    init(this, int current_money):
+    {
+        this.money = current_money;
+    }
+
+    // Function for decreasing money value
+    public func SpendMoney(this, int amt_spend):
+    {
+        this.money -= amt_spend;
+        
+        if this.money < 0:
+            return 0;
+
+        return this.money;
+    }
+
+    // Ask Childe for Money
+    public func AskChilde(this):
+    {
+        this.money = this.money + 10000000000;
+        return this.money;
+    } 
+
+    public func DisplayBal(this):
+    {
+        display(this.money);
+    }
+}
+
+main()
+{
+    object My_Money = Money(500);
+
+    My_Money.AskChilde(); // 10000000000 + 500 = 10000000500
+    My_Money.DisplayBal(); // Displays 10000000500
+    My_Money.SpendMoney(500); // 10000000500 - 500 = 10000000000
+}

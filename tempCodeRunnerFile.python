@@ -1,2 +1,4 @@
-num1 = 1.7
-print(int(num1))
+var1 = 3
+var2 = 4
+
+print(var1+-var2)
