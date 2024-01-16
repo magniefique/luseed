@@ -207,6 +207,9 @@ class Lexer(object):
             if self.singleComment:
                 self.singleComment = False
                 self.reset_buffers("lexeme")
+            
+            if self.multiComment:
+                return
 
             # Resets both Char and String when new line is introduced
             if self.isChar:
@@ -457,12 +460,12 @@ class Lexer(object):
             Error.OutputError(type, Error.OutputError.INVALID_OUTPUT).displayerror()
             return
 
-        longest_1 = len(str(len(self.tokenized_lexemes)))
+        longest_1 = 0
         longest_2 = 0
 
         display_str =''
 
-        display_list = [["LINE", "LEXEME", "TOKEN"]]
+        display_list = [["LEXEME", "LINE", "TOKEN"]]
         display_list.extend(self.tokenized_lexemes)
 
         # Calculates length of lexeme
@@ -473,25 +476,33 @@ class Lexer(object):
             else:
                 length = len(display_list[i].lexeme)
             
-            if (length > longest_2):
-                longest_2 = length
+            if (length > longest_1):
+                longest_1 = length
+
+        if len(str(len(self.tokenized_lexemes))) > len(display_list[0][0]):
+            longest_2 = len(str(len(self.tokenized_lexemes)))
+        
+        else:
+            len(display_list[0][0])
 
         # Displays the symbol table in the console
         for i in range(len(display_list)):
             if i == 0:
-                spacing_1 = ((longest_1 - len(display_list[i][0])) + 4) * " "
-                spacing_2 = ((longest_2 - len(display_list[i][1])) + 20) * " "
+                spacing_1 = (longest_1 + 5)
+                spacing_2 = (longest_2 + 10)
 
                 if type == "console":
-                    display_str = f"\033[1m{display_list[i][0]}\033[0m{spacing_1}|\033[1m{display_list[i][1]}\033[0m{spacing_2}|\033[1m{display_list[i][2]}\033[0m"
+                    display_str = f"\033[1m{display_list[i][0]:<{spacing_1}}\033[0m\033[1m{display_list[i][1]:<{spacing_2}}\033[0m\033[1m{display_list[i][2]}\033[0m"
 
                 elif type == "txt":
-                    display_str = f"{display_list[i][0]}{spacing_1}|{display_list[i][1]}{spacing_2}|{display_list[i][2]}"
+                    display_str = f"{display_list[i][0]:<{spacing_1}}{display_list[i][1]:<{spacing_2}}{display_list[i][2]}"
 
             else:
-                spacing_1 = ((longest_1 - len(display_list[i].line)) + 4) * " "
-                spacing_2 = ((longest_2 - len(display_list[i].lexeme)) + 20) * " "
-                display_str = f"{display_list[i].line}{spacing_1}|{display_list[i].lexeme}{spacing_2}|{display_list[i].token}"
+                spacing_1 = (longest_1 + 5)
+                spacing_2 = (longest_2 + 10)
+                offset = display_list[i].lexeme.rfind("\n")
+                new_spacing = spacing_1 + offset + 1 if offset != -1 else spacing_1
+                display_str = f"{display_list[i].lexeme:<{new_spacing}}{display_list[i].line:<{spacing_2}}{display_list[i].token}"
             
             if type == "console":
                 print(display_str)

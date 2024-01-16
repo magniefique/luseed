@@ -1,6 +1,8 @@
 
 SYMBOL TABLE for money.lusd
-Total Tokenized Lexemes		: 1
-Elapsed Time				: 0.0
-LINE |LEXEME                                                                                 |TOKEN
-1    |/* Hello This is a Test Variable Please tell me where I did wrong*/                    |COMMENT_MLTILINE
+Total Tokenized Lexemes		: 2
+Elapsed Time				: 0.0010004043579101562
+LINE    |LEXEME                                                      |TOKEN
+1       |/* Hello This is a Test Variable Please                     |COMMENT_MLTILINE
+2       |
+tell me where I did wrong*/                                |UNKNOWN_TOKEN
