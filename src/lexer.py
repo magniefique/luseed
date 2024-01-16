@@ -17,6 +17,9 @@ class Lexer(object):
         self.lexeme = ''
         self.oplexeme = ''
 
+        self.space_len = 0
+        self.char_cmnt_ctr = 0
+
         # Used to tell the program that the next values are char/strings if this persist at the end of the runtime of the lexer
         # it will return an error for the char/string is not terminated
         self.isChar = False
@@ -148,6 +151,7 @@ class Lexer(object):
 
                 elif self.oplexeme == "/*":
                     self.multiComment = True
+                    self.char_cmnt_ctr = 2
                     self.comment_line = self.line_count
                     self.comment_start = self.char_count
 
@@ -209,6 +213,8 @@ class Lexer(object):
                 self.reset_buffers("lexeme")
             
             if self.multiComment:
+                self.check_len(self.char_cmnt_ctr)
+                self.char_cmnt_ctr = 0
                 return
 
             # Resets both Char and String when new line is introduced
@@ -312,7 +318,11 @@ class Lexer(object):
                     self.lexeme += self.oplexeme
                     self.reset_buffers("lexeme")
                     self.oplexeme = ""
+                    self.check_len(self.char_cmnt_ctr)
+                    self.char_cmnt_ctr = 0
                     return
+            
+            self.char_cmnt_ctr += 1
 
     def error_check(self, type: int):
         """
@@ -382,6 +392,7 @@ class Lexer(object):
             
             else:
                 self.tokenized_lexemes.append(Token(self.line_count, lexeme, "COMMENT_MLTILINE"))
+                return
         
         elif lexeme.isnumeric():
             self.tokenized_lexemes.append(Token(self.line_count, lexeme, 'INT_LITERAL'))
@@ -414,6 +425,8 @@ class Lexer(object):
                 Error.TokenError(line_count= self.line_count, prompt=Error.TokenError.INVALID_TOKEN)
                 self.tokenized_lexemes.append(Token(self.line_count, lexeme, 'UNKNOWN_TOKEN'))
 
+        self.check_len(len(lexeme))
+
     def is_float(self, value):
         """
         Tests a value if it is a valid float
@@ -424,6 +437,13 @@ class Lexer(object):
         
         except ValueError:
             return False
+
+    def check_len(self, lex_len: int):
+        """
+        Finds the longest lexeme
+        """
+        if (lex_len > self.space_len):
+            self.space_len = lex_len
 
     def display_table(self, type: str = "console"):
         """
@@ -469,17 +489,13 @@ class Lexer(object):
         display_list.extend(self.tokenized_lexemes)
 
         # Calculates length of lexeme
-        for i in range(len(display_list)):
-            if i == 0:
-                length = len(display_list[i][1])
+        if self.space_len > len(display_list[0][0]):
+            longest_1 = self.space_len
+        
+        else:
+            len(display_list[0][0])
 
-            else:
-                length = len(display_list[i].lexeme)
-            
-            if (length > longest_1):
-                longest_1 = length
-
-        if len(str(len(self.tokenized_lexemes))) > len(display_list[0][0]):
+        if len(str(len(self.tokenized_lexemes))) > len(display_list[0][1]):
             longest_2 = len(str(len(self.tokenized_lexemes)))
         
         else:
