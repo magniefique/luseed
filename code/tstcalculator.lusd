@@ -1,7 +1,7 @@
 // Sample Luseed Program with Elements
 
 /*Define a class named Calculator
-public class Calculator*/ {
+public class Calculator */ {
     // Define different types of constants
     const float pi = 3f;                     // Floating-point constant
     const double gravity = 9;                 // Double constant

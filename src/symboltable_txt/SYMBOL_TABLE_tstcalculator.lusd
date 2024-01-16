@@ -1,508 +1,508 @@
 
 SYMBOL TABLE for tstcalculator.lusd
-Total Tokenized Lexemes		: 503
-Elapsed Time				: 0.0020754337310791016
-LINE    |LEXEME                                                                          |TOKEN
-1       |// Sample Luseed Program with Elements                                          |COMMENT_SNGLELINE
-3       |/*Define a class named Calculator\npublic class Calculator*/                    |COMMENT_MLTILINE
-3       |                                                                                |UNKNOWN_TOKEN
-3       |{                                                                               |DELIM_OPEN_CURLY_BRACKET
-4       |// Define different types of constants                                          |COMMENT_SNGLELINE
-5       |const                                                                           |KEYWORD_CONST
-5       |float                                                                           |KEYWORD_FLOAT
-5       |pi                                                                              |IDENTIFIER
-5       |=                                                                               |OP_ASSIGNMENT
-5       |3.0f                                                                            |FLOAT_LITERAL
-5       |;                                                                               |DELIM_STMT_TERMINATOR
-5       |// Floating-point constant                                                      |COMMENT_SNGLELINE
-6       |const                                                                           |KEYWORD_CONST
-6       |double                                                                          |KEYWORD_DOUBLE
-6       |gravity                                                                         |IDENTIFIER
-6       |=                                                                               |OP_ASSIGNMENT
-6       |9                                                                               |INT_LITERAL
-6       |;                                                                               |DELIM_STMT_TERMINATOR
-6       |// Double constant                                                              |COMMENT_SNGLELINE
-7       |const                                                                           |KEYWORD_CONST
-7       |str                                                                             |KEYWORD_STR
-7       |appName                                                                         |IDENTIFIER
-7       |=                                                                               |OP_ASSIGNMENT
-7       |"Luseed Calculator"                                                             |STRING_LITERAL
-7       |;                                                                               |DELIM_STMT_TERMINATOR
-7       |// String constant                                                              |COMMENT_SNGLELINE
-8       |constant                                                                        |KEYWORD_CONST
-8       |int                                                                             |KEYWORD_INT
-8       |version                                                                         |IDENTIFIER
-8       |=                                                                               |OP_ASSIGNMENT
-8       |1                                                                               |INT_LITERAL
-8       |;                                                                               |DELIM_STMT_TERMINATOR
-8       |// Integer constant                                                             |COMMENT_SNGLELINE
-9       |constant                                                                        |KEYWORD_CONST
-9       |bool                                                                            |KEYWORD_BOOL
-9       |isOn                                                                            |IDENTIFIER
-9       |=                                                                               |OP_ASSIGNMENT
-9       |true                                                                            |KEYWORD_TRUE
-9       |// Bool Constant                                                                |COMMENT_SNGLELINE
-11      |public                                                                          |KEYWORD_PUBLIC
-11      |integer                                                                         |KEYWORD_INT
-11      |testvar1                                                                        |IDENTIFIER
-11      |=                                                                               |OP_ASSIGNMENT
-11      |1                                                                               |INT_LITERAL
-11      |;                                                                               |DELIM_STMT_TERMINATOR
-11      |// INT NOISE WORD                                                               |COMMENT_SNGLELINE
-12      |public                                                                          |KEYWORD_PUBLIC
-12      |character                                                                       |KEYWORD_CHAR
-12      |char1                                                                           |IDENTIFIER
-12      |=                                                                               |OP_ASSIGNMENT
-12      |'z'                                                                             |CHAR_LITERAL
-12      |;                                                                               |DELIM_STMT_TERMINATOR
-12      |// CHAR NOISE WORD                                                              |COMMENT_SNGLELINE
-14      |// Invalid tokens                                                               |COMMENT_SNGLELINE
-15      |int                                                                             |KEYWORD_INT
-15      |8num                                                                            |UNKNOWN_TOKEN
-15      |;                                                                               |DELIM_STMT_TERMINATOR
-15      |// invalid identifier                                                           |COMMENT_SNGLELINE
-16      |int                                                                             |KEYWORD_INT
-16      |x                                                                               |IDENTIFIER
-16      |=                                                                               |OP_ASSIGNMENT
-16      |5                                                                               |INT_LITERAL
-16      |&                                                                               |UNKNOWN_TOKEN
-16      |3                                                                               |INT_LITERAL
-16      |;                                                                               |DELIM_STMT_TERMINATOR
-16      |// invalid operator                                                             |COMMENT_SNGLELINE
-17      |char                                                                            |KEYWORD_CHAR
-17      |blood_type                                                                      |IDENTIFIER
-17      |=                                                                               |OP_ASSIGNMENT
-17      |'ab'                                                                            |UNKNOWN_TOKEN
-17      |// invalid character literal                                                    |COMMENT_SNGLELINE
-19      |// Define a function to add two numbers                                         |COMMENT_SNGLELINE
-20      |func                                                                            |KEYWORD_FUNC
-20      |add                                                                             |IDENTIFIER
-20      |(                                                                               |DELIM_OPEN_PARENTHESIS
-20      |float                                                                           |KEYWORD_FLOAT
-20      |a                                                                               |IDENTIFIER
-20      |,                                                                               |DELIM_SEPARATOR
-20      |float                                                                           |KEYWORD_FLOAT
-20      |b                                                                               |IDENTIFIER
-20      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-20      |{                                                                               |DELIM_OPEN_CURLY_BRACKET
-21      |return                                                                          |KEYWORD_RETURN
-21      |a                                                                               |IDENTIFIER
-21      |+                                                                               |OP_ADDITION
-21      |b                                                                               |IDENTIFIER
-21      |;                                                                               |DELIM_STMT_TERMINATOR
-22      |}                                                                               |DELIM_CLOSE_CURLY_BRACKET
-24      |// Main function                                                                |COMMENT_SNGLELINE
-25      |func                                                                            |KEYWORD_FUNC
-25      |calculate                                                                       |IDENTIFIER
-25      |(                                                                               |DELIM_OPEN_PARENTHESIS
-25      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-25      |{                                                                               |DELIM_OPEN_CURLY_BRACKET
-26      |// Display welcome message with string constant                                 |COMMENT_SNGLELINE
-27      |display                                                                         |KEYWORD_DISPLAY
-27      |(                                                                               |DELIM_OPEN_PARENTHESIS
-27      |"Welcome to the "                                                               |STRING_LITERAL
-27      |+                                                                               |OP_ADDITION
-27      |appName                                                                         |IDENTIFIER
-27      |+                                                                               |OP_ADDITION
-27      |"!"                                                                             |STRING_LITERAL
-27      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-27      |;                                                                               |DELIM_STMT_TERMINATOR
-29      |// Display constant values                                                      |COMMENT_SNGLELINE
-30      |display                                                                         |KEYWORD_DISPLAY
-30      |(                                                                               |DELIM_OPEN_PARENTHESIS
-30      |"Value of pi: "                                                                 |STRING_LITERAL
-30      |+                                                                               |OP_ADDITION
-30      |pi                                                                              |IDENTIFIER
-30      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-30      |;                                                                               |DELIM_STMT_TERMINATOR
-31      |display                                                                         |KEYWORD_DISPLAY
-31      |(                                                                               |DELIM_OPEN_PARENTHESIS
-31      |"Value of gravity: "                                                            |STRING_LITERAL
-31      |,                                                                               |DELIM_SEPARATOR
-31      |gravity                                                                         |IDENTIFIER
-31      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-31      |;                                                                               |DELIM_STMT_TERMINATOR
-32      |display                                                                         |KEYWORD_DISPLAY
-32      |(                                                                               |DELIM_OPEN_PARENTHESIS
-32      |"Application Name: "                                                            |STRING_LITERAL
-32      |,                                                                               |DELIM_SEPARATOR
-32      |appName                                                                         |IDENTIFIER
-32      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-32      |;                                                                               |DELIM_STMT_TERMINATOR
-33      |display                                                                         |KEYWORD_DISPLAY
-33      |(                                                                               |DELIM_OPEN_PARENTHESIS
-33      |"Version: "                                                                     |STRING_LITERAL
-33      |+                                                                               |OP_ADDITION
-33      |version                                                                         |IDENTIFIER
-33      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-33      |;                                                                               |DELIM_STMT_TERMINATOR
-35      |// Ask the user to enter two numbers                                            |COMMENT_SNGLELINE
-36      |float                                                                           |KEYWORD_FLOAT
-36      |num1                                                                            |IDENTIFIER
-36      |=                                                                               |OP_ASSIGNMENT
-36      |float                                                                           |KEYWORD_FLOAT
-36      |(                                                                               |DELIM_OPEN_PARENTHESIS
-36      |ask                                                                             |KEYWORD_ASK
-36      |(                                                                               |DELIM_OPEN_PARENTHESIS
-36      |"Enter the first number: "                                                      |STRING_LITERAL
-36      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-36      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-36      |;                                                                               |DELIM_STMT_TERMINATOR
-37      |float                                                                           |KEYWORD_FLOAT
-37      |num2                                                                            |IDENTIFIER
-37      |=                                                                               |OP_ASSIGNMENT
-37      |float                                                                           |KEYWORD_FLOAT
-37      |(                                                                               |DELIM_OPEN_PARENTHESIS
-37      |ask                                                                             |KEYWORD_ASK
-37      |(                                                                               |DELIM_OPEN_PARENTHESIS
-37      |"Enter the second number: "                                                     |STRING_LITERAL
-37      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-37      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-37      |;                                                                               |DELIM_STMT_TERMINATOR
-38      |int                                                                             |KEYWORD_INT
-38      |i                                                                               |IDENTIFIER
-38      |=                                                                               |OP_ASSIGNMENT
-38      |1                                                                               |INT_LITERAL
-38      |;                                                                               |DELIM_STMT_TERMINATOR
-40      |// Perform arithmetic operations                                                |COMMENT_SNGLELINE
-41      |display                                                                         |KEYWORD_DISPLAY
-41      |(                                                                               |DELIM_OPEN_PARENTHESIS
-41      |"Sum: "                                                                         |STRING_LITERAL
-41      |+                                                                               |OP_ADDITION
-41      |add                                                                             |IDENTIFIER
-41      |(                                                                               |DELIM_OPEN_PARENTHESIS
-41      |num1                                                                            |IDENTIFIER
-41      |,                                                                               |DELIM_SEPARATOR
-41      |num2                                                                            |IDENTIFIER
-41      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-41      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-41      |;                                                                               |DELIM_STMT_TERMINATOR
-42      |display                                                                         |KEYWORD_DISPLAY
-42      |(                                                                               |DELIM_OPEN_PARENTHESIS
-42      |"Difference: "                                                                  |STRING_LITERAL
-42      |,                                                                               |DELIM_SEPARATOR
-42      |(                                                                               |DELIM_OPEN_PARENTHESIS
-42      |num1                                                                            |IDENTIFIER
-42      |-                                                                               |OP_SUBTRACTION
-42      |num2                                                                            |IDENTIFIER
-42      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-42      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-42      |;                                                                               |DELIM_STMT_TERMINATOR
-43      |display                                                                         |KEYWORD_DISPLAY
-43      |(                                                                               |DELIM_OPEN_PARENTHESIS
-43      |"Product: "                                                                     |STRING_LITERAL
-43      |,                                                                               |DELIM_SEPARATOR
-43      |(                                                                               |DELIM_OPEN_PARENTHESIS
-43      |num1                                                                            |IDENTIFIER
-43      |*                                                                               |OP_MULTIPLICATION
-43      |num2                                                                            |IDENTIFIER
-43      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-43      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-43      |;                                                                               |DELIM_STMT_TERMINATOR
-44      |display                                                                         |KEYWORD_DISPLAY
-44      |(                                                                               |DELIM_OPEN_PARENTHESIS
-44      |"Quotient: "                                                                    |STRING_LITERAL
-44      |,                                                                               |DELIM_SEPARATOR
-44      |(                                                                               |DELIM_OPEN_PARENTHESIS
-44      |num1                                                                            |IDENTIFIER
-44      |/                                                                               |OP_DIVISION
-44      |num2                                                                            |IDENTIFIER
-44      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-44      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-44      |;                                                                               |DELIM_STMT_TERMINATOR
-45      |display                                                                         |KEYWORD_DISPLAY
-45      |(                                                                               |DELIM_OPEN_PARENTHESIS
-45      |"Remainder: "                                                                   |STRING_LITERAL
-45      |,                                                                               |DELIM_SEPARATOR
-45      |(                                                                               |DELIM_OPEN_PARENTHESIS
-45      |num1                                                                            |IDENTIFIER
-45      |%                                                                               |OP_MODULO
-45      |num2                                                                            |IDENTIFIER
-45      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-45      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-45      |;                                                                               |DELIM_STMT_TERMINATOR
-46      |display                                                                         |KEYWORD_DISPLAY
-46      |(                                                                               |DELIM_OPEN_PARENTHESIS
-46      |"Power: "                                                                       |STRING_LITERAL
-46      |,                                                                               |DELIM_SEPARATOR
-46      |(                                                                               |DELIM_OPEN_PARENTHESIS
-46      |num1                                                                            |IDENTIFIER
-46      |**                                                                              |OP_EXPONENTIATE
-46      |num2                                                                            |IDENTIFIER
-46      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-46      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-46      |;                                                                               |DELIM_STMT_TERMINATOR
-47      |display                                                                         |KEYWORD_DISPLAY
-47      |(                                                                               |DELIM_OPEN_PARENTHESIS
-47      |"Square Root of num1: "                                                         |STRING_LITERAL
-47      |,                                                                               |DELIM_SEPARATOR
-47      |(                                                                               |DELIM_OPEN_PARENTHESIS
-47      |num1                                                                            |IDENTIFIER
-47      |**                                                                              |OP_EXPONENTIATE
-47      |0.5f                                                                            |FLOAT_LITERAL
-47      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-47      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-47      |;                                                                               |DELIM_STMT_TERMINATOR
-48      |display                                                                         |KEYWORD_DISPLAY
-48      |(                                                                               |DELIM_OPEN_PARENTHESIS
-48      |"Increment value: "                                                             |STRING_LITERAL
-48      |,                                                                               |DELIM_SEPARATOR
-48      |(                                                                               |DELIM_OPEN_PARENTHESIS
-48      |i                                                                               |IDENTIFIER
-48      |++                                                                              |OP_INCREMENT
-48      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-48      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-48      |;                                                                               |DELIM_STMT_TERMINATOR
-49      |display                                                                         |KEYWORD_DISPLAY
-49      |(                                                                               |DELIM_OPEN_PARENTHESIS
-49      |"Decrement value: "                                                             |STRING_LITERAL
-49      |,                                                                               |DELIM_SEPARATOR
-49      |(                                                                               |DELIM_OPEN_PARENTHESIS
-49      |i                                                                               |IDENTIFIER
-49      |--                                                                              |OP_DECREMENT
-49      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-49      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-49      |;                                                                               |DELIM_STMT_TERMINATOR
-51      |// Perform boolean operations                                                   |COMMENT_SNGLELINE
-52      |bool                                                                            |KEYWORD_BOOL
-52      |resultAnd1                                                                      |IDENTIFIER
-52      |=                                                                               |OP_ASSIGNMENT
-52      |(                                                                               |DELIM_OPEN_PARENTHESIS
-52      |num1                                                                            |IDENTIFIER
-52      |>                                                                               |OP_GREATER_THAN
-52      |0.0f                                                                            |FLOAT_LITERAL
-52      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-52      |and                                                                             |KEYWORD_AND
-52      |(                                                                               |DELIM_OPEN_PARENTHESIS
-52      |num2                                                                            |IDENTIFIER
-52      |<                                                                               |OP_LESS_THAN
-52      |10.0f                                                                           |FLOAT_LITERAL
-52      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-52      |;                                                                               |DELIM_STMT_TERMINATOR
-53      |bool                                                                            |KEYWORD_BOOL
-53      |resultAnd2                                                                      |IDENTIFIER
-53      |=                                                                               |OP_ASSIGNMENT
-53      |(                                                                               |DELIM_OPEN_PARENTHESIS
-53      |num1                                                                            |IDENTIFIER
-53      |==                                                                              |OP_EQUALITY
-53      |0.0f                                                                            |FLOAT_LITERAL
-53      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-53      |and                                                                             |KEYWORD_AND
-53      |(                                                                               |DELIM_OPEN_PARENTHESIS
-53      |num2                                                                            |IDENTIFIER
-53      |!=                                                                              |OP_INEQUALITY
-53      |0.0f                                                                            |FLOAT_LITERAL
-53      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-53      |;                                                                               |DELIM_STMT_TERMINATOR
-54      |bool                                                                            |KEYWORD_BOOL
-54      |resultOr1                                                                       |IDENTIFIER
-54      |=                                                                               |OP_ASSIGNMENT
-54      |(                                                                               |DELIM_OPEN_PARENTHESIS
-54      |num1                                                                            |IDENTIFIER
-54      |<                                                                               |OP_LESS_THAN
-54      |0.0f                                                                            |FLOAT_LITERAL
-54      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-54      |or                                                                              |KEYWORD_OR
-54      |(                                                                               |DELIM_OPEN_PARENTHESIS
-54      |num2                                                                            |IDENTIFIER
-54      |>                                                                               |OP_GREATER_THAN
-54      |10.0f                                                                           |FLOAT_LITERAL
-54      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-54      |;                                                                               |DELIM_STMT_TERMINATOR
-55      |bool                                                                            |KEYWORD_BOOL
-55      |resultOr2                                                                       |IDENTIFIER
-55      |=                                                                               |OP_ASSIGNMENT
-55      |(                                                                               |DELIM_OPEN_PARENTHESIS
-55      |num1                                                                            |IDENTIFIER
-55      |<=                                                                              |OP_LESS_OR_EQUAL
-55      |5.0f                                                                            |FLOAT_LITERAL
-55      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-55      |or                                                                              |KEYWORD_OR
-55      |(                                                                               |DELIM_OPEN_PARENTHESIS
-55      |num2                                                                            |IDENTIFIER
-55      |>=                                                                              |OP_GREATER_OR_EQUAL
-55      |5.0f                                                                            |FLOAT_LITERAL
-55      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-55      |;                                                                               |DELIM_STMT_TERMINATOR
-56      |bool                                                                            |KEYWORD_BOOL
-56      |resultNot1                                                                      |IDENTIFIER
-56      |=                                                                               |OP_ASSIGNMENT
-56      |not                                                                             |KEYWORD_NOT
-56      |(                                                                               |DELIM_OPEN_PARENTHESIS
-56      |num1f                                                                           |IDENTIFIER
-56      |==                                                                              |OP_EQUALITY
-56      |num2f                                                                           |IDENTIFIER
-56      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-56      |;                                                                               |DELIM_STMT_TERMINATOR
-57      |bool                                                                            |KEYWORD_BOOL
-57      |resultNot2                                                                      |IDENTIFIER
-57      |=                                                                               |OP_ASSIGNMENT
-57      |not                                                                             |KEYWORD_NOT
-57      |(                                                                               |DELIM_OPEN_PARENTHESIS
-57      |num1f                                                                           |IDENTIFIER
-57      |>=                                                                              |OP_GREATER_OR_EQUAL
-57      |num2f                                                                           |IDENTIFIER
-57      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-57      |;                                                                               |DELIM_STMT_TERMINATOR
-58      |bool                                                                            |KEYWORD_BOOL
-58      |resultEqual                                                                     |IDENTIFIER
-58      |=                                                                               |OP_ASSIGNMENT
-58      |(                                                                               |DELIM_OPEN_PARENTHESIS
-58      |num1f                                                                           |IDENTIFIER
-58      |==                                                                              |OP_EQUALITY
-58      |num2f                                                                           |IDENTIFIER
-58      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-58      |;                                                                               |DELIM_STMT_TERMINATOR
-59      |bool                                                                            |KEYWORD_BOOL
-59      |resultNotEqual                                                                  |IDENTIFIER
-59      |=                                                                               |OP_ASSIGNMENT
-59      |(                                                                               |DELIM_OPEN_PARENTHESIS
-59      |num1f                                                                           |IDENTIFIER
-59      |!=                                                                              |OP_INEQUALITY
-59      |num2f                                                                           |IDENTIFIER
-59      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-59      |;                                                                               |DELIM_STMT_TERMINATOR
-60      |bool                                                                            |KEYWORD_BOOL
-60      |resultGreater                                                                   |IDENTIFIER
-60      |=                                                                               |OP_ASSIGNMENT
-60      |(                                                                               |DELIM_OPEN_PARENTHESIS
-60      |num1f                                                                           |IDENTIFIER
-60      |>                                                                               |OP_GREATER_THAN
-60      |num2f                                                                           |IDENTIFIER
-60      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-60      |;                                                                               |DELIM_STMT_TERMINATOR
-61      |bool                                                                            |KEYWORD_BOOL
-61      |resultLess                                                                      |IDENTIFIER
-61      |=                                                                               |OP_ASSIGNMENT
-61      |(                                                                               |DELIM_OPEN_PARENTHESIS
-61      |num1f                                                                           |IDENTIFIER
-61      |<                                                                               |OP_LESS_THAN
-61      |num2f                                                                           |IDENTIFIER
-61      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-61      |;                                                                               |DELIM_STMT_TERMINATOR
-63      |// Display boolean results                                                      |COMMENT_SNGLELINE
-64      |display                                                                         |KEYWORD_DISPLAY
-64      |(                                                                               |DELIM_OPEN_PARENTHESIS
-64      |"Result of AND operation 1: "                                                   |STRING_LITERAL
-64      |,                                                                               |DELIM_SEPARATOR
-64      |resultAnd1                                                                      |IDENTIFIER
-64      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-64      |;                                                                               |DELIM_STMT_TERMINATOR
-65      |display                                                                         |KEYWORD_DISPLAY
-65      |(                                                                               |DELIM_OPEN_PARENTHESIS
-65      |"Result of AND operation 2: "                                                   |STRING_LITERAL
-65      |,                                                                               |DELIM_SEPARATOR
-65      |resultAnd2                                                                      |IDENTIFIER
-65      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-65      |;                                                                               |DELIM_STMT_TERMINATOR
-66      |display                                                                         |KEYWORD_DISPLAY
-66      |(                                                                               |DELIM_OPEN_PARENTHESIS
-66      |"Result of OR operation 1: "                                                    |STRING_LITERAL
-66      |,                                                                               |DELIM_SEPARATOR
-66      |resultOr1                                                                       |IDENTIFIER
-66      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-66      |;                                                                               |DELIM_STMT_TERMINATOR
-67      |display                                                                         |KEYWORD_DISPLAY
-67      |(                                                                               |DELIM_OPEN_PARENTHESIS
-67      |"Result of OR operation 2: "                                                    |STRING_LITERAL
-67      |,                                                                               |DELIM_SEPARATOR
-67      |resultOr2                                                                       |IDENTIFIER
-67      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-67      |;                                                                               |DELIM_STMT_TERMINATOR
-68      |display                                                                         |KEYWORD_DISPLAY
-68      |(                                                                               |DELIM_OPEN_PARENTHESIS
-68      |"Result of NOT operation 1: "                                                   |STRING_LITERAL
-68      |,                                                                               |DELIM_SEPARATOR
-68      |resultNot1                                                                      |IDENTIFIER
-68      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-68      |;                                                                               |DELIM_STMT_TERMINATOR
-69      |display                                                                         |KEYWORD_DISPLAY
-69      |(                                                                               |DELIM_OPEN_PARENTHESIS
-69      |"Result of NOT operation 2: "                                                   |STRING_LITERAL
-69      |,                                                                               |DELIM_SEPARATOR
-69      |resultNot2                                                                      |IDENTIFIER
-69      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-69      |;                                                                               |DELIM_STMT_TERMINATOR
-70      |display                                                                         |KEYWORD_DISPLAY
-70      |(                                                                               |DELIM_OPEN_PARENTHESIS
-70      |"Result of Equal operation: "                                                   |STRING_LITERAL
-70      |,                                                                               |DELIM_SEPARATOR
-70      |resultEqual                                                                     |IDENTIFIER
-70      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-70      |;                                                                               |DELIM_STMT_TERMINATOR
-71      |display                                                                         |KEYWORD_DISPLAY
-71      |(                                                                               |DELIM_OPEN_PARENTHESIS
-71      |"Result of Not Equal operation: "                                               |STRING_LITERAL
-71      |,                                                                               |DELIM_SEPARATOR
-71      |resultNotEqual                                                                  |IDENTIFIER
-71      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-71      |;                                                                               |DELIM_STMT_TERMINATOR
-72      |display                                                                         |KEYWORD_DISPLAY
-72      |(                                                                               |DELIM_OPEN_PARENTHESIS
-72      |"Result of Greater operation: "                                                 |STRING_LITERAL
-72      |,                                                                               |DELIM_SEPARATOR
-72      |resultGreater                                                                   |IDENTIFIER
-72      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-72      |;                                                                               |DELIM_STMT_TERMINATOR
-73      |display                                                                         |KEYWORD_DISPLAY
-73      |(                                                                               |DELIM_OPEN_PARENTHESIS
-73      |"Result of Less operation: "                                                    |STRING_LITERAL
-73      |,                                                                               |DELIM_SEPARATOR
-73      |resultLess                                                                      |IDENTIFIER
-73      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-73      |;                                                                               |DELIM_STMT_TERMINATOR
-75      |// End of the program                                                           |COMMENT_SNGLELINE
-76      |display                                                                         |KEYWORD_DISPLAY
-76      |(                                                                               |DELIM_OPEN_PARENTHESIS
-76      |"End of the Luseed program."                                                    |STRING_LITERAL
-76      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-76      |;                                                                               |DELIM_STMT_TERMINATOR
-77      |}                                                                               |DELIM_CLOSE_CURLY_BRACKET
-78      |}                                                                               |DELIM_CLOSE_CURLY_BRACKET
-80      |main                                                                            |KEYWORD_MAIN
-80      |(                                                                               |DELIM_OPEN_PARENTHESIS
-80      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-80      |{                                                                               |DELIM_OPEN_CURLY_BRACKET
-81      |// Create an instance of the Calculator class                                   |COMMENT_SNGLELINE
-82      |obj                                                                             |KEYWORD_OBJ
-82      |calcObj                                                                         |IDENTIFIER
-82      |=                                                                               |OP_ASSIGNMENT
-82      |Calculator                                                                      |IDENTIFIER
-82      |(                                                                               |DELIM_OPEN_PARENTHESIS
-82      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-82      |;                                                                               |DELIM_STMT_TERMINATOR
-84      |// Call the main function of the Calculator class                               |COMMENT_SNGLELINE
-85      |calcObj                                                                         |IDENTIFIER
-85      |.                                                                               |DELIM_OBJECT
-85      |calculate                                                                       |IDENTIFIER
-85      |(                                                                               |DELIM_OPEN_PARENTHESIS
-85      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-85      |;                                                                               |DELIM_STMT_TERMINATOR
-87      |// Create another instance of the Calculator class                              |COMMENT_SNGLELINE
-88      |object                                                                          |KEYWORD_OBJ
-88      |calcObj1                                                                        |IDENTIFIER
-88      |=                                                                               |OP_ASSIGNMENT
-88      |Calculator                                                                      |IDENTIFIER
-88      |(                                                                               |DELIM_OPEN_PARENTHESIS
-88      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-88      |;                                                                               |DELIM_STMT_TERMINATOR
-90      |// Call the main function of the Calculator class                               |COMMENT_SNGLELINE
-91      |calcObj1                                                                        |IDENTIFIER
-91      |.                                                                               |DELIM_OBJECT
-91      |calculate                                                                       |IDENTIFIER
-91      |(                                                                               |DELIM_OPEN_PARENTHESIS
-91      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-91      |;                                                                               |DELIM_STMT_TERMINATOR
-93      |repeat                                                                          |KEYWORD_REPEAT
-93      |(                                                                               |DELIM_OPEN_PARENTHESIS
-93      |10                                                                              |INT_LITERAL
-93      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-93      |:                                                                               |DELIM_CODEBLK_INDICATOR
-94      |{                                                                               |DELIM_OPEN_CURLY_BRACKET
-95      |display                                                                         |KEYWORD_DISPLAY
-95      |(                                                                               |DELIM_OPEN_PARENTHESIS
-95      |"Hi Ebriwan"                                                                    |STRING_LITERAL
-95      |)                                                                               |DELIM_CLOSE_PARENTHESIS
-95      |;                                                                               |DELIM_STMT_TERMINATOR
-96      |}                                                                               |DELIM_CLOSE_CURLY_BRACKET
-97      |}                                                                               |DELIM_CLOSE_CURLY_BRACKET
+Total Tokenized Lexemes		: 502
+Elapsed Time				: 0.0029985904693603516
+LEXEME                                                |LINE   |TOKEN
+// Sample Luseed Program with Elements                |1      |COMMENT_SNGLELINE
+/*Define a class named Calculator
+public class Calculator */|3      |COMMENT_MLTILINE
+{                                                     |3      |DELIM_OPEN_CURLY_BRACKET
+// Define different types of constants                |4      |COMMENT_SNGLELINE
+const                                                 |5      |KEYWORD_CONST
+float                                                 |5      |KEYWORD_FLOAT
+pi                                                    |5      |IDENTIFIER
+=                                                     |5      |OP_ASSIGNMENT
+3.0f                                                  |5      |FLOAT_LITERAL
+;                                                     |5      |DELIM_STMT_TERMINATOR
+// Floating-point constant                            |5      |COMMENT_SNGLELINE
+const                                                 |6      |KEYWORD_CONST
+double                                                |6      |KEYWORD_DOUBLE
+gravity                                               |6      |IDENTIFIER
+=                                                     |6      |OP_ASSIGNMENT
+9                                                     |6      |INT_LITERAL
+;                                                     |6      |DELIM_STMT_TERMINATOR
+// Double constant                                    |6      |COMMENT_SNGLELINE
+const                                                 |7      |KEYWORD_CONST
+str                                                   |7      |KEYWORD_STR
+appName                                               |7      |IDENTIFIER
+=                                                     |7      |OP_ASSIGNMENT
+"Luseed Calculator"                                   |7      |STRING_LITERAL
+;                                                     |7      |DELIM_STMT_TERMINATOR
+// String constant                                    |7      |COMMENT_SNGLELINE
+constant                                              |8      |KEYWORD_CONST
+int                                                   |8      |KEYWORD_INT
+version                                               |8      |IDENTIFIER
+=                                                     |8      |OP_ASSIGNMENT
+1                                                     |8      |INT_LITERAL
+;                                                     |8      |DELIM_STMT_TERMINATOR
+// Integer constant                                   |8      |COMMENT_SNGLELINE
+constant                                              |9      |KEYWORD_CONST
+bool                                                  |9      |KEYWORD_BOOL
+isOn                                                  |9      |IDENTIFIER
+=                                                     |9      |OP_ASSIGNMENT
+true                                                  |9      |KEYWORD_TRUE
+// Bool Constant                                      |9      |COMMENT_SNGLELINE
+public                                                |11     |KEYWORD_PUBLIC
+integer                                               |11     |KEYWORD_INT
+testvar1                                              |11     |IDENTIFIER
+=                                                     |11     |OP_ASSIGNMENT
+1                                                     |11     |INT_LITERAL
+;                                                     |11     |DELIM_STMT_TERMINATOR
+// INT NOISE WORD                                     |11     |COMMENT_SNGLELINE
+public                                                |12     |KEYWORD_PUBLIC
+character                                             |12     |KEYWORD_CHAR
+char1                                                 |12     |IDENTIFIER
+=                                                     |12     |OP_ASSIGNMENT
+'z'                                                   |12     |CHAR_LITERAL
+;                                                     |12     |DELIM_STMT_TERMINATOR
+// CHAR NOISE WORD                                    |12     |COMMENT_SNGLELINE
+// Invalid tokens                                     |14     |COMMENT_SNGLELINE
+int                                                   |15     |KEYWORD_INT
+8num                                                  |15     |UNKNOWN_TOKEN
+;                                                     |15     |DELIM_STMT_TERMINATOR
+// invalid identifier                                 |15     |COMMENT_SNGLELINE
+int                                                   |16     |KEYWORD_INT
+x                                                     |16     |IDENTIFIER
+=                                                     |16     |OP_ASSIGNMENT
+5                                                     |16     |INT_LITERAL
+&                                                     |16     |UNKNOWN_TOKEN
+3                                                     |16     |INT_LITERAL
+;                                                     |16     |DELIM_STMT_TERMINATOR
+// invalid operator                                   |16     |COMMENT_SNGLELINE
+char                                                  |17     |KEYWORD_CHAR
+blood_type                                            |17     |IDENTIFIER
+=                                                     |17     |OP_ASSIGNMENT
+'ab'                                                  |17     |UNKNOWN_TOKEN
+// invalid character literal                          |17     |COMMENT_SNGLELINE
+// Define a function to add two numbers               |19     |COMMENT_SNGLELINE
+func                                                  |20     |KEYWORD_FUNC
+add                                                   |20     |IDENTIFIER
+(                                                     |20     |DELIM_OPEN_PARENTHESIS
+float                                                 |20     |KEYWORD_FLOAT
+a                                                     |20     |IDENTIFIER
+,                                                     |20     |DELIM_SEPARATOR
+float                                                 |20     |KEYWORD_FLOAT
+b                                                     |20     |IDENTIFIER
+)                                                     |20     |DELIM_CLOSE_PARENTHESIS
+{                                                     |20     |DELIM_OPEN_CURLY_BRACKET
+return                                                |21     |KEYWORD_RETURN
+a                                                     |21     |IDENTIFIER
++                                                     |21     |OP_ADDITION
+b                                                     |21     |IDENTIFIER
+;                                                     |21     |DELIM_STMT_TERMINATOR
+}                                                     |22     |DELIM_CLOSE_CURLY_BRACKET
+// Main function                                      |24     |COMMENT_SNGLELINE
+func                                                  |25     |KEYWORD_FUNC
+calculate                                             |25     |IDENTIFIER
+(                                                     |25     |DELIM_OPEN_PARENTHESIS
+)                                                     |25     |DELIM_CLOSE_PARENTHESIS
+{                                                     |25     |DELIM_OPEN_CURLY_BRACKET
+// Display welcome message with string constant       |26     |COMMENT_SNGLELINE
+display                                               |27     |KEYWORD_DISPLAY
+(                                                     |27     |DELIM_OPEN_PARENTHESIS
+"Welcome to the "                                     |27     |STRING_LITERAL
++                                                     |27     |OP_ADDITION
+appName                                               |27     |IDENTIFIER
++                                                     |27     |OP_ADDITION
+"!"                                                   |27     |STRING_LITERAL
+)                                                     |27     |DELIM_CLOSE_PARENTHESIS
+;                                                     |27     |DELIM_STMT_TERMINATOR
+// Display constant values                            |29     |COMMENT_SNGLELINE
+display                                               |30     |KEYWORD_DISPLAY
+(                                                     |30     |DELIM_OPEN_PARENTHESIS
+"Value of pi: "                                       |30     |STRING_LITERAL
++                                                     |30     |OP_ADDITION
+pi                                                    |30     |IDENTIFIER
+)                                                     |30     |DELIM_CLOSE_PARENTHESIS
+;                                                     |30     |DELIM_STMT_TERMINATOR
+display                                               |31     |KEYWORD_DISPLAY
+(                                                     |31     |DELIM_OPEN_PARENTHESIS
+"Value of gravity: "                                  |31     |STRING_LITERAL
+,                                                     |31     |DELIM_SEPARATOR
+gravity                                               |31     |IDENTIFIER
+)                                                     |31     |DELIM_CLOSE_PARENTHESIS
+;                                                     |31     |DELIM_STMT_TERMINATOR
+display                                               |32     |KEYWORD_DISPLAY
+(                                                     |32     |DELIM_OPEN_PARENTHESIS
+"Application Name: "                                  |32     |STRING_LITERAL
+,                                                     |32     |DELIM_SEPARATOR
+appName                                               |32     |IDENTIFIER
+)                                                     |32     |DELIM_CLOSE_PARENTHESIS
+;                                                     |32     |DELIM_STMT_TERMINATOR
+display                                               |33     |KEYWORD_DISPLAY
+(                                                     |33     |DELIM_OPEN_PARENTHESIS
+"Version: "                                           |33     |STRING_LITERAL
++                                                     |33     |OP_ADDITION
+version                                               |33     |IDENTIFIER
+)                                                     |33     |DELIM_CLOSE_PARENTHESIS
+;                                                     |33     |DELIM_STMT_TERMINATOR
+// Ask the user to enter two numbers                  |35     |COMMENT_SNGLELINE
+float                                                 |36     |KEYWORD_FLOAT
+num1                                                  |36     |IDENTIFIER
+=                                                     |36     |OP_ASSIGNMENT
+float                                                 |36     |KEYWORD_FLOAT
+(                                                     |36     |DELIM_OPEN_PARENTHESIS
+ask                                                   |36     |KEYWORD_ASK
+(                                                     |36     |DELIM_OPEN_PARENTHESIS
+"Enter the first number: "                            |36     |STRING_LITERAL
+)                                                     |36     |DELIM_CLOSE_PARENTHESIS
+)                                                     |36     |DELIM_CLOSE_PARENTHESIS
+;                                                     |36     |DELIM_STMT_TERMINATOR
+float                                                 |37     |KEYWORD_FLOAT
+num2                                                  |37     |IDENTIFIER
+=                                                     |37     |OP_ASSIGNMENT
+float                                                 |37     |KEYWORD_FLOAT
+(                                                     |37     |DELIM_OPEN_PARENTHESIS
+ask                                                   |37     |KEYWORD_ASK
+(                                                     |37     |DELIM_OPEN_PARENTHESIS
+"Enter the second number: "                           |37     |STRING_LITERAL
+)                                                     |37     |DELIM_CLOSE_PARENTHESIS
+)                                                     |37     |DELIM_CLOSE_PARENTHESIS
+;                                                     |37     |DELIM_STMT_TERMINATOR
+int                                                   |38     |KEYWORD_INT
+i                                                     |38     |IDENTIFIER
+=                                                     |38     |OP_ASSIGNMENT
+1                                                     |38     |INT_LITERAL
+;                                                     |38     |DELIM_STMT_TERMINATOR
+// Perform arithmetic operations                      |40     |COMMENT_SNGLELINE
+display                                               |41     |KEYWORD_DISPLAY
+(                                                     |41     |DELIM_OPEN_PARENTHESIS
+"Sum: "                                               |41     |STRING_LITERAL
++                                                     |41     |OP_ADDITION
+add                                                   |41     |IDENTIFIER
+(                                                     |41     |DELIM_OPEN_PARENTHESIS
+num1                                                  |41     |IDENTIFIER
+,                                                     |41     |DELIM_SEPARATOR
+num2                                                  |41     |IDENTIFIER
+)                                                     |41     |DELIM_CLOSE_PARENTHESIS
+)                                                     |41     |DELIM_CLOSE_PARENTHESIS
+;                                                     |41     |DELIM_STMT_TERMINATOR
+display                                               |42     |KEYWORD_DISPLAY
+(                                                     |42     |DELIM_OPEN_PARENTHESIS
+"Difference: "                                        |42     |STRING_LITERAL
+,                                                     |42     |DELIM_SEPARATOR
+(                                                     |42     |DELIM_OPEN_PARENTHESIS
+num1                                                  |42     |IDENTIFIER
+-                                                     |42     |OP_SUBTRACTION
+num2                                                  |42     |IDENTIFIER
+)                                                     |42     |DELIM_CLOSE_PARENTHESIS
+)                                                     |42     |DELIM_CLOSE_PARENTHESIS
+;                                                     |42     |DELIM_STMT_TERMINATOR
+display                                               |43     |KEYWORD_DISPLAY
+(                                                     |43     |DELIM_OPEN_PARENTHESIS
+"Product: "                                           |43     |STRING_LITERAL
+,                                                     |43     |DELIM_SEPARATOR
+(                                                     |43     |DELIM_OPEN_PARENTHESIS
+num1                                                  |43     |IDENTIFIER
+*                                                     |43     |OP_MULTIPLICATION
+num2                                                  |43     |IDENTIFIER
+)                                                     |43     |DELIM_CLOSE_PARENTHESIS
+)                                                     |43     |DELIM_CLOSE_PARENTHESIS
+;                                                     |43     |DELIM_STMT_TERMINATOR
+display                                               |44     |KEYWORD_DISPLAY
+(                                                     |44     |DELIM_OPEN_PARENTHESIS
+"Quotient: "                                          |44     |STRING_LITERAL
+,                                                     |44     |DELIM_SEPARATOR
+(                                                     |44     |DELIM_OPEN_PARENTHESIS
+num1                                                  |44     |IDENTIFIER
+/                                                     |44     |OP_DIVISION
+num2                                                  |44     |IDENTIFIER
+)                                                     |44     |DELIM_CLOSE_PARENTHESIS
+)                                                     |44     |DELIM_CLOSE_PARENTHESIS
+;                                                     |44     |DELIM_STMT_TERMINATOR
+display                                               |45     |KEYWORD_DISPLAY
+(                                                     |45     |DELIM_OPEN_PARENTHESIS
+"Remainder: "                                         |45     |STRING_LITERAL
+,                                                     |45     |DELIM_SEPARATOR
+(                                                     |45     |DELIM_OPEN_PARENTHESIS
+num1                                                  |45     |IDENTIFIER
+%                                                     |45     |OP_MODULO
+num2                                                  |45     |IDENTIFIER
+)                                                     |45     |DELIM_CLOSE_PARENTHESIS
+)                                                     |45     |DELIM_CLOSE_PARENTHESIS
+;                                                     |45     |DELIM_STMT_TERMINATOR
+display                                               |46     |KEYWORD_DISPLAY
+(                                                     |46     |DELIM_OPEN_PARENTHESIS
+"Power: "                                             |46     |STRING_LITERAL
+,                                                     |46     |DELIM_SEPARATOR
+(                                                     |46     |DELIM_OPEN_PARENTHESIS
+num1                                                  |46     |IDENTIFIER
+**                                                    |46     |OP_EXPONENTIATE
+num2                                                  |46     |IDENTIFIER
+)                                                     |46     |DELIM_CLOSE_PARENTHESIS
+)                                                     |46     |DELIM_CLOSE_PARENTHESIS
+;                                                     |46     |DELIM_STMT_TERMINATOR
+display                                               |47     |KEYWORD_DISPLAY
+(                                                     |47     |DELIM_OPEN_PARENTHESIS
+"Square Root of num1: "                               |47     |STRING_LITERAL
+,                                                     |47     |DELIM_SEPARATOR
+(                                                     |47     |DELIM_OPEN_PARENTHESIS
+num1                                                  |47     |IDENTIFIER
+**                                                    |47     |OP_EXPONENTIATE
+0.5f                                                  |47     |FLOAT_LITERAL
+)                                                     |47     |DELIM_CLOSE_PARENTHESIS
+)                                                     |47     |DELIM_CLOSE_PARENTHESIS
+;                                                     |47     |DELIM_STMT_TERMINATOR
+display                                               |48     |KEYWORD_DISPLAY
+(                                                     |48     |DELIM_OPEN_PARENTHESIS
+"Increment value: "                                   |48     |STRING_LITERAL
+,                                                     |48     |DELIM_SEPARATOR
+(                                                     |48     |DELIM_OPEN_PARENTHESIS
+i                                                     |48     |IDENTIFIER
+++                                                    |48     |OP_INCREMENT
+)                                                     |48     |DELIM_CLOSE_PARENTHESIS
+)                                                     |48     |DELIM_CLOSE_PARENTHESIS
+;                                                     |48     |DELIM_STMT_TERMINATOR
+display                                               |49     |KEYWORD_DISPLAY
+(                                                     |49     |DELIM_OPEN_PARENTHESIS
+"Decrement value: "                                   |49     |STRING_LITERAL
+,                                                     |49     |DELIM_SEPARATOR
+(                                                     |49     |DELIM_OPEN_PARENTHESIS
+i                                                     |49     |IDENTIFIER
+--                                                    |49     |OP_DECREMENT
+)                                                     |49     |DELIM_CLOSE_PARENTHESIS
+)                                                     |49     |DELIM_CLOSE_PARENTHESIS
+;                                                     |49     |DELIM_STMT_TERMINATOR
+// Perform boolean operations                         |51     |COMMENT_SNGLELINE
+bool                                                  |52     |KEYWORD_BOOL
+resultAnd1                                            |52     |IDENTIFIER
+=                                                     |52     |OP_ASSIGNMENT
+(                                                     |52     |DELIM_OPEN_PARENTHESIS
+num1                                                  |52     |IDENTIFIER
+>                                                     |52     |OP_GREATER_THAN
+0.0f                                                  |52     |FLOAT_LITERAL
+)                                                     |52     |DELIM_CLOSE_PARENTHESIS
+and                                                   |52     |KEYWORD_AND
+(                                                     |52     |DELIM_OPEN_PARENTHESIS
+num2                                                  |52     |IDENTIFIER
+<                                                     |52     |OP_LESS_THAN
+10.0f                                                 |52     |FLOAT_LITERAL
+)                                                     |52     |DELIM_CLOSE_PARENTHESIS
+;                                                     |52     |DELIM_STMT_TERMINATOR
+bool                                                  |53     |KEYWORD_BOOL
+resultAnd2                                            |53     |IDENTIFIER
+=                                                     |53     |OP_ASSIGNMENT
+(                                                     |53     |DELIM_OPEN_PARENTHESIS
+num1                                                  |53     |IDENTIFIER
+==                                                    |53     |OP_EQUALITY
+0.0f                                                  |53     |FLOAT_LITERAL
+)                                                     |53     |DELIM_CLOSE_PARENTHESIS
+and                                                   |53     |KEYWORD_AND
+(                                                     |53     |DELIM_OPEN_PARENTHESIS
+num2                                                  |53     |IDENTIFIER
+!=                                                    |53     |OP_INEQUALITY
+0.0f                                                  |53     |FLOAT_LITERAL
+)                                                     |53     |DELIM_CLOSE_PARENTHESIS
+;                                                     |53     |DELIM_STMT_TERMINATOR
+bool                                                  |54     |KEYWORD_BOOL
+resultOr1                                             |54     |IDENTIFIER
+=                                                     |54     |OP_ASSIGNMENT
+(                                                     |54     |DELIM_OPEN_PARENTHESIS
+num1                                                  |54     |IDENTIFIER
+<                                                     |54     |OP_LESS_THAN
+0.0f                                                  |54     |FLOAT_LITERAL
+)                                                     |54     |DELIM_CLOSE_PARENTHESIS
+or                                                    |54     |KEYWORD_OR
+(                                                     |54     |DELIM_OPEN_PARENTHESIS
+num2                                                  |54     |IDENTIFIER
+>                                                     |54     |OP_GREATER_THAN
+10.0f                                                 |54     |FLOAT_LITERAL
+)                                                     |54     |DELIM_CLOSE_PARENTHESIS
+;                                                     |54     |DELIM_STMT_TERMINATOR
+bool                                                  |55     |KEYWORD_BOOL
+resultOr2                                             |55     |IDENTIFIER
+=                                                     |55     |OP_ASSIGNMENT
+(                                                     |55     |DELIM_OPEN_PARENTHESIS
+num1                                                  |55     |IDENTIFIER
+<=                                                    |55     |OP_LESS_OR_EQUAL
+5.0f                                                  |55     |FLOAT_LITERAL
+)                                                     |55     |DELIM_CLOSE_PARENTHESIS
+or                                                    |55     |KEYWORD_OR
+(                                                     |55     |DELIM_OPEN_PARENTHESIS
+num2                                                  |55     |IDENTIFIER
+>=                                                    |55     |OP_GREATER_OR_EQUAL
+5.0f                                                  |55     |FLOAT_LITERAL
+)                                                     |55     |DELIM_CLOSE_PARENTHESIS
+;                                                     |55     |DELIM_STMT_TERMINATOR
+bool                                                  |56     |KEYWORD_BOOL
+resultNot1                                            |56     |IDENTIFIER
+=                                                     |56     |OP_ASSIGNMENT
+not                                                   |56     |KEYWORD_NOT
+(                                                     |56     |DELIM_OPEN_PARENTHESIS
+num1f                                                 |56     |IDENTIFIER
+==                                                    |56     |OP_EQUALITY
+num2f                                                 |56     |IDENTIFIER
+)                                                     |56     |DELIM_CLOSE_PARENTHESIS
+;                                                     |56     |DELIM_STMT_TERMINATOR
+bool                                                  |57     |KEYWORD_BOOL
+resultNot2                                            |57     |IDENTIFIER
+=                                                     |57     |OP_ASSIGNMENT
+not                                                   |57     |KEYWORD_NOT
+(                                                     |57     |DELIM_OPEN_PARENTHESIS
+num1f                                                 |57     |IDENTIFIER
+>=                                                    |57     |OP_GREATER_OR_EQUAL
+num2f                                                 |57     |IDENTIFIER
+)                                                     |57     |DELIM_CLOSE_PARENTHESIS
+;                                                     |57     |DELIM_STMT_TERMINATOR
+bool                                                  |58     |KEYWORD_BOOL
+resultEqual                                           |58     |IDENTIFIER
+=                                                     |58     |OP_ASSIGNMENT
+(                                                     |58     |DELIM_OPEN_PARENTHESIS
+num1f                                                 |58     |IDENTIFIER
+==                                                    |58     |OP_EQUALITY
+num2f                                                 |58     |IDENTIFIER
+)                                                     |58     |DELIM_CLOSE_PARENTHESIS
+;                                                     |58     |DELIM_STMT_TERMINATOR
+bool                                                  |59     |KEYWORD_BOOL
+resultNotEqual                                        |59     |IDENTIFIER
+=                                                     |59     |OP_ASSIGNMENT
+(                                                     |59     |DELIM_OPEN_PARENTHESIS
+num1f                                                 |59     |IDENTIFIER
+!=                                                    |59     |OP_INEQUALITY
+num2f                                                 |59     |IDENTIFIER
+)                                                     |59     |DELIM_CLOSE_PARENTHESIS
+;                                                     |59     |DELIM_STMT_TERMINATOR
+bool                                                  |60     |KEYWORD_BOOL
+resultGreater                                         |60     |IDENTIFIER
+=                                                     |60     |OP_ASSIGNMENT
+(                                                     |60     |DELIM_OPEN_PARENTHESIS
+num1f                                                 |60     |IDENTIFIER
+>                                                     |60     |OP_GREATER_THAN
+num2f                                                 |60     |IDENTIFIER
+)                                                     |60     |DELIM_CLOSE_PARENTHESIS
+;                                                     |60     |DELIM_STMT_TERMINATOR
+bool                                                  |61     |KEYWORD_BOOL
+resultLess                                            |61     |IDENTIFIER
+=                                                     |61     |OP_ASSIGNMENT
+(                                                     |61     |DELIM_OPEN_PARENTHESIS
+num1f                                                 |61     |IDENTIFIER
+<                                                     |61     |OP_LESS_THAN
+num2f                                                 |61     |IDENTIFIER
+)                                                     |61     |DELIM_CLOSE_PARENTHESIS
+;                                                     |61     |DELIM_STMT_TERMINATOR
+// Display boolean results                            |63     |COMMENT_SNGLELINE
+display                                               |64     |KEYWORD_DISPLAY
+(                                                     |64     |DELIM_OPEN_PARENTHESIS
+"Result of AND operation 1: "                         |64     |STRING_LITERAL
+,                                                     |64     |DELIM_SEPARATOR
+resultAnd1                                            |64     |IDENTIFIER
+)                                                     |64     |DELIM_CLOSE_PARENTHESIS
+;                                                     |64     |DELIM_STMT_TERMINATOR
+display                                               |65     |KEYWORD_DISPLAY
+(                                                     |65     |DELIM_OPEN_PARENTHESIS
+"Result of AND operation 2: "                         |65     |STRING_LITERAL
+,                                                     |65     |DELIM_SEPARATOR
+resultAnd2                                            |65     |IDENTIFIER
+)                                                     |65     |DELIM_CLOSE_PARENTHESIS
+;                                                     |65     |DELIM_STMT_TERMINATOR
+display                                               |66     |KEYWORD_DISPLAY
+(                                                     |66     |DELIM_OPEN_PARENTHESIS
+"Result of OR operation 1: "                          |66     |STRING_LITERAL
+,                                                     |66     |DELIM_SEPARATOR
+resultOr1                                             |66     |IDENTIFIER
+)                                                     |66     |DELIM_CLOSE_PARENTHESIS
+;                                                     |66     |DELIM_STMT_TERMINATOR
+display                                               |67     |KEYWORD_DISPLAY
+(                                                     |67     |DELIM_OPEN_PARENTHESIS
+"Result of OR operation 2: "                          |67     |STRING_LITERAL
+,                                                     |67     |DELIM_SEPARATOR
+resultOr2                                             |67     |IDENTIFIER
+)                                                     |67     |DELIM_CLOSE_PARENTHESIS
+;                                                     |67     |DELIM_STMT_TERMINATOR
+display                                               |68     |KEYWORD_DISPLAY
+(                                                     |68     |DELIM_OPEN_PARENTHESIS
+"Result of NOT operation 1: "                         |68     |STRING_LITERAL
+,                                                     |68     |DELIM_SEPARATOR
+resultNot1                                            |68     |IDENTIFIER
+)                                                     |68     |DELIM_CLOSE_PARENTHESIS
+;                                                     |68     |DELIM_STMT_TERMINATOR
+display                                               |69     |KEYWORD_DISPLAY
+(                                                     |69     |DELIM_OPEN_PARENTHESIS
+"Result of NOT operation 2: "                         |69     |STRING_LITERAL
+,                                                     |69     |DELIM_SEPARATOR
+resultNot2                                            |69     |IDENTIFIER
+)                                                     |69     |DELIM_CLOSE_PARENTHESIS
+;                                                     |69     |DELIM_STMT_TERMINATOR
+display                                               |70     |KEYWORD_DISPLAY
+(                                                     |70     |DELIM_OPEN_PARENTHESIS
+"Result of Equal operation: "                         |70     |STRING_LITERAL
+,                                                     |70     |DELIM_SEPARATOR
+resultEqual                                           |70     |IDENTIFIER
+)                                                     |70     |DELIM_CLOSE_PARENTHESIS
+;                                                     |70     |DELIM_STMT_TERMINATOR
+display                                               |71     |KEYWORD_DISPLAY
+(                                                     |71     |DELIM_OPEN_PARENTHESIS
+"Result of Not Equal operation: "                     |71     |STRING_LITERAL
+,                                                     |71     |DELIM_SEPARATOR
+resultNotEqual                                        |71     |IDENTIFIER
+)                                                     |71     |DELIM_CLOSE_PARENTHESIS
+;                                                     |71     |DELIM_STMT_TERMINATOR
+display                                               |72     |KEYWORD_DISPLAY
+(                                                     |72     |DELIM_OPEN_PARENTHESIS
+"Result of Greater operation: "                       |72     |STRING_LITERAL
+,                                                     |72     |DELIM_SEPARATOR
+resultGreater                                         |72     |IDENTIFIER
+)                                                     |72     |DELIM_CLOSE_PARENTHESIS
+;                                                     |72     |DELIM_STMT_TERMINATOR
+display                                               |73     |KEYWORD_DISPLAY
+(                                                     |73     |DELIM_OPEN_PARENTHESIS
+"Result of Less operation: "                          |73     |STRING_LITERAL
+,                                                     |73     |DELIM_SEPARATOR
+resultLess                                            |73     |IDENTIFIER
+)                                                     |73     |DELIM_CLOSE_PARENTHESIS
+;                                                     |73     |DELIM_STMT_TERMINATOR
+// End of the program                                 |75     |COMMENT_SNGLELINE
+display                                               |76     |KEYWORD_DISPLAY
+(                                                     |76     |DELIM_OPEN_PARENTHESIS
+"End of the Luseed program."                          |76     |STRING_LITERAL
+)                                                     |76     |DELIM_CLOSE_PARENTHESIS
+;                                                     |76     |DELIM_STMT_TERMINATOR
+}                                                     |77     |DELIM_CLOSE_CURLY_BRACKET
+}                                                     |78     |DELIM_CLOSE_CURLY_BRACKET
+main                                                  |80     |KEYWORD_MAIN
+(                                                     |80     |DELIM_OPEN_PARENTHESIS
+)                                                     |80     |DELIM_CLOSE_PARENTHESIS
+{                                                     |80     |DELIM_OPEN_CURLY_BRACKET
+// Create an instance of the Calculator class         |81     |COMMENT_SNGLELINE
+obj                                                   |82     |KEYWORD_OBJ
+calcObj                                               |82     |IDENTIFIER
+=                                                     |82     |OP_ASSIGNMENT
+Calculator                                            |82     |IDENTIFIER
+(                                                     |82     |DELIM_OPEN_PARENTHESIS
+)                                                     |82     |DELIM_CLOSE_PARENTHESIS
+;                                                     |82     |DELIM_STMT_TERMINATOR
+// Call the main function of the Calculator class     |84     |COMMENT_SNGLELINE
+calcObj                                               |85     |IDENTIFIER
+.                                                     |85     |DELIM_OBJECT
+calculate                                             |85     |IDENTIFIER
+(                                                     |85     |DELIM_OPEN_PARENTHESIS
+)                                                     |85     |DELIM_CLOSE_PARENTHESIS
+;                                                     |85     |DELIM_STMT_TERMINATOR
+// Create another instance of the Calculator class    |87     |COMMENT_SNGLELINE
+object                                                |88     |KEYWORD_OBJ
+calcObj1                                              |88     |IDENTIFIER
+=                                                     |88     |OP_ASSIGNMENT
+Calculator                                            |88     |IDENTIFIER
+(                                                     |88     |DELIM_OPEN_PARENTHESIS
+)                                                     |88     |DELIM_CLOSE_PARENTHESIS
+;                                                     |88     |DELIM_STMT_TERMINATOR
+// Call the main function of the Calculator class     |90     |COMMENT_SNGLELINE
+calcObj1                                              |91     |IDENTIFIER
+.                                                     |91     |DELIM_OBJECT
+calculate                                             |91     |IDENTIFIER
+(                                                     |91     |DELIM_OPEN_PARENTHESIS
+)                                                     |91     |DELIM_CLOSE_PARENTHESIS
+;                                                     |91     |DELIM_STMT_TERMINATOR
+repeat                                                |93     |KEYWORD_REPEAT
+(                                                     |93     |DELIM_OPEN_PARENTHESIS
+10                                                    |93     |INT_LITERAL
+)                                                     |93     |DELIM_CLOSE_PARENTHESIS
+:                                                     |93     |DELIM_CODEBLK_INDICATOR
+{                                                     |94     |DELIM_OPEN_CURLY_BRACKET
+display                                               |95     |KEYWORD_DISPLAY
+(                                                     |95     |DELIM_OPEN_PARENTHESIS
+"Hi Ebriwan"                                          |95     |STRING_LITERAL
+)                                                     |95     |DELIM_CLOSE_PARENTHESIS
+;                                                     |95     |DELIM_STMT_TERMINATOR
+}                                                     |96     |DELIM_CLOSE_CURLY_BRACKET
+}                                                     |97     |DELIM_CLOSE_CURLY_BRACKET

@@ -100,12 +100,9 @@ class Lexer(object):
             elif self.multiComment:
                 self.parse_comment(char, "multi")
         
-        if not self.multiComment:
-            self.reset_buffers("lexeme")
-            self.reset_buffers("oplexeme_2")
-
-        else:
-            self.reset_buffers("oplexeme_2")
+        
+        self.reset_buffers("lexeme")
+        self.reset_buffers("oplexeme_2")
 
         self.error_check(1)
 
@@ -210,10 +207,6 @@ class Lexer(object):
             if self.singleComment:
                 self.singleComment = False
                 self.reset_buffers("lexeme")
-            
-            if self.multiComment:
-                self.lexeme += r"\n"
-                return
 
             # Resets both Char and String when new line is introduced
             if self.isChar:
@@ -295,6 +288,13 @@ class Lexer(object):
             self.lexeme += char
 
         elif type == "multi":
+            # Checks if character is a substring of the terminator of multiline comments
+            if char == "*" or char == "/":
+                self.oplexeme += char
+            
+            else:
+                self.lexeme += char
+
             # Check if the length of the self.oplexeme is equal to 2
             if len(self.oplexeme) == 2:
                 # If not equal to the terminator for comments, remove the first character of the string self.oplexeme
@@ -309,13 +309,7 @@ class Lexer(object):
                     self.lexeme += self.oplexeme
                     self.reset_buffers("lexeme")
                     self.oplexeme = ""
-
-            # Checks if character is a substring of the terminator of multiline comments
-            if char == "*" or char == "/":
-                self.oplexeme += char
-            
-            elif char != "\n":
-                self.lexeme += char
+                    return
 
     def error_check(self, type: int):
         """
@@ -353,10 +347,6 @@ class Lexer(object):
                 if (self.oplexeme != "*" or self.oplexeme != "/") and not self.multiComment:
                     self.tokenize(self.oplexeme)
                     self.oplexeme = ""
-                
-                elif self.multiComment and self.oplexeme == "*/":
-                    self.lexeme += self.oplexeme
-                    self.reset_buffers("lexeme")
 
     def tokenize(self, lexeme: str):
         """
@@ -467,7 +457,7 @@ class Lexer(object):
             Error.OutputError(type, Error.OutputError.INVALID_OUTPUT).displayerror()
             return
 
-        longest_1 = 0
+        longest_1 = len(str(len(self.tokenized_lexemes)))
         longest_2 = 0
 
         display_str =''
@@ -475,21 +465,16 @@ class Lexer(object):
         display_list = [["LINE", "LEXEME", "TOKEN"]]
         display_list.extend(self.tokenized_lexemes)
 
-        # Calculates length of space
+        # Calculates length of lexeme
         for i in range(len(display_list)):
             if i == 0:
-                length_1 = len(display_list[i][0])
-                length_2 = len(display_list[i][1])
+                length = len(display_list[i][1])
 
             else:
-                length_1 = len(display_list[i].line)
-                length_2 = len(display_list[i].lexeme)
-
-            if (length_1 > longest_1):
-                longest_1 = length_1
+                length = len(display_list[i].lexeme)
             
-            if (length_2 > longest_2):
-                longest_2 = length_2
+            if (length > longest_2):
+                longest_2 = length
 
         # Displays the symbol table in the console
         for i in range(len(display_list)):
