@@ -2,6 +2,27 @@ SPECIAL_CHAR = [".", "+", "-", "*", "/", "%", "<", ">", "=", "\\", "\"", "\'", "
 DOUBLE_OP = ["+", "-", "*", "/", "%", "~", "=", "!", "<", ">"]
 ESCAPE_CHAR = ["n", "t", "v", "\'", "\"", "\\"]
 
+###############################################
+# TOKEN IDENTIFICATION
+###############################################
+
+# LITERALS
+CHAR_LITERAL = "CHAR_LITERAL"
+STR_LITERAL = "STR_LITERAL"
+INT_LITERAL = "INT_LITERAL"
+FLOAT_LITERAL = "FLOAT_LITERAL"
+DOUBLE_LITERAL = "DOUBLE_LITERAL"
+
+# COMMENTS
+COMMENT_SNGLELINE = "COMMENT_SNGLELINE"
+COMMENT_MLTILINE = "COMMENT_MLTILINE"
+
+# IDENTIFIER
+IDENTIFIER = "IDENTIFIER"
+
+# UNKNOWN
+UNKNOWN_TOKEN = "UNKNOWN_TOKEN"
+
 # KEYWORD DICTIONARY
 KEYWORDS = {
     # NoneType
@@ -171,3 +192,16 @@ COMMENTS = {
     "/*"            : "CMMNT_MULTI_OPEN", 
     "*/"            : "CMMNT_MULTI_CLOSE"
 }
+
+###############################################
+# TOKEN RULES
+###############################################
+
+# PRECEDENCE OF ARITHMETIC OPERATIONS
+OP_ARITH_FRSTPREC = ["OP_EXPONENT"]
+OP_ARITH_SECPREC = ["OP_MULTIPLY", "OP_MULTPLY", "OP_DIVD", "OP_MODULO", "OP_FLRDIVD"]
+OP_ARITH_THRDPREC = ["OP_ADD", "OP_SUBTRCT"]
+
+# DATA TYPE VARIATIONS
+TEXT_DATA = ["CHAR_LITERAL", "STRING_LITERAL"]
+NUM_DATA = ""

@@ -1,7 +1,7 @@
 
 SYMBOL TABLE for test.lusd
 Total Tokenized Lexemes		: 267
-Elapsed Time				: 0.0030431747436523438
+Elapsed Time				: 0.0036330223083496094
 LEXEME                                       LINE      TOKEN
 import                                       1         KYWRD_IMPORT
 TestLibrary                                  1         IDENTIFIER

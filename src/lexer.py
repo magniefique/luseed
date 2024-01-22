@@ -388,42 +388,42 @@ class Lexer(object):
 
         elif lexeme[:2] == "//" or (lexeme[:2] == "/*" and lexeme[-2:] == "*/") or lexeme[:2] == "/*":
             if lexeme[:2] == "//":
-                self.tokenized_lexemes.append(Token(self.line_count, lexeme, "COMMENT_SNGLELINE"))
+                self.tokenized_lexemes.append(Token(self.line_count, lexeme, COMMENT_SNGLELINE))
             
             else:
-                self.tokenized_lexemes.append(Token(self.line_count, lexeme, "COMMENT_MLTILINE"))
+                self.tokenized_lexemes.append(Token(self.line_count, lexeme, COMMENT_MLTILINE))
                 return
         
         elif lexeme.isnumeric():
-            self.tokenized_lexemes.append(Token(self.line_count, lexeme, 'INT_LITERAL'))
+            self.tokenized_lexemes.append(Token(self.line_count, lexeme, INT_LITERAL))
 
         elif len(lexeme) > 1 and (lexeme[-1] == "f") and (lexeme[-2] != ".") and self.is_float(lexeme.replace("f", "")):
             if "." not in lexeme:
                 lexeme = lexeme.rstrip(lexeme[-1])
                 lexeme += ".0f"
-            self.tokenized_lexemes.append(Token(self.line_count, lexeme, 'FLOAT_LITERAL'))
+            self.tokenized_lexemes.append(Token(self.line_count, lexeme, FLOAT_LITERAL))
 
         elif len(lexeme) > 1 and ("." in lexeme) and (lexeme[-1] != ".") and self.is_float(lexeme):
-            self.tokenized_lexemes.append(Token(self.line_count, lexeme, 'DOUBLE_LITERAL'))
+            self.tokenized_lexemes.append(Token(self.line_count, lexeme, DOUBLE_LITERAL))
 
         elif lexeme[0] == "\"" and lexeme[-1] == "\"":
-            self.tokenized_lexemes.append(Token(self.line_count, lexeme, 'STRING_LITERAL'))
+            self.tokenized_lexemes.append(Token(self.line_count, lexeme, STR_LITERAL))
 
         elif lexeme[0] == "\'" and lexeme[-1] == "\'":
             if len(lexeme.replace("\'", "")) == 1:
-                self.tokenized_lexemes.append(Token(self.line_count, lexeme, 'CHAR_LITERAL'))
+                self.tokenized_lexemes.append(Token(self.line_count, lexeme, CHAR_LITERAL))
 
             else:
                 Error.TokenError(line_count= self.line_count, prompt=Error.TokenError.INVALID_CHAR)
-                self.tokenized_lexemes.append(Token(self.line_count, lexeme, 'UNKNOWN_TOKEN'))
+                self.tokenized_lexemes.append(Token(self.line_count, lexeme, UNKNOWN_TOKEN))
 
         else:
             if len(lexeme) > 0 and lexeme[0].isalpha() and lexeme.replace("_", "").isalnum() and lexeme[-1].isalnum():
-                self.tokenized_lexemes.append(Token(self.line_count, lexeme, 'IDENTIFIER'))
+                self.tokenized_lexemes.append(Token(self.line_count, lexeme, IDENTIFIER))
 
             else:
                 Error.TokenError(line_count= self.line_count, prompt=Error.TokenError.INVALID_TOKEN)
-                self.tokenized_lexemes.append(Token(self.line_count, lexeme, 'UNKNOWN_TOKEN'))
+                self.tokenized_lexemes.append(Token(self.line_count, lexeme, UNKNOWN_TOKEN))
 
         self.check_len(len(lexeme))
 
