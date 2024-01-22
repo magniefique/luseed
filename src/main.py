@@ -28,7 +28,7 @@ def readfile(file_path: str):
                 file_name = os.path.basename(file.name)
             # Create a Lexer object and tokenize the file content
             code = Lexer(file_content, file_name)
-            code.display_table("all")
+            code.display_table("txt")
             token_list = code.return_tokens()
 
         except FileNotFoundError:

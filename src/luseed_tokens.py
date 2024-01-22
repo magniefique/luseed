@@ -4,142 +4,170 @@ ESCAPE_CHAR = ["n", "t", "v", "\'", "\"", "\\"]
 
 # KEYWORD DICTIONARY
 KEYWORDS = {
-    "all" : "KEYWORD_ALL",
-    "and" : "KEYWORD_AND",
-    "ask" : "KEYWORD_ASK",
-    "bool" : "KEYWORD_BOOL",
-    "break" : "KEYWORD_BREAK",
-    "catch" : "KEYWORD_CATCH",
-    "char" : "KEYWORD_CHAR",
-    "check" : "KEYWORD_CHECK",
-    "class" : "KEYWORD_CLASS",
-    "const" : "KEYWORD_CONST",
-    "continue" : "KEYWORD_CONTINUE",
-    "display" : "KEYWORD_DISPLAY",
-    "do" : "KEYWORD_DO",
-    "double" : "KEYWORD_DOUBLE",
-    "elif" : "KEYWORD_ELIF",
-    "else" : "KEYWORD_ELSE",
-    "false" : "KEYWORD_FALSE",
-    "finally" : "KEYWORD_FINALLY",
-    "float" : "KEYWORD_FLOAT",
-    "for" : "KEYWORD_FOR",
-    "foreach" : "KEYWORD_FOREACH",
-    "from" : "KEYWORD_FROM",
-    "func" : "KEYWORD_FUNC",
-    "help" : "KEYWORD_HELP",
-    "if" : "KEYWORD_IF",
-    "import" : "KEYWORD_IMPORT",
-    "info" : "KEYWORD_INFO",
-    "init" : "KEYWORD_INIT",
-    "inheritall" : "KEYWORD_INHRTALL",
-    "in" : "KEYWORD_IN",
-    "int" : "KEYWORD_INT",
-    "list" : "KEYWORD_LIST",
-    "main" : "KEYWORD_MAIN",
-    "not" : "KEYWORD_NOT",
-    "null" : "KEYWORD_NULL",
-    "obj" : "KEYWORD_OBJ",
-    "or" : "KEYWORD_OR",
-    "pass" : "KEYWORD_PASS",
-    "private" : "KEYWORD_PRIVATE",
-    "protected" : "KEYWORD_PROTECTED",
-    "public" : "KEYWORD_PUBLIC",
-    "quit" : "KEYWORD_QUIT",
-    "raise" : "KEYWORD_RAISE",
-    "repeat" : "KEYWORD_REPEAT",
-    "return" : "KEYWORD_RETURN",
-    "str" : "KEYWORD_STR",
-    "then" : "KEYWORD_THEN",
-    "this" : "KEYWORD_THIS",
-    "true" : "KEYWORD_TRUE",
-    "try" : "KEYWORD_TRY",
-    "until" : "KEYWORD_UNTIL",
-    "while" : "KEYWORD_WHILE"
+    # NoneType
+    "null"          : "KYWRD_NULL",
+
+    # Input/Output Statements
+    "ask"           : "KYWRD_ASK",
+    "display"       : "KYWRD_DISPLAY",
+
+    # Import Statements
+    "import"        : "KYWRD_IMPORT",
+    "from"          : "KYWRD_FROM",
+    "all"           : "KYWRD_ALL",
+
+    # Conditional Statements
+    "if"            : "KYWRD_IF",
+    "elif"          : "KYWRD_ELIF",
+    "else"          : "KYWRD_ELSE",
+    "then"          : "KYWRD_THEN",
+    
+    # Loop statements
+    "do"            : "KYWRD_LOOP_DO",
+    "for"           : "KYWRD_LOOP_FOR",
+    "foreach"       : "KYWRD_LOOP_FOREACH",
+    "repeat"        : "KYWRD_LOOP_REPEAT",
+    "until"         : "KYWRD_LOOP_UNTIL",
+    "while"         : "KYWRD_LOOP_WHILE",
+    "in"            : "KYWRD_LOOP_IN",
+
+    # Functions
+    "main"          : "KYWRD_MAIN",
+    "func"          : "KYWRD_FUNC",
+    "return"        : "KYWRD_RETURN",
+
+    # Classes
+    "class"         : "KYWRD_CLASS",
+    "init"          : "KYWRD_INIT",
+    "inheritall"    : "KYWRD_INHRTALL",
+    "this"          : "KYWRD_THIS",
+
+    # Access Modifiers
+    "public"        : "KYWRD_PUBLIC",
+    "private"       : "KYWRD_PRIVATE",
+    "protected"     : "KYWRD_PROTECTED",
+
+    # Boolean values
+    "true"          : "KYWRD_TRUE",
+    "false"         : "KYWRD_FALSE",
+
+    # Boolean Operators
+    "and"           : "KYWRD_BOOL_AND",
+    "or"            : "KYWRD_BOOL_OR",
+    "not"           : "KYWRD_BOOL_NOT",
+
+    # Data type keywords
+    "int"           : "KYWRD_DATA_INT",
+    "float"         : "KYWRD_DATA_FLOAT",
+    "double"        : "KYWRD_DATA_DOUBLE",
+    "char"          : "KYWRD_DATA_CHAR",
+    "str"           : "KYWRD_DATA_STR",
+    "bool"          : "KYWRD_BOOL",
+    "list"          : "KYWRD_DATA_LIST",
+    "obj"           : "KYWRD_OBJ",
+    "const"         : "KYWRD_CONST",
+
+    # Control Statements
+    "pass"          : "KYWRD_PASS",
+    "break"         : "KYWRD_BREAK",
+    "continue"      : "KYWRD_CONTINUE",
+
+    # Error Handling
+    "try"           : "KYWRD_TRY",
+    "catch"         : "KYWRD_CATCH",
+    "finally"       : "KYWRD_FINALLY",
+    "raise"         : "KYWRD_RAISE",
+
+    # Documentation Statement
+    "info"          : "KYWRD_INFO",
+    "quit"          : "KYWRD_QUIT",
+
+    # Check Functionality - New Feature
+    "check"         : "KYWRD_CHECK"
 }
 
 # NOISEWORDS
 NOISEWORDS = {
-    "boolean" : "bool",
-    "character" : "char",
-    "constant" : "const",
-    "integer" : "int",
-    "information" : "info",
-    "initialize" : "init",
-    "object" : "obj",
-    "string" : "str"
+    "boolean"       : "bool",
+    "character"     : "char",
+    "constant"      : "const",
+    "integer"       : "int",
+    "information"   : "info",
+    "initialize"    : "init",
+    "object"        : "obj",
+    "string"        : "str"
 }
 
 # OPERATORS
 OP_ASSIGNMENT = {
-    "=" : "OP_ASSIGNMENT",
-    "+=" : "OP_ADDITION_ASSIGNMENT",
-    "-=" : "OP_SUBTRACTION_ASSIGNMENT",
-    "*=" : "OP_MULTIPLICATION_ASSIGNMENT",
-    "/=" : "OP_DIVISION_ASSIGNMENT",
-    "%=" : "OP_MODULO_ASSIGNMENT",
-    "~=" : "OP_FLRDIVISION_ASSIGNMENT"
+    "="             : "OP_ASSIGN",
+    "+="            : "OP_ADD_ASSIGN",
+    "-="            : "OP_SUBTRCT_ASSIGN",
+    "*="            : "OP_MULTPLY_ASSIGN",
+    "/="            : "OP_DIVD_ASSIGN",
+    "%="            : "OP_MODULO_ASSIGN",
+    "~="            : "OP_FLRDIVD_ASSIGN"
 }
 
 OP_ARITHMETIC = {
-    "+" : "OP_ADDITION",
-    "-" : "OP_SUBTRACTION",
-    "*" : "OP_MULTIPLICATION",
-    "/" : "OP_DIVISION",
-    "%" : "OP_MODULO",
-    "~" : "OP_FLRDIVISION",
-    "**" : "OP_EXPONENTIATE"
+    "+"             : "OP_ADD",
+    "-"             : "OP_SUBTRCT",
+    "*"             : "OP_MULTPLY",
+    "/"             : "OP_DIVD",
+    "%"             : "OP_MODULO",
+    "~"             : "OP_FLRDIVD",
+    "**"            : "OP_EXPONENT"
 }
 
 OP_UNARY = {
-    "+" : "OP_POSITIVE",
-    "-" : "OP_NEGATIVE", 
-    "++" : "OP_INCREMENT",
-    "--" : "OP_DECREMENT",
+    "+"             : "OP_POSITIVE",
+    "-"             : "OP_NEGATIVE", 
+    "++"            : "OP_INCREMENT",
+    "--"            : "OP_DECREMENT",
 }
 
 OP_RELATION = {
-    "==" : "OP_EQUALITY",
-    "!=" : "OP_INEQUALITY",
-    ">" : "OP_GREATER_THAN",
-    "<" : "OP_LESS_THAN",
-    ">=" : "OP_GREATER_OR_EQUAL",
-    "<=" : "OP_LESS_OR_EQUAL",
+    "=="            : "OP_EQUALITY",
+    "!="            : "OP_INEQUALITY",
+    ">"             : "OP_GREATER_THAN",
+    "<"             : "OP_LESS_THAN",
+    ">="            : "OP_GREATER_OR_EQUAL",
+    "<="            : "OP_LESS_OR_EQUAL",
 }
 
 # DELIMITERS
 DELIMITERS = {
-    ";" : "DELIM_STMT_TERMINATOR",
-    ":" : "DELIM_CODEBLK_INDICATOR",
-    "{" : "DELIM_OPEN_CURLY_BRACKET",
-    "}" : "DELIM_CLOSE_CURLY_BRACKET",
-    "[" : "DELIM_OPEN_SQUARE_BRACKET",
-    "]" : "DELIM_CLOSE_SQUARE_BRACKET",
-    "(" : "DELIM_OPEN_PARENTHESIS",
-    ")" : "DELIM_CLOSE_PARENTHESIS",
-    "," : "DELIM_SEPARATOR",
-    "." : "DELIM_OBJECT"
+    ";"             : "DELIM_STMT_TERMINATOR",
+    ":"             : "DELIM_CODEBLK_INDICATOR",
+    "{"             : "DELIM_OPEN_CURLY_BRCKT",
+    "}"             : "DELIM_CLOSE_CURLY_BRCKT",
+    "["             : "DELIM_OPEN_SQUARE_BRCKT",
+    "]"             : "DELIM_CLOSE_SQUARE_BRCKT",
+    "("             : "DELIM_OPEN_PRNTHSIS",
+    ")"             : "DELIM_CLOSE_PRNTHSIS",
+    ","             : "DELIM_SEPARATOR",
+    "."             : "DELIM_OBJECT"
 }
 
 # ESCAPE SEQUENCES
 ESCAPE_SEQUENCES = {
-    r"\n" : "NEW_LINE",
-    r"\t" : "HORIZONTAL_TAB",
-    r"\v" : "VERTICAL_TAB",
-    r"\'" : "SINGLE_QUOTE",
-    r"\"" : "DOUBLE_QUOTE",
-    r"\\" : "BACKSLASH"
+    r"\n"           : "NEW_LINE",
+    r"\t"           : "HORIZONTAL_TAB",
+    r"\v"           : "VERTICAL_TAB",
+    r"\'"           : "SINGLE_QUOTE",
+    r"\""           : "DOUBLE_QUOTE",
+    r"\\"           : "BACKSLASH"
 }
 
 # WHITESPACES
 WHITESPACES = {
-    " " : "WHITESPACE",
-    "\n" : "NEWLINE"
+    " "             : "WHT_SPACE",
+    "\n"            : "WHT_NEWLINE"
 }
 
 # COMMENTS
 COMMENTS = {
-    "//" : "COMMENT_SINGLE", 
-    "/*" : "COMMENT_MULTI_OPEN", 
-    "*/" : "COMMENT_MULTI_CLOSE"
+    "//"            : "CMMNT_SINGLE", 
+    "/*"            : "CMMNT_MULTI_OPEN", 
+    "*/"            : "CMMNT_MULTI_CLOSE"
 }
