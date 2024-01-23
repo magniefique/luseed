@@ -118,7 +118,13 @@ class Lexer(object):
                     
         # Appends the current value of the self.oplexeme if it is not empty 
         if self.oplexeme != "" and self.lexeme != "":
-            self.tokenize(self.oplexeme)
+            if self.oplexeme == "+-" or self.oplexeme == "-+" or self.oplexeme == "++" or self.oplexeme == "--":
+                self.tokenize(self.oplexeme[0])
+                self.tokenize(self.oplexeme[1])
+
+            else:
+                self.tokenize(self.oplexeme)
+            
             self.oplexeme = ""
 
     def parse_spec(self, char: str):
@@ -130,19 +136,7 @@ class Lexer(object):
             # Tokenizes the lexemes present in the self.lexeme
             self.reset_buffers("lexeme")
 
-            if self.oplexeme != "":
-                if self.oplexeme + char not in OP_ASSIGNMENT and self.oplexeme + char not in OP_ARITHMETIC and self.oplexeme + char not in OP_UNARY and self.oplexeme + char not in OP_RELATION and self.oplexeme + char not in COMMENTS:
-                    self.reset_buffers("oplexeme_1")
-                    self.tokenize(char)
-
-                elif self.oplexeme + char in COMMENTS:
-                    self.oplexeme += char
-                
-                else:
-                    self.oplexeme += char
-                    self.reset_buffers("oplexeme_1")
-            else:
-                self.oplexeme += char
+            self.oplexeme += char
 
             # Activates comment boolean if self.oplexeme is in comments
             if self.oplexeme in COMMENTS:
@@ -160,7 +154,13 @@ class Lexer(object):
                
         else:
             # Appends the current value of the self.oplexeme if it is not empty 
-            self.reset_buffers("oplexeme_1") 
+            if (self.oplexeme == "+-" or self.oplexeme == "-+" or self.oplexeme == "++" or self.oplexeme == "--") and (char != ";" and char != ")"):
+                self.tokenize(self.oplexeme[0])
+                self.tokenize(self.oplexeme[1])
+                self.oplexeme = ""
+
+            else:
+                self.reset_buffers("oplexeme_1") 
 
             # Checks if character is a double quotation for str literals
             if char == "\"":
@@ -397,7 +397,7 @@ class Lexer(object):
         elif lexeme.isnumeric():
             self.tokenized_lexemes.append(Token(self.line_count, lexeme, INT_LITERAL))
 
-        elif len(lexeme) > 1 and (lexeme[-1] == "f") and (lexeme[-2] != ".") and self.is_float(lexeme.replace("f", "")):
+        elif len(lexeme) > 1 and (lexeme[-1] == "f") and (lexeme[-2] != ".") and self.is_float(lexeme.replace("f", "")) and (lexeme > -3.4e-38 and lexeme < 3.4e+38):
             if "." not in lexeme:
                 lexeme = lexeme.rstrip(lexeme[-1])
                 lexeme += ".0f"
@@ -504,7 +504,7 @@ class Lexer(object):
         # Displays the symbol table in the console
         for i in range(len(display_list)):
             if i == 0:
-                spacing_1 = (longest_1 + 5)
+                spacing_1 = (longest_1 + 10)
                 spacing_2 = (longest_2 + 10)
 
                 if type == "console":
@@ -514,7 +514,7 @@ class Lexer(object):
                     display_str = f"{display_list[i][0]:<{spacing_1}}{display_list[i][1]:<{spacing_2}}{display_list[i][2]}"
 
             else:
-                spacing_1 = (longest_1 + 5)
+                spacing_1 = (longest_1 + 10)
                 spacing_2 = (longest_2 + 10)
                 offset = display_list[i].lexeme.rfind("\n")
                 new_spacing = spacing_1 + offset + 1 if offset != -1 else spacing_1

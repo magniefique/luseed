@@ -1,12 +1,7 @@
 
 SYMBOL TABLE for expression.lusd
-Total Tokenized Lexemes		: 7
+Total Tokenized Lexemes		: 2
 Elapsed Time				: 0.0
-LEXEMELINE      TOKEN
-(    1         DELIM_OPEN_PRNTHSIS
-a    1         IDENTIFIER
-+    1         OP_ADD
-b    1         IDENTIFIER
-)    1         DELIM_CLOSE_PRNTHSIS
-*    1         OP_MULTPLY
-2    1         INT_LITERAL
+LEXEME    LINE      TOKEN
+-         1         OP_MINUS
+5         1         INT_LITERAL

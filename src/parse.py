@@ -18,6 +18,14 @@ class BinaryOpNode:
     def __repr__(self) -> str:
         return f"({self.left_node}, {self.op_token}, {self.right_node})"
 
+class UnaryNode:
+    def __init__(self, unary_op, node):
+        self.unary_op = unary_op
+        self.node = node
+
+    def __repr__(self) -> str:
+        return f"({self.unary_op.token}:{self.unary_op.lexeme}, {self.node})"
+
 class Parser:
     def __init__(self, token_list: list):
         self.token_list = token_list
@@ -32,34 +40,51 @@ class Parser:
         return self.current_token
 
     def parse(self):
-        res = self.frth_prec()
+        res = self.assign()
         print(res)
 
     def factor(self):
         curr_tok = self.current_token
 
-        if curr_tok.token in NUM_DATA or curr_tok.token == "IDENTIFIER":
+        if curr_tok.token in UNARY:
+            self.idx_advance()
+            factor = self.factor()
+            return UnaryNode(curr_tok, factor)
+
+        elif curr_tok.token in NUM_DATA or curr_tok.token == "IDENTIFIER":
             self.idx_advance()
             return TokenRep(curr_tok)
 
-        if curr_tok.token == "DELIM_OPEN_PRNTHSIS":
+        elif curr_tok.token == "DELIM_OPN_PRN":
             self.idx_advance()
-            res = self.frth_prec()
-            if self.current_token.token == "DELIM_CLOSE_PRNTHSIS":
+            res = self.or_op()
+            if self.current_token.token == "DELIM_CLS_PRN":
                 self.idx_advance()
                 return res
 
-    def frst_prec(self):
-        return self.binary_op(self.factor, OP_FRSTPREC)
+    def expntiate(self):
+        return self.binary_op(self.factor, EXPONENTIATE)
 
-    def sec_prec(self):
-        return self.binary_op(self.frst_prec, OP_SECPREC)
+    def multplctve(self):
+        return self.binary_op(self.expntiate, MULTIPLICATIVE)
 
-    def thrd_prec(self):
-        return self.binary_op(self.sec_prec, OP_THRDPREC)
+    def addtve(self):
+        return self.binary_op(self.multplctve, ADDITIVE)
 
-    def frth_prec(self):
-        return self.binary_op(self.thrd_prec, OP_FRTHPREC)
+    def rlation(self):
+        return self.binary_op(self.addtve, RELATION)
+    
+    def eqlity(self):
+        return self.binary_op(self.rlation, EQUALITY)
+    
+    def and_op(self):
+        return self.binary_op(self.eqlity, AND_OP)
+    
+    def or_op(self):
+        return self.binary_op(self.and_op, OR_OP)
+    
+    def assign(self):
+        return self.binary_op(self.or_op, ASSIGNMENT)
 
     def binary_op(self, func, ops):
         left_node = func()

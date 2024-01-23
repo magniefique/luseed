@@ -134,8 +134,8 @@ OP_ASSIGNMENT = {
 }
 
 OP_ARITHMETIC = {
-    "+"             : "OP_ADD",
-    "-"             : "OP_SUBTRCT",
+    "+"             : "OP_PLUS",
+    "-"             : "OP_MINUS",
     "*"             : "OP_MULTPLY",
     "/"             : "OP_DIVD",
     "%"             : "OP_MODULO",
@@ -144,8 +144,6 @@ OP_ARITHMETIC = {
 }
 
 OP_UNARY = {
-    "+"             : "OP_POSITIVE",
-    "-"             : "OP_NEGATIVE", 
     "++"            : "OP_INCREMENT",
     "--"            : "OP_DECREMENT",
 }
@@ -153,22 +151,22 @@ OP_UNARY = {
 OP_RELATION = {
     "=="            : "OP_EQUALITY",
     "!="            : "OP_INEQUALITY",
-    ">"             : "OP_GREATER_THAN",
-    "<"             : "OP_LESS_THAN",
-    ">="            : "OP_GREATER_OR_EQUAL",
-    "<="            : "OP_LESS_OR_EQUAL",
+    ">"             : "OP_GRTR_THAN",
+    "<"             : "OP_LSS_THAN",
+    ">="            : "OP_GRTR_EQUAL",
+    "<="            : "OP_LSS_EQUAL",
 }
 
 # DELIMITERS
 DELIMITERS = {
-    ";"             : "DELIM_STMT_TERMINATOR",
-    ":"             : "DELIM_CODEBLK_INDICATOR",
-    "{"             : "DELIM_OPEN_CURLY_BRCKT",
-    "}"             : "DELIM_CLOSE_CURLY_BRCKT",
-    "["             : "DELIM_OPEN_SQUARE_BRCKT",
-    "]"             : "DELIM_CLOSE_SQUARE_BRCKT",
-    "("             : "DELIM_OPEN_PRNTHSIS",
-    ")"             : "DELIM_CLOSE_PRNTHSIS",
+    ";"             : "DELIM_STMT_TRMNTR",
+    ":"             : "DELIM_CODEBLK_INDIC",
+    "{"             : "DELIM_OPN_CURLY",
+    "}"             : "DELIM_CLS_CURLY",
+    "["             : "DELIM_OPN_SQUARE",
+    "]"             : "DELIM_CLS_SQUARE",
+    "("             : "DELIM_OPN_PRN",
+    ")"             : "DELIM_CLS_PRN",
     ","             : "DELIM_SEPARATOR",
     "."             : "DELIM_OBJECT"
 }
@@ -192,8 +190,8 @@ WHITESPACES = {
 # COMMENTS
 COMMENTS = {
     "//"            : "CMMNT_SINGLE", 
-    "/*"            : "CMMNT_MULTI_OPEN", 
-    "*/"            : "CMMNT_MULTI_CLOSE"
+    "/*"            : "CMMNT_MULTI_OPN", 
+    "*/"            : "CMMNT_MULTI_CLS"
 }
 
 ###############################################
@@ -202,10 +200,10 @@ COMMENTS = {
 
 # PRECEDENCE OF OPERATIONS (TOP TO BOTTOM)
 EXPONENTIATE = ["OP_EXPONENT"]
-UNARY = ["OP_POSITIVE", "OP_NEGATIVE", "OP_INCREMENT", "OP_DECREMENT", "KYWRD_BOOL_NOT"]
+UNARY = ["OP_PLUS", "OP_MINUS", "KYWRD_BOOL_NOT"]
 MULTIPLICATIVE = ["OP_MULTIPLY", "OP_MULTPLY", "OP_DIVD", "OP_MODULO", "OP_FLRDIVD"]
-ADDITIVE = ["OP_ADD", "OP_SUBTRCT"]
-RELATION = ["OP_GREATER_THAN", "OP_LESS_THAN", "OP_GREATER_OR_EQUAL", "OP_LESS_OR_EQUAL"]
+ADDITIVE = ["OP_PLUS", "OP_MINUS"]
+RELATION = ["OP_GRTR_THAN", "OP_LSS_THAN", "OP_GRTR_EQUAL", "OP_LSS_EQUAL"]
 EQUALITY = ["OP_EQUALITY", "OP_INEQUALITY"]
 AND_OP = ["KYWRD_BOOL_AND"]
 OR_OP = ["KYWRD_BOOL_OR"]
@@ -229,4 +227,4 @@ ACCESS_MOD = ["KYWRD_PUBLIC", "KYWRD_PRIVATE", "KYWRD_PROTECTED"]
 BOOL_VAL = ["KYWRD_TRUE", "KYWRD_FALSE",]
 
 # BOOL OPERATORS
-OP_BOOL = ["KYWRD_BOOL_AND", "KYWRD_BOOL_OR", "KYWRD_BOOL_NOT",]
+OP_BOOL = ["KYWRD_BOOL_AND", "KYWRD_BOOL_OR", "KYWRD_BOOL_NOT"]
