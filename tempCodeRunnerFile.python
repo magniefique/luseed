@@ -1,1 +1,1 @@
-print(3++++++)
+print(f'{{\n\ttoken: Hello\n\tvalue: Value\n}}')

@@ -3,7 +3,7 @@ import codecs
 from luseed_tokens import *
 from luseed_error import *
 from lexer import *
-from syntax import *
+from parse import *
 from pathlib import Path
 
 def main():
@@ -30,7 +30,8 @@ def readfile(file_path: str):
             # Create a Lexer object and tokenize the file content
             tokenize = Lexer(file_content, file_name)
             tokenize.display_table("txt")
-            analyze_syntax = SyntaxAnalyzer(tokenize.return_tokens())
+            analyze_syntax = Parser(tokenize.return_tokens())
+            analyze_syntax.parse()
 
         except FileNotFoundError:
             # Print error message if file is not found

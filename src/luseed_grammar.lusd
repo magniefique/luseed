@@ -1,10 +1,94 @@
-# IDENTIFIER
+<CHARACTERSET>      ::=     <ALNUM><
 
-<IDENTIFIER> ::= <ALPHABET><ACCEPTED_CHAR>*<ALNUM>
-<ACCEPTED_CHAR> ::= <ALNUM> | _
-<ALNUM> ::= <ALPHABET> | <DIGITS>
-<ALPHABET> ::= <LOWERC> | <UPPERC>
-<LOWERC> ::= a | b | c | d | e | f | g | h | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z
-<UPPERC> ::= A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P | Q | R | S | T | U | V | W | X | Y | Z
-<DIGITS> ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+# IDENTIFIER (For breaking down purposes)
 
+<IDENTIFIER>        ::=     <ALPHABET><ACCEPTED_CHAR>*<ALNUM>
+<ACCEPTED_CHAR>     ::=     <ALNUM> | _
+<ALNUM>             ::=     <ALPHABET> | <DIGITS>
+<ALPHABET>          ::=     <LOWERC> | <UPPERC>
+<LOWERC>            ::=     a | b | c | d | e | f | g | h | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z
+<UPPERC>            ::=     A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P | Q | R | S | T | U | V | W | X | Y | Z
+<DIGITS>            ::=     0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+
+# SPECIAL CHARACTERS
+SPECIAL_CHAR        ::=     . | + | - | * | / | % | < | > | = | \ | " | ' | , | ; | | | ! | ( | ) | [ | ] | { | } | _ | ^ | ~ | & | : | ? | ^ | # | @ | - | `
+
+# DATA_TYPE
+<DATA_TYPE>         ::=     <KYWRD_DATA_INT> | <KYWRD_DATA_FLOAT> | <KYWRD_DATA_DOUBLE> | 
+                            <KYWRD_DATA_STR> | <KYWRD_DATA_BOOL> | <KYWRD_DATA_LIST> |  | <KYWRD_DATA_CONST> 
+
+<KYWRD_DATA_INT>    ::=     int
+<KYWRD_DATA_FLOAT>  ::=     float
+<KYWRD_DATA_DOUBLE> ::=     double
+<KYWRD_DATA_CHAR>   ::=     char
+<KYWRD_DATA_STR>    ::=     str
+<KYWRD_DATA_BOOL>   ::=     bool
+<KYWRD_DATA_LIST>   ::=     list
+<KYWRD_DATA_OBJ>    ::=     obj
+<KYWRD_DATA_CONST>  ::=     const
+
+# DATA_LITERAL
+<DATA_LIT>          ::=     <INT_LITERAL> | <FLOAT_LITERAL> | <DOUBLE_LITERAL> | <CHAR_LITERAL> | <STR_LITERAL>
+<INT_LITERAL>       ::=     <DIGITS>^+ | -<DIGITS>^+
+<FLOAT_LITERAL>     ::=     <DIGITS>^+.<DIGITS>^+f | -<DIGITS>^+.<DIGITS>^+f 
+<DOUBLE_LITERAL>    ::=     <DIGITS>^+.<DIGITS>^+ | -<DIGITS>^+.<DIGITS>^+ 
+<CHAR_LITERAL>      ::=     '
+
+# DECLARATION STATEMENTS
+
+# INPUT/OUTPUT STATEMENTS
+
+# LISTS
+
+# CONDITIONAL STATEMENTS
+
+# LOOPING STATEMENTS
+
+# ASSIGNMENT STATEMENTS
+
+# FUNCTIONS
+
+# CLASSES
+
+# ERROR-HANDLING STATEMENTS
+
+# IMPORT STATEMENTS
+<IMPRT_STMNT>       ::=     <IMPRT_LIB> | <IMPRT_ATTR>
+<IMPRT_LIB>         ::=     <KYWRD_IMPORT> <IDENTIFIER>;
+<IMPRT_ATTR>        ::=     <KYWRD_FROM> <IDENTIFIER> <KYWRD_IMPORT> <IDENTIFIER>; | <KYWRD_FROM> <IDENTIFIER> <KYWRD_IMPORT> <KYWRD_ALL>;
+<KYWRD_IMPORT>      ::=     import
+<KYWRD_FROM>        ::=     from
+<KYWRD_ALL>         ::=     all
+
+# TYPE CASTING STATEMENTS
+<TYPE_CSTING_STMNT> ::=     (<DATA_TYPE>) <IDENTIFIER>;
+
+# LOOP NAMING
+
+# SWAP FUNCTION
+<SWAP_STMNT>        ::=     <TWO_WAY_SWAP> | <THREE_WAY_SWAP>
+<TWO_WAY_SWAP>      ::=     <KYWRD_SWAP>(<DATA_LITERAL>, <DATA_LITERAL>);
+<THREE_WAY_SWAP>    ::=     <KYWRD_SWAP>(<DATA_LITERAL>, <DATA_LITERAL>, <DATA_LITERAL>);
+<KYWRD_SWAP>        ::=     swap
+
+<SWAP_STMNT>        ::=     <TWO_WAY_SWAP> | <THREE_WAY_SWAP>
+<TWO_WAY_SWAP>      ::=     swap(<DATA_LITERAL>, <DATA_LITERAL>);
+<THREE_WAY_SWAP>    ::=     swap(<DATA_LITERAL>, <DATA_LITERAL>, <DATA_LITERAL>);
+
+# CHECK FUNCTION
+<CHECK_STMNT>       ::=     <CHECK_PROPERTY> | <CHECK_METHOD>
+<CHECK_PROPERTY>    ::=     <KYWRD_CHECK>(<IDENTIFIER>.<IDENTIFIER>);
+<CHECK_METHOD>      ::=     <KYWRD_CHECK>(<IDENTIFIER>.<IDENTIFIER>(<PARAM_LIST>));
+<KYWRD_CHECK>       ::=     check
+
+<CHECK_STMNT>       ::=     <CHECK_PROPERTY> | <CHECK_METHOD>
+<CHECK_PROPERTY>    ::=     check(<IDENTIFIER>.<IDENTIFIER>);
+<CHECK_METHOD>      ::=     check(<IDENTIFIER>.<IDENTIFIER>(<PARAM_LIST>));
+
+# HELP FUNCTION
+<HELP_STMNT>        ::=     help(<HELP_INP>);
+<HELP_INP>          ::=     ε | <STR_LITERAL>
+
+<HELP_STMNT>        ::=     <KYWRD_HELP>(<HELP_INP>);
+<KYWRD_HELP>        ::=     help
+<HELP_INP>          ::=     ε | <STR_LITERAL>
