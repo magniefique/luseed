@@ -16,4 +16,4 @@ class Token:
         return f'[\'{self.line}\', \'{self.lexeme}\', \'{self.token}\']'
     
     def __str__(self) -> str:
-        return f'[\'{self.line}\', \'{self.lexeme}\', \'{self.token}\']'
+        return f'[\'{self.lexeme}\':\'{self.token}\']'

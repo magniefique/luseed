@@ -1,5 +1,5 @@
-from luseed_tokens import *
-from luseed_token import *
+from lexer.luseed_tokens import *
+from lexer.luseed_token import *
 from luseed_error import *
 from fpdf import FPDF
 import time
@@ -113,7 +113,10 @@ class Lexer(object):
         """
         Responsible for parsing alphanumeric characters.
         """
-        
+        if self.lexeme == ".":
+            self.tokenize(self.lexeme)
+            self.lexeme = ""
+
         self.lexeme += char
                     
         # Appends the current value of the self.oplexeme if it is not empty 
@@ -131,6 +134,7 @@ class Lexer(object):
         """
         Responsible for parsing special characters
         """
+
         # Checks if char is part of an operator that contains 2 characters
         if char in DOUBLE_OP:
             # Tokenizes the lexemes present in the self.lexeme
@@ -229,6 +233,8 @@ class Lexer(object):
                 self.error_check(3)
                 self.isString = False
                 self.lexeme = ""
+
+            self.tokenize(char)
 
             # Tokenizes lexemes if they are not empty
             self.reset_buffers("lexeme")
@@ -386,32 +392,35 @@ class Lexer(object):
         elif lexeme in DELIMITERS:
             self.tokenized_lexemes.append(Token(self.line_count, lexeme, DELIMITERS[lexeme]))
 
+        elif lexeme in WHITESPACES:
+            self.tokenized_lexemes.append(Token(self.line_count, WHITESPACE_REP[WHITESPACES[lexeme]], WHITESPACES[lexeme]))
+
         elif lexeme[:2] == "//" or (lexeme[:2] == "/*" and lexeme[-2:] == "*/") or lexeme[:2] == "/*":
             if lexeme[:2] == "//":
-                self.tokenized_lexemes.append(Token(self.line_count, lexeme, COMMENT_SNGLELINE))
+                self.tokenized_lexemes.append(Token(self.line_count, lexeme, CMNT_SINGLE))
             
             else:
-                self.tokenized_lexemes.append(Token(self.line_count, lexeme, COMMENT_MLTILINE))
+                self.tokenized_lexemes.append(Token(self.line_count, lexeme, CMNT_MULTI))
                 return
         
         elif lexeme.isnumeric():
-            self.tokenized_lexemes.append(Token(self.line_count, lexeme, INT_LITERAL))
+            self.tokenized_lexemes.append(Token(self.line_count, lexeme, LIT_INT))
 
         elif len(lexeme) > 1 and (lexeme[-1] == "f") and (lexeme[-2] != ".") and self.is_float(lexeme.replace("f", "")) and (lexeme > -3.4e-38 and lexeme < 3.4e+38):
             if "." not in lexeme:
                 lexeme = lexeme.rstrip(lexeme[-1])
                 lexeme += ".0f"
-            self.tokenized_lexemes.append(Token(self.line_count, lexeme, FLOAT_LITERAL))
+            self.tokenized_lexemes.append(Token(self.line_count, lexeme, LIT_FLT))
 
         elif len(lexeme) > 1 and ("." in lexeme) and (lexeme[-1] != ".") and self.is_float(lexeme):
-            self.tokenized_lexemes.append(Token(self.line_count, lexeme, DOUBLE_LITERAL))
+            self.tokenized_lexemes.append(Token(self.line_count, lexeme, LIT_DBL))
 
         elif lexeme[0] == "\"" and lexeme[-1] == "\"":
-            self.tokenized_lexemes.append(Token(self.line_count, lexeme, STR_LITERAL))
+            self.tokenized_lexemes.append(Token(self.line_count, lexeme, LIT_STR))
 
         elif lexeme[0] == "\'" and lexeme[-1] == "\'":
             if len(lexeme.replace("\'", "")) == 1:
-                self.tokenized_lexemes.append(Token(self.line_count, lexeme, CHAR_LITERAL))
+                self.tokenized_lexemes.append(Token(self.line_count, lexeme, LIT_CHAR))
 
             else:
                 Error.TokenError(line_count= self.line_count, prompt=Error.TokenError.INVALID_CHAR)

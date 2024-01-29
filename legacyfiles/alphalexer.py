@@ -1,5 +1,5 @@
-from luseed_tokens import *
-from luseed_token import *
+from lexer.luseed_tokens import *
+from lexer.luseed_token import *
 from fpdf import FPDF
 import time
 

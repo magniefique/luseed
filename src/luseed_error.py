@@ -54,3 +54,10 @@ class Error:
         
         def displayerror(self):
             print(f"\033[91m[OutputError]: Symbol Table cannot be presented.\n\t{self.prompt}\033[0m")
+    
+    class SyntaxError:
+        MISSING_LPAREN = "Missing left parenthesis \'(\' at line "
+        MISSING_RPAREN = "Expecting right parenthesis \')\' at line "
+
+        def __init__(self) -> None:
+            pass

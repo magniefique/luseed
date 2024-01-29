@@ -1,25 +1,5 @@
-import random
-idx_ctr = 0
-token_list = ["display", "(", "Hello World", ")", ";"]
+def Func():
+    var1 = 2
+    return var1
 
-print(random.randint(0, 1))
-if token_list[idx_ctr] == "display":
-    idx_ctr += 1
-    if token_list[idx_ctr] == "(":
-        idx_ctr +=1
-        if token_list[idx_ctr] in ["Hello World", "Identifier", "NUMBER"]:
-            idx_ctr += 1
-            if token_list[idx_ctr] == ")":
-                idx_ctr += 1
-                if token_list[idx_ctr] == ";":
-                    print("Successful Parse!")
-                else:
-                    print("Missing statement terminator")
-            else:
-                print("Expecting ) or ; after expression")
-        else:
-            print("Invalid argument passed")
-    else:
-        print("Expecting ( in line chuchu")
-elif token_list[idx_ctr] == "ask":
-    pass
+Func() = 2

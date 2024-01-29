@@ -1,9 +1,9 @@
 import os
 import codecs
-from luseed_tokens import *
+from lexer.luseed_tokens import *
 from luseed_error import *
-from lexer import *
-from parse import *
+from lexer.luseed_lexer import *
+from parser.luseed_parser import *
 from pathlib import Path
 
 def main():
@@ -29,7 +29,7 @@ def readfile(file_path: str):
                 file_name = os.path.basename(file.name)
             # Create a Lexer object and tokenize the file content
             tokenize = Lexer(file_content, file_name)
-            tokenize.display_table("txt")
+            tokenize.display_table("console")
             analyze_syntax = Parser(tokenize.return_tokens())
             analyze_syntax.parse()
 
