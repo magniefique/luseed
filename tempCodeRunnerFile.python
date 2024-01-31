@@ -1,5 +1,5 @@
-def Func():
-    var1 = 2
-    return var1
+class TestFUnc:
+    var1 = 5
 
-Func() = 2
+
+testclass += TestFUnc()

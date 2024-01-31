@@ -21,14 +21,14 @@ DATA_TYPE = ["KW_DATA_INT", "KW_DATA_FLT", "KW_DATA_DBL", "KW_DATA_CHAR", "KW_DA
 # ACCESS MODIFIERS
 ACCESS_MOD = ["KW_PUB", "KW_PRIV", "KW_PROT"]
 
-# STATEMENTS
+# STATEMENT MAP (FOR LENGTHY REPETITIVE STATEMENTS)
 IMPORT_STMNT = [
                 # import <IDENTIFIER>;
                 [[[IDENTIFIER], 'Invalid Import statement', True], 
-                [["DLM_TRMNTR"], 'Missing ;', True]],
+                 [["DLM_TRMNTR"], 'Missing ;', True]],
 
                 # from <IDENTIFIER> import (<all> | <IDENTIFIER>);
-                [[[IDENTIFIER], 'Expecting an identifier', True],
+                [[[IDENTIFIER], 'Expecting an identifier b', True],
                  [["KW_IMPORT"], 'Expecting keyword import', True],
                  [["KW_ALL", IDENTIFIER], 'Expecting keyword all or an Identifier', True],
                  [["DLM_TRMNTR"], 'Missing ;', True]]
@@ -38,4 +38,11 @@ MAIN_STMNT = [
                 [["DLM_LPRN"], 'Expecting ( here', True],
                 [["DLM_RPRN"], 'Expecting ) here', True],
                 [["DLM_CODEBLK"], 'Expecting : here', True]
+             ]
+
+FUNC_STMNT = [
+                [[[IDENTIFIER], 'Expecting an identifier', True],
+                 [["DLM_LPRN"], 'Expecting ( here', True]],
+                [[["DLM_RPRN"], 'Expecting ) here', True],
+                 [["DLM_COLON"], 'Expecting : here', False]],
              ]

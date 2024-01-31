@@ -30,3 +30,10 @@ IMPORT STATEMENT
 #     self.look_for(["DLM_TRMNTR"], self.curr_tok, f"Missing ; {self.curr_tok.token, self.tk_list[self.idx_ctr-1], self.curr_tok.line}", True)
 #     self.idx_incr() 
 #     return TreeSegment(None, res, curr_tok)
+
+# elif self.curr_tok.token == "DLM_LPRN" and is_dec:
+        #     raise Exception("Function call cannot be a declaration statement")
+
+        # elif self.curr_tok.token == "DLM_TRMNTR" and is_dec:
+        #     curr_stmnt = TreeSegment(None, identifier, self.curr_tok.token)
+        #     self.idx_incr()

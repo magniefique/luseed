@@ -121,7 +121,7 @@ class Lexer(object):
                     
         # Appends the current value of the self.oplexeme if it is not empty 
         if self.oplexeme != "" and self.lexeme != "":
-            if self.oplexeme == "+-" or self.oplexeme == "-+" or self.oplexeme == "++" or self.oplexeme == "--":
+            if self.oplexeme == "+-" or self.oplexeme == "-+":
                 self.tokenize(self.oplexeme[0])
                 self.tokenize(self.oplexeme[1])
 
@@ -134,12 +134,11 @@ class Lexer(object):
         """
         Responsible for parsing special characters
         """
-
         # Checks if char is part of an operator that contains 2 characters
         if char in DOUBLE_OP:
             # Tokenizes the lexemes present in the self.lexeme
             self.reset_buffers("lexeme")
-
+            
             self.oplexeme += char
 
             # Activates comment boolean if self.oplexeme is in comments
@@ -234,12 +233,12 @@ class Lexer(object):
                 self.isString = False
                 self.lexeme = ""
 
-            self.tokenize(char)
-
             # Tokenizes lexemes if they are not empty
             self.reset_buffers("lexeme")
             
             self.reset_buffers("oplexeme_2")
+
+            self.tokenize(char)
 
             # Increments line count for new line and resets char cout
             self.line_count += 1
@@ -406,7 +405,7 @@ class Lexer(object):
         elif lexeme.isnumeric():
             self.tokenized_lexemes.append(Token(self.line_count, lexeme, LIT_INT))
 
-        elif len(lexeme) > 1 and (lexeme[-1] == "f") and (lexeme[-2] != ".") and self.is_float(lexeme.replace("f", "")) and (lexeme > -3.4e-38 and lexeme < 3.4e+38):
+        elif len(lexeme) > 1 and (lexeme[-1] == "f") and (lexeme[-2] != ".") and self.is_float(lexeme.replace("f", "")) and (float(lexeme.replace("f", "")) > -3.4e-38 and float(lexeme.replace("f", "")) < 3.4e+38):
             if "." not in lexeme:
                 lexeme = lexeme.rstrip(lexeme[-1])
                 lexeme += ".0f"
@@ -510,11 +509,17 @@ class Lexer(object):
         else:
             len(display_list[0][0])
 
+        if type == "console":
+            print(f"|------------------------START OF SYMBOL TABLE------------------------|\n")
+            
+        elif type == "txt":
+            file.write(f"|------------------------END OF SYMBOL TABLE------------------------|" + '\n')
+
         # Displays the symbol table in the console
         for i in range(len(display_list)):
             if i == 0:
                 spacing_1 = (longest_1 + 10)
-                spacing_2 = (longest_2 + 10)
+                spacing_2 = (longest_2 + 20)
 
                 if type == "console":
                     display_str = f"\033[1m{display_list[i][0]:<{spacing_1}}\033[0m\033[1m{display_list[i][1]:<{spacing_2}}\033[0m\033[1m{display_list[i][2]}\033[0m"
@@ -524,7 +529,7 @@ class Lexer(object):
 
             else:
                 spacing_1 = (longest_1 + 10)
-                spacing_2 = (longest_2 + 10)
+                spacing_2 = (longest_2 + 20)
                 offset = display_list[i].lexeme.rfind("\n")
                 new_spacing = spacing_1 + offset + 1 if offset != -1 else spacing_1
                 display_str = f"{display_list[i].lexeme:<{new_spacing}}{display_list[i].line:<{spacing_2}}{display_list[i].token}"
@@ -534,6 +539,12 @@ class Lexer(object):
             
             elif type == "txt":
                 file.write(display_str + '\n')
+
+        if type == "console":
+            print(f"\n|-------------------------END OF SYMBOL TABLE-------------------------|\n")
+            
+        elif type == "txt":
+            file.write(f"\n|-------------------------END OF SYMBOL TABLE-------------------------|" + '\n')
 
         if type == "txt":
             print(f"The SYMBOL_TABLE_{self.file_path}.txt has been generated.")

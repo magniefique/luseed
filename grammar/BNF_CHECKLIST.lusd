@@ -11,9 +11,9 @@ Note: This is not 1 to 1 with the code since each lexeme in this document will b
 #DONE
 
 <STMNT_LIST> ::= <STMNT> | <STMNT> <STMNT_LIST>
-<STMNT> ::= #DONE<IMPORT_STMNT>#DONE |<DEC_STMNT> | #DONE<ASSIGN_STMNT>#DONE | <INPUT_STMNT> | <OUTPUT_STMNT> | <CONDN_STMNT> | <LOOP_STMNT> | <UNARY_STMNT> 
-          | <PASS_STMNT> | <FUNC_STMNT> | <CLASS_STMNT> | <ERROR_STMNT> | <CAST_STMNT> | <RETURN_STMNT> | <INFO_STMNT> | <SWAP_STMNT> 
-          | <CHECK_STMNT>
+<STMNT> ::= #DONE<IMPORT_STMNT>#DONE |#<DEC_STMNT># | #DONE<ASSIGN_STMNT>#DONE | #<INPUT_STMNT># | #<OUTPUT_STMNT># | #<CONDN_STMNT># | #<LOOP_STMNT># | #<UNARY_STMNT># 
+          | #<PASS_STMNT># | #<FUNC_STMNT># | <CLASS_STMNT> | <ERROR_STMNT> | #<CAST_STMNT># | #<RETURN_STMNT># | #<INFO_STMNT># | #<SWAP_STMNT># 
+          | #<CHECK_STMNT>#
           
 <CHARACTERSET> ::= <ALNUM> | <SPECIAL_CHAR>
 
@@ -132,10 +132,10 @@ Note: This is not 1 to 1 with the code since each lexeme in this document will b
 
 # LOOPING STATEMENTS
 <LOOP_STMNT> ::= <LOOP_FOR> | <LOOP_FOREACH> | <LOOP_WHILE> | <LOOP_UNTIL> | <LOOP_REPEAT>
-<LOOP_FOR> ::= (loop <IDENTIFIER>:)? for(<LOOP_INIT>; <EXPR>; <UNARY_EXP>):{(<LOOP_BODY>)^+}
+<LOOP_FOR> ::= (loop <IDENTIFIER>:)? for(<INIT>; <EXPR>; <UNARY_EXP>):{(<LOOP_BODY>)^+}
 <LOOP_FOREACH> ::= (loop <IDENTIFIER>:)? foreach(<DATA_TYPE> <IDENTIFIER> in <IDENTIFIER>): {(<LOOP_BODY>)^+}
 <LOOP_WHILE> ::= (loop <IDENTIFIER>:)? while(<EXPR>):{(<LOOP_BODY>)^+}
-<LOOP_UNTIL> ::= (loop <IDENTIFIER>:)? do:{(<LOOP_BODY>)^+}until(<EXPR>)
+<LOOP_UNTIL> ::= (loop <IDENTIFIER>:)? do:{(<LOOP_BODY>)^+}until(<EXPR>);
 <LOOP_REPEAT> ::= (loop <IDENTIFIER>:)? repeat(<VALUE>):{(<LOOP_BODY>)^+}
 <INIT> ::= <DATA_TYPE>? <IDENTIFIER> = <VALUE>
 <VALUE> ::= <ATOM> | <EXPR>
@@ -204,6 +204,6 @@ Note: This is not 1 to 1 with the code since each lexeme in this document will b
 <CHECK_STMNT> ::= check(<PROPERTY>);
                 | check(<METHOD_CALL>);
 
-<INFO_STMNT> ::= help();
-               | help(<LIT_STR>);
-               | help(<KEYWORDS>);
+<INFO_STMNT> ::= info();
+               | info(<LIT_STR>);
+               | info(<KEYWORDS>);
