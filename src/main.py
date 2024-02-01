@@ -29,7 +29,7 @@ def readfile(file_path: str):
                 file_name = os.path.basename(file.name)
             # Create a Lexer object and tokenize the file content
             tokenize = Lexer(file_content, file_name)
-            tokenize.display_table("console")
+            tokenize.display_table("txt")
             analyze_syntax = Parser(tokenize.return_tokens())
             analyze_syntax.parse()
 

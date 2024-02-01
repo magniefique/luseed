@@ -37,13 +37,13 @@ class Error:
     
         def displayerror(self, type: int = None):
             if type == 1:
-                print(f"\033[1;33;40m[Warning]: Invalid lexeme found in line {self.line_count}.\n\t{self.prompt}\033[0m")
+                print(f"\033[93m[Warning]: Invalid lexeme found in line {self.line_count}.\n\t{self.prompt}\033[0m")
             
             elif type == 2:
-                print(f"\033[1;33;40m[Warning]: Unterminated char/str/comment found in character {self.lexeme_start}, line {self.line_count}.\n\t{self.prompt}\033[0m") 
+                print(f"\033[93m[Warning]: Unterminated char/str/comment found in character {self.lexeme_start}, line {self.line_count}.\n\t{self.prompt}\033[0m") 
 
             elif type == 3:
-                print(f"\033[1;33;40m[Warning]: Error within string literal in character {self.lexeme_start}, line {self.line_count}.\n\t{self.prompt}\033[0m")
+                print(f"\033[93m[Warning]: Error within string literal in character {self.lexeme_start}, line {self.line_count}.\n\t{self.prompt}\033[0m")
 
     class OutputError:
         INVALID_OUTPUT = "Invalid output method for the following symbol table."
@@ -56,8 +56,28 @@ class Error:
             print(f"\033[91m[OutputError]: Symbol Table cannot be presented.\n\t{self.prompt}\033[0m")
     
     class SyntaxError:
-        MISSING_LPAREN = "Missing left parenthesis \'(\' at line "
+        UNKNOWN_TOKEN = "Unknown token found at line "
+        INVALID_STMNT = "Cannot start a statement with "
+        EXPRESSION_STMNT = "Cannot use a value/expression/identifer as a statement"
+        ELIF_ERROR = "Cannot  use \'elif\' without previous \'if\' statement"
+        ELSE_ERROR = "Cannot  use \'else\' without previous \'if\' statement"
+        INVALID_ASSIGN = "Expression cannot be an assignment statement"
+        INVALID_PAREN = "Used a closing parenthesis \')\' without opening one"
+        MISSING_LPAREN = "Expecting left parenthesis \'(\' at line "
         MISSING_RPAREN = "Expecting right parenthesis \')\' at line "
+        MISSING_RSQUARE = "Expecting right square bracket \']\' at line "
+        MISSING_OPERAND = "Expecting a value or an identifier at line "
+        MISSING_SEMICOLON = "Expecting a statement terminator \';\' at line "
+        EXPECTING_DEC = "Expecting \'[\', \'=\', or \';\' at line "
+        EXPECTING_UN = "Expecting \'++\' or \'--\' at line "
+        EXPECTING_IDEN = "Expecting identifier at line "
+        INVALID_VALUE = "Invalid value found at line "
+        
+        def __init__(self, prompt: str = None, line_info: str = None) -> None:
+            self.prompt = prompt
+            self.line_info = line_info
 
-        def __init__(self) -> None:
-            pass
+        def displayerror(self):
+            print(f"\033[91m[SyntaxError]: Syntax analyzer found an error within the source code:\n\t{self.prompt}.")
+            print(f"\t{self.line_info}\033[0m")
+            exit(1)

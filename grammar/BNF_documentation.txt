@@ -15,7 +15,7 @@ Note: This is not 1 to 1 with the code since each lexeme in this document will b
 <CHARACTERSET> ::= <ALNUM> | <SPECIAL_CHAR>
 
 # IDENTIFIER
-<IDENTIFIER> ::= <ALPHABET><VALID_CHAR>*<ALNUM>
+<IDENTIFIER> ::= <ALPHABET><VALID_CHAR>*<ALNUM> | <ALPHABET>
 <VALID_CHAR> ::= <ALNUM> | <UNDSC>
 <ALNUM> ::= <ALPHABET> | <DIGITS>
 <ALPHABET> ::= <LOWERC> | <UPPERC>
@@ -71,7 +71,8 @@ Note: This is not 1 to 1 with the code since each lexeme in this document will b
 <EXPR_AND> ::= <EXPR_EQ> and <EXPR_AND> | <EXPR_EQ> 
 <EXPR_EQ>  ::= <EXPR_REL> <OP_RELATION_E> <EXPR_EQ> | <EXPR_REL>
 <EXPR_REL> ::= <EXPR_ADD> <OP_RELATION_R> <EXPR_REL> | <EXPR_ADD>
-<EXPR_ADD> ::= <EXPR_MUL> <OP_ARITH_A> <EXPR_ADD> | <EXPR_MUL> 
+<EXPR_ADD> ::= <EXPR_MUL> <OP_ARITH_A> <EXPR_ADD> | <EXPR_MUL>
+<EXPR_MUL> ::= <EXPR_UN> <OP_ARITH_M> <EXPR_MUL> | <EXPR_UN> 
 <EXPR_UN>  ::= <EXPR_EXPO> | not<EXPR_UN> | +<EXPR_UN> | -<EXPR_UN>
 <EXPR_EXPO> ::= <EXPR_ATOM>**<EXPR_UN> | <ATOM>
 <ATOM> ::= <LIT_DATA> | <IDENTIFIER> | <PROPERTY> | <FUNC_CALL> | <METHOD_CALL> | <EXPR_PAREN>

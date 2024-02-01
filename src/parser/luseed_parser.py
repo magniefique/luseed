@@ -1,4 +1,5 @@
 from lexer.luseed_token import *
+from luseed_error import *
 from parser.grammar import *
 
 class TreeSegment:
@@ -41,11 +42,11 @@ class Parser:
         self.idx_ctr += 1
         if self.idx_ctr < len(self.tk_list):
             self.curr_tok = self.tk_list[self.idx_ctr]
-            self.look_for(["UNKNOWN_TOKEN"], self.curr_tok, "UNKNOWN TOKEN FOUND", False)
+            self.look_for(["UNKNOWN_TOKEN"], self.curr_tok, Error.SyntaxError.UNKNOWN_TOKEN + self.curr_tok.line, False)
             
         else:
             if self.curr_tok.token not in ["WHT_NEWLINE", "DLM_RCURLY"]:
-                self.look_for(["DLM_TRMNTR"], self.curr_tok, f"{self.curr_tok.lexeme} <- Missing statement terminator \';\'.", True) # Check if final char is semicolon
+                self.look_for(["DLM_TRMNTR"], self.curr_tok, Error.SyntaxError.UNKNOWN_TOKEN + self.curr_tok.line, True) # Check if final char is semicolon
 
             self.is_done = True
             self.curr_tok = Token(None, " ",  "EOF")
@@ -69,8 +70,10 @@ class Parser:
         if (accept and tok.token in token) or (not accept and tok.token not in token):
             return tok
         
-        print(error)
-        exit(1)
+        self.parse_error(error, tok)
+
+    def parse_error(self, error: str, token: Token):
+        Error.SyntaxError(error, token.line).displayerror()
 
     def parse(self):
         """
@@ -88,8 +91,8 @@ class Parser:
         """
         res = self.expr_or()
         
-        self.look_for(OP_ASSIGNMENT.values(), self.curr_tok, "EXPRESSION CANNOT BE AN ASSIGNMENT TARGET", False)
-        self.look_for(["DLM_LPRN", "DLM_RPRN"], self.curr_tok, "Invalid Usage of ')'", False)
+        self.look_for(OP_ASSIGNMENT.values(), self.curr_tok, Error.SyntaxError.INVALID_ASSIGN, False)
+        self.look_for(["DLM_RPRN"], self.curr_tok, Error.SyntaxError.INVALID_PAREN, False)
         return res
 
     # Recursion function of each operation (LEVELED)
@@ -148,7 +151,7 @@ class Parser:
             self.idx_incr()
             lsquare = curr_tok
             list_val = self.args_list()
-            rsquare = self.look_for(["DLM_RSQUARE"], self.curr_tok, "Missing Right Square Bracket", True)
+            rsquare = self.look_for(["DLM_RSQUARE"], self.curr_tok, Error.SyntaxError.MISSING_RSQUARE + self.curr_tok.line, True)
             self.idx_incr()
             return TreeSegment(lsquare, list_val, rsquare)
 
@@ -165,17 +168,11 @@ class Parser:
         elif curr_tok.token == "KW_ASK":
             return self.input_expr(curr_tok)
 
-        # Error
-        elif curr_tok.token == "DLM_RPRN":
-            raise SyntaxError("Missing '\(\' parenthesis.") #####RETURNS IF PARENTHESIS WAS USED EXAMPLE (4 + )
-
-        # Checks if operand is not completed
-        elif curr_tok.token in "DLM_TRMNTR":
-            raise SyntaxError("Error Operation on Operand") ################################################RETURNS IF OPERAND NOT CONCLUDED
+        elif curr_tok.token in ["DLM_RPRN", "DLM_TRMNTR"]:
+            self.parse_error(Error.SyntaxError.MISSING_OPERAND, curr_tok)
         
-        # Checks for invalid tokens for atoms
         else:
-            raise SyntaxError(f"Error Operand! {self.curr_tok}") ################################################RETURNS IF ATOMS ARE NOT VALID ATOMS (EX. KEYWORDS)
+            self.parse_error(Error.SyntaxError.INVALID_VALUE, curr_tok)
 
     def atom_paren(self):
         """
@@ -259,7 +256,7 @@ class Parser:
             idx_value = self.expr_or()
         
         else:
-            raise SyntaxError("INVALID INDEX VALUE")
+            self.parse_error(Error.SyntaxError.INVALID_VALUE, self.curr_tok)
 
         rsquare = self.look_for(["DLM_RSQUARE"],  self.curr_tok, "Expected ']' to close index expression.", True)
         self.idx_incr()
@@ -283,7 +280,7 @@ class Parser:
             return None
 
         else:
-            raise SyntaxError("INVALID ARGUMENT")
+            self.parse_error(Error.SyntaxError.INVALID_VALUE, arg_list)
 
     def args_atom(self):
         """
@@ -314,8 +311,8 @@ class Parser:
             return TreeSegment(identifier, op, value)
 
         else:
-            raise Exception(f"UNEXPECTED SYMBOL FOUND {self.curr_tok}")
-
+            self.parse_error(Error.SyntaxError.EXPECTING_DEC, self.curr_tok)
+    
     def param_list(self):
         """
         List of parameters.
@@ -339,7 +336,7 @@ class Parser:
             return kw_this
         
         else:
-            raise Exception("Invalid parameter")
+            self.parse_error(Error.SyntaxError.INVALID_VALUE, self.curr_tok)
 
     def obj_atom(self):
         """
@@ -411,7 +408,7 @@ class Parser:
             expr = self.expr_parse()
 
         else:
-            raise Exception("Invalid value for expression")
+            self.parse_error(Error.SyntaxError.INVALID_VALUE, self.curr_tok)
 
         delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, "Expecting a delimiter ;", True)
         self.idx_incr()
@@ -427,10 +424,10 @@ class Parser:
                 update = self.assign_expr(update_iden, False)
 
             else:
-                raise Exception(f"Do you mean ++ or -- ? {self.curr_tok}")
+                self.parse_error(Error.SyntaxError.EXPECTING_UN, self.curr_tok)
 
         else:
-            raise Exception("Invalid value for update section")
+            self.parse_error(Error.SyntaxError.EXPECTING_IDEN, self.curr_tok)
 
         condn = TreeSegment(None, expr, delim)
         return TreeSegment(init, condn, update)
@@ -574,8 +571,17 @@ class Parser:
             
             curr_stmnt = (None, modifier, curr_stmnt)
 
+        elif self.curr_tok.token == "KW_ELIF":
+            self.parse_error(Error.SyntaxError.ELIF_ERROR, self.curr_tok)
+
+        elif self.curr_tok.token == "KW_ELSE":
+            self.parse_error(Error.SyntaxError.ELSE_ERROR, self.curr_tok)
+
+        elif self.curr_tok.token in LIT_DATA:
+            self.parse_error(Error.SyntaxError.EXPRESSION_STMNT, self.curr_tok)
+
         else:
-            raise Exception(f"NONONONO WAY {self.curr_tok} {self.tk_list[self.idx_ctr - 2]}")
+            self.parse_error(Error.SyntaxError.INVALID_STMNT + self.curr_tok.lexeme, self.curr_tok)
 
         if self.curr_tok.token != "DLM_RCURLY" and self.curr_tok.token != 'EOF':
             next_stmnt = self.stmnt(is_loop)
@@ -601,7 +607,7 @@ class Parser:
             curr_stmnt = self.unary_stmnt(identifier, 1)
 
         elif self.curr_tok.token == "DLM_TRMNTR":
-            raise Exception("Expression cannot be a statement")
+            self.parse_error(Error.SyntaxError.EXPRESSION_STMNT, self.curr_tok)
         
         return curr_stmnt  
     

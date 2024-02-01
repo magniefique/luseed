@@ -1,5 +1,0 @@
-class TestFUnc:
-    var1 = 5
-
-
-testclass += TestFUnc()

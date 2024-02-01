@@ -2,40 +2,6 @@ main():
 {
     class Helping(Helping2):
     {
-        init(this, int a, int b):
-        {
-            this.var1 = 5;
-        }
-
-        public func func1(this, int a, int v):
-        {
-            public list a[3] = [a, "str", b];
-        }
-    }
-
-    private class Yelping:
-    {
-        
-    }
-
-    try:
-    {
-        float var1 = 5;
-        var2 += 10;
-        var2++;
-    }
-    catch (Exception):
-    {
-        check(test(1, 2, 3));
-    }
-
-    public func FunctionTest(int a, int b, int c, int d):
-    {
-
-    }
-
-    public func FunctionTest(int a, int b, int c, int d):
-    {
-        
+        int var1 = 'cd';
     }
 }
