@@ -39,10 +39,3 @@ MAIN_STMNT = [
                 [["DLM_RPRN"], 'Expecting ) here', True],
                 [["DLM_CODEBLK"], 'Expecting : here', True]
              ]
-
-FUNC_STMNT = [
-                [[[IDENTIFIER], 'Expecting an identifier', True],
-                 [["DLM_LPRN"], 'Expecting ( here', True]],
-                [[["DLM_RPRN"], 'Expecting ) here', True],
-                 [["DLM_COLON"], 'Expecting : here', False]],
-             ]

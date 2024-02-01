@@ -3,7 +3,7 @@ from parser.grammar import *
 
 class TreeSegment:
     """
-    Segment of the tree that contains the root node, the left node, and the right node
+    Segment of the tree that contains the root node, the left node, and the right node (Originally applied for the Operator Precedence)
     """
     def __init__(self, left_node: Token, root_node: Token, right_node: Token):
         self.left_node = left_node
@@ -54,6 +54,9 @@ class Parser:
         return self.curr_tok
 
     def idx_dcr(self):
+        """
+        Decrements the index counter and sets the current token to the previous token.
+        """
         self.idx_ctr -= 1
 
         self.curr_tok = self.tk_list[self.idx_ctr]
@@ -61,7 +64,7 @@ class Parser:
 
     def look_for(self, token: list, tok: Token, error: str, accept: bool):
         """
-        Look for a token. If true, look for it, if false, look against it.
+        Checks if the current token satisfies the specified token. If this is True, accept the given specified token, and not if False.
         """
         if (accept and tok.token in token) or (not accept and tok.token not in token):
             return tok
@@ -70,6 +73,9 @@ class Parser:
         exit(1)
 
     def parse(self):
+        """
+        Starts the parsing process.
+        """
         while not self.is_done:
             parse_res = self.stmnt()
             print(parse_res)
@@ -78,15 +84,12 @@ class Parser:
 
     def expr_parse(self):
         """
-        Parses and expression.
+        Parses an expression. This is used mainly for assignment statements.
         """
         res = self.expr_or()
         
         self.look_for(OP_ASSIGNMENT.values(), self.curr_tok, "EXPRESSION CANNOT BE AN ASSIGNMENT TARGET", False)
         self.look_for(["DLM_LPRN", "DLM_RPRN"], self.curr_tok, "Invalid Usage of ')'", False)
-
-        if self.curr_tok.token in ["DLM_LPRN", "DLM_RPRN"]:
-            raise Exception("STARTED A PARENTHESIS GRRRRRRRR")
         return res
 
     # Recursion function of each operation (LEVELED)
@@ -116,7 +119,7 @@ class Parser:
 
     def atom(self):
         """
-        Values that can be used an expression on. 
+        Values that can be used in an expression.  
         """
         curr_tok = self.curr_tok
 
@@ -135,11 +138,12 @@ class Parser:
                 res = self.cast_stmnt()
 
             else:
-                res = self.expr_paren(self.atom_paren)
+                res = self.expr_paren(self.atom_paren, True)
                 self.idx_incr()
 
             return res
         
+        # Used for lists
         elif curr_tok.token == "DLM_LSQUARE":
             self.idx_incr()
             lsquare = curr_tok
@@ -149,7 +153,7 @@ class Parser:
             return TreeSegment(lsquare, list_val, rsquare)
 
         # Used for unary operators
-        elif self.curr_tok.token in ["OP_PLUS", "OP_MINUS"]:
+        elif self.curr_tok.token in ["OP_PLUS", "OP_MINUS", "KW_BOOL_NOT"]:
             if self.curr_tok.token == "OP_PLUS":
                 self.curr_tok.token = "OP_POS"
             
@@ -188,7 +192,8 @@ class Parser:
         self.idx_incr()
         res = func()
         rparen = self.look_for(["DLM_RPRN"], self.curr_tok, f"MISSING RIGHT PARENTHESIS{self.curr_tok} {self.tk_list[self.idx_ctr-2]}", True)################################ CANNOT BE MISSING A RIGHT PARENTHESIS
-        return res
+        
+        return res if is_op else TreeSegment(lparen, res, rparen)
 
     def expr_operation(self, func, acc_op: list, assoc: str):
         """
@@ -219,7 +224,7 @@ class Parser:
 
     def rule_iden(self):
         """
-        Identifier Rules
+        Rules for Identifiers.
         """
         iden_tok = self.curr_tok
         self.idx_incr()
@@ -245,9 +250,12 @@ class Parser:
         return iden_tok
 
     def list_idx(self):
+        """
+        List Index for Identifiers. Ex. testList[1] <- list_idx.
+        """
         lsquare = self.curr_tok
         self.idx_incr()
-        if self.curr_tok.token in VALUE_LIST or self.curr_tok.token in ["DLM_LPRN", "DLM_LSQUARE", "KW_NOT"]:
+        if self.curr_tok.token in VALUE_LIST or self.curr_tok.token in ["DLM_LPRN", "DLM_LSQUARE", "KW_BOOL_NOT"]:
             idx_value = self.expr_or()
         
         else:
@@ -264,8 +272,11 @@ class Parser:
         return TreeSegment(lsquare, idx_value, rsquare)
 
     def args_list(self):
+        """
+        List of arguments that is passed in a method call/function call/class instantiation.
+        """
         arg_list = self.curr_tok
-        if arg_list.token in VALUE_LIST or arg_list.token in ["DLM_LPRN", "DLM_LSQUARE", "KW_NOT"]:
+        if arg_list.token in VALUE_LIST or arg_list.token in ["DLM_LPRN", "DLM_LSQUARE", "KW_BOOL_NOT"]:
             return self.expr_operation(self.args_atom, ['DLM_SPRTR'], 'L')
 
         elif arg_list.token in ["DLM_RPRN", "DLM_RSQUARE"]:
@@ -275,11 +286,17 @@ class Parser:
             raise SyntaxError("INVALID ARGUMENT")
 
     def args_atom(self):
+        """
+        Accepted values that can be passed as arguments.
+        """
         self.look_for(["DLM_RPRN"], self.curr_tok, "Unfinished Comma", False)
         res = self.expr_or()
         return res
 
     def dec_atom(self):
+        """
+        Accepted values in a declaration statement.
+        """
         identifier = self.curr_tok
         self.idx_incr()
 
@@ -300,9 +317,15 @@ class Parser:
             raise Exception(f"UNEXPECTED SYMBOL FOUND {self.curr_tok}")
 
     def param_list(self):
+        """
+        List of parameters.
+        """
         return self.expr_operation(self.param_atom, ["DLM_SPRTR"], 'L')
 
     def param_atom(self):
+        """
+        List of each atom that can be present in a parameter. Ex. int a, char b = 'a'.
+        """
         if self.curr_tok.token in DATA_TYPE:
             dataType = self.curr_tok
             self.idx_incr()
@@ -319,12 +342,18 @@ class Parser:
             raise Exception("Invalid parameter")
 
     def obj_atom(self):
+        """
+        Atom that can be used as a property. Ex. TestClass.test <- obj_atom
+        """
         self.idx_incr()
         self.look_for([IDENTIFIER], self.curr_tok, "Expecting Identifier", True)
         return self.rule_iden()
     
     def info_atom(self):
-        if self.curr_tok.token in VALUE_LIST or self.curr_tok.token in ["DLM_LPRN", "DLM_LSQUARE", "KW_NOT"]:
+        """
+        Atoms for the info statement.
+        """
+        if self.curr_tok.token in VALUE_LIST or self.curr_tok.token in ["DLM_LPRN", "DLM_LSQUARE", "KW_BOOL_NOT"]:
             return self.expr_or()
         
         elif self.curr_tok.token in KEYWORDS.values():
@@ -333,6 +362,9 @@ class Parser:
             return res
 
     def swap_atom(self):
+        """
+        Atoms for the swap statement. Can be either 2 or 3 identifiers only.
+        """
         atom_1 = self.look_for([IDENTIFIER], self.curr_tok, "Expected Identifier", True)
         self.idx_incr()
         sep_1 = self.look_for(["DLM_SPRTR"], self.curr_tok,  "Expected a separator", True)
@@ -350,19 +382,23 @@ class Parser:
             return f'{atom_1}, {sep_1}, {atom_2}'
 
     def check_atom(self):
+        """
+        Atoms for the check function.
+        """
         self.look_for([IDENTIFIER], self.curr_tok, "Expecting an Identifier", True)
         iden = self.rule_iden()
 
         if self.curr_tok.token == "DLM_LPRN":
-            lparen = self.curr_tok
             values = self.expr_paren(self.args_list)
-            rparen = self.curr_tok
             self.idx_incr()
-            return TreeSegment(lparen, values, rparen)
+            return values
 
         return iden
 
     def for_expr(self):
+        """
+        The expression for the for loop. This includes the initialization, condition, and update of the for loop.
+        """
         if self.curr_tok in DATA_TYPE:
             data_type = self.curr_tok
             self.idx_incr()
@@ -371,7 +407,7 @@ class Parser:
         self.idx_incr()
         self.look_for(OP_ASSIGNMENT.values(), self.curr_tok, "Expecting assignment operation", True)
         init = self.assign_stmnt(iden)
-        if self.curr_tok.token in VALUE_LIST or self.curr_tok.token in ["DLM_LPRN", "DLM_LSQUARE", "KW_NOT"]:
+        if self.curr_tok.token in VALUE_LIST or self.curr_tok.token in ["DLM_LPRN", "DLM_LSQUARE", "KW_BOOL_NOT"]:
             expr = self.expr_parse()
 
         else:
@@ -400,11 +436,17 @@ class Parser:
         return TreeSegment(init, condn, update)
 
     def error_atom(self):
+        """
+        Possible values that can be and error. This is an identifier since Errors are Classes in python which is where is this based.
+        """
         error = self.look_for([IDENTIFIER], self.curr_tok, "Expected an Identifier", True)
         self.idx_incr()
         return error
 
     def code_block(self, is_loop = False):
+        """
+        The code block for complex statements.
+        """
         self.idx_incr()
         if self.curr_tok.token == "WHT_NEWLINE":
             self.idx_incr()
@@ -420,6 +462,9 @@ class Parser:
         return TreeSegment(lcurly, sub_stmnt, rcurly)
 
     def check_order(self, order_array):
+        """
+        Checks the order for the main function and the import statements.
+        """
         stmnt_list = []
         stmnt_order = order_array
 
@@ -432,6 +477,9 @@ class Parser:
 
 #region Statements
     def stmnt(self, is_loop: bool=False):
+        """
+        Collection of all possible statements in the luseed programming language.
+        """
         if self.curr_tok.token == "WHT_NEWLINE":
             self.idx_incr()
             if self.curr_tok.token != "EOF" and self.curr_tok.token != "DLM_RCURLY":
@@ -539,6 +587,9 @@ class Parser:
         return res
 
     def iden_stmnt(self):
+        """
+        Contains all the possible statements that can be used when an identifier is found first.
+        """
         identifier = self.rule_iden()
         if self.curr_tok.token in OP_ASSIGNMENT.values():
             curr_stmnt = self.assign_stmnt(identifier)
@@ -555,10 +606,10 @@ class Parser:
         return curr_stmnt  
     
     def call_stmnt(self, identifier):
-        lparen = self.curr_tok
-        args_val = self.expr_paren(self.args_list)
-        rparen = self.curr_tok
-        args = TreeSegment(lparen, args_val, rparen)
+        """
+        This is for call statements such as function calls and method calls.
+        """
+        args = self.expr_paren(self.args_list)
         self.idx_incr()
         self.look_for(OP_ASSIGNMENT.values(), self.curr_tok, "Cannot assign value to an expression", False)
         delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, f"Missing ; here {self.curr_tok}", True)
@@ -566,6 +617,9 @@ class Parser:
         return TreeSegment(identifier, args, delim)
 
     def imprt_stmnt(self):
+        """
+        Parses the import statements.
+        """
         stmnt_stack = []
         stmnt_stack.append(self.curr_tok)
 
@@ -599,6 +653,9 @@ class Parser:
         return TreeSegment(None, stmnt_header, sub_stmnt)
 
     def dec_stmnt(self):
+        """
+        Parses the declaration statement of luseed.
+        """
         data_type = self.curr_tok
         self.idx_incr()
         self.look_for([IDENTIFIER], self.curr_tok, "Expecting an Identifier", True)
@@ -608,16 +665,19 @@ class Parser:
         return TreeSegment(data_type, res, delim)
 
     def input_expr(self, keyword):
+        """
+        Parses the input expressions. This is also used by assignment statements.
+        """
         kw_disp = keyword
         self.idx_incr()
-        lparen = self.look_for(["DLM_LPRN"], self.curr_tok, "Expecting ( here ", True)
-        args_list = self.expr_paren(self.args_list)
-        rparen = self.look_for(["DLM_RPRN"], self.curr_tok, "Exprecting ) here", True)
+        args = self.expr_paren(self.args_list)
         self.idx_incr()
-        args = TreeSegment(lparen, args_list, rparen)
         return TreeSegment(None, kw_disp, args)
 
     def io_stmnt(self):
+        """
+        Parses the ask and display functions of the language.
+        """
         kw_disp = self.curr_tok
         expr = self.input_expr(kw_disp)
         delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, "Expected ; here", True)
@@ -625,6 +685,9 @@ class Parser:
         return TreeSegment(None, expr, delim)
     
     def assign_expr(self, dest_value, is_assign: bool = True):
+        """
+        Parses the assignment expressions. This is used by for loops and assignment statements
+        """
         op = self.curr_tok
         self.idx_incr()
         self.look_for(["DLM_TRMNTR", "WHT_NEWLINE"], self.curr_tok, "Expecting a value after operator", False)
@@ -632,23 +695,28 @@ class Parser:
         return TreeSegment(dest_value, op, value)
 
     def assign_stmnt(self, dest_value):
+        """
+        Parses the assignment statements.
+        """
         expr = self.assign_expr(dest_value)
         delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, f"Missing ; symbol {self.curr_tok}", True)
         self.idx_incr()
         return TreeSegment (None, expr, delim)
 
     def func_stmnt(self):
-        sub_stmnt = None
-        stmnt_stack = []
-        stmnt_stack.append(self.curr_tok)
-        stmnt_stack.extend(self.check_order(FUNC_STMNT[0]))
-        param_list = self.expr_paren(self.param_list)
-        self.idx_dcr()
-        stmnt_stack.extend(self.check_order(FUNC_STMNT[1]))
+        """
+        Parses the function statements
+        """
+        kw_func = self.curr_tok
+        self.idx_incr()
+        iden = self.look_for([IDENTIFIER], self.curr_tok, "Expecting an Identifier", True)
+        self.idx_incr()
+        param = self.expr_paren(self.param_list)
+        self.idx_incr()
+        colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, "Expecting : symbol", True)
         sub_stmnt = self.code_block()
-        param = TreeSegment(stmnt_stack[2],  param_list, stmnt_stack[3])
-        header = f'{stmnt_stack[0]}, {stmnt_stack[1]}, {param}, {stmnt_stack[4]}'
-        return TreeSegment(None, header, sub_stmnt)
+        header = TreeSegment(iden, param, colon)
+        return TreeSegment(kw_func, header, sub_stmnt)
     
     def condn_block(self, with_condn: bool = True):
         """
@@ -657,9 +725,7 @@ class Parser:
         kw_start = self.curr_tok
         self.idx_incr()
         if with_condn:
-            lparen = self.curr_tok
-            condn = self.expr_paren(self.atom_paren)
-            rparen = self.curr_tok
+            condn_expr = self.expr_paren(self.atom_paren)
             self.idx_incr()
             kw_then = self.look_for(["KW_THEN"], self.curr_tok, "Expecting then keyword after condition", True)
             self.idx_incr()
@@ -668,7 +734,6 @@ class Parser:
         sub_stmnt = self.code_block()
         # For if/elif statements
         if with_condn:
-            condn_expr = TreeSegment(lparen, condn, rparen)
             inc_header = TreeSegment(kw_start, condn_expr, kw_then)
             condn_stmnt = TreeSegment(inc_header, colon, sub_stmnt)
 
@@ -679,6 +744,9 @@ class Parser:
         return condn_stmnt
 
     def if_stmnt(self):
+        """
+        Parses the conditional statements.
+        """
         if_stmnt = self.condn_block()
         elif_stmnt = None
         else_stmnt = None
@@ -697,6 +765,9 @@ class Parser:
         return TreeSegment(if_stmnt, elif_stmnt, else_stmnt)
 
     def elif_stmnt(self):
+        """
+        The elif block of the if else statement.
+        """
         elif_block = self.condn_block()
         while self.curr_tok.token == "WHT_NEWLINE":
             self.idx_incr()
@@ -709,31 +780,36 @@ class Parser:
         return elif_block
 
     def for_stmnt(self):
+        """
+        Parses the for loop statement.
+        """
         kw_for = self.curr_tok
         self.idx_incr()
-        lparen = self.curr_tok
-        args_list = self.expr_paren(self.for_expr)
-        rparen = self.curr_tok
+        args = self.expr_paren(self.for_expr)
         self.idx_incr()
         colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, "Expecting : after arguments", True)
         loop_body = self.code_block(True)
 
-        args = TreeSegment(lparen, args_list, rparen)
-        return f'{kw_for}, {args}, {colon}, {loop_body}'
+        header = TreeSegment(kw_for, args, colon)
+        return TreeSegment(None, header, loop_body)
 
     def while_stmnt(self):
+        """
+        Parses the while loop statement.
+        """
         kw_while = self.curr_tok
         self.idx_incr()
-        lparen = self.curr_tok
         condn = self.expr_paren(self.atom_paren)
-        rparen = self.curr_tok
         self.idx_incr()
         colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, "Expected : after arguments", True)
         loop_body = self.code_block(True)
-        args = TreeSegment(lparen, condn, rparen)
-        return f'{kw_while}, {args}, {colon}, {loop_body}'
+        header = TreeSegment(kw_while, condn, colon)
+        return TreeSegment(None, header, loop_body)
 
     def do_stmnt(self):
+        """
+        Parses the do-until loop statement.
+        """
         kw_do = self.curr_tok
         self.idx_incr()
         colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, "Expected : after arguments", True)
@@ -742,41 +818,39 @@ class Parser:
             self.idx_incr()
         kw_until = self.look_for(["KW_LOOP_UNTIL"], self.curr_tok, f"Expected 'Until' keyword {self.curr_tok}", True)
         self.idx_incr()
-        lparen = self.curr_tok
         condn = self.expr_paren(self.atom_paren)
-        rparen = self.curr_tok
         self.idx_incr()
         delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, "Expected ;", True)
         self.idx_incr()
-        args = TreeSegment(lparen, condn, rparen)
         header = TreeSegment(None, kw_do, colon)
-        footer = TreeSegment(kw_until, args, delim)
+        footer = TreeSegment(kw_until, condn, delim)
         return TreeSegment(header, loop_body, footer)
 
     def repeat_stmnt(self):
+        """
+        Parses the repeat statement.
+        """
         kw_repeat = self.curr_tok
         self.idx_incr()
-        lparen = self.curr_tok
-        rep_val = self.expr_paren(self.args_atom)
-        rparen = self.curr_tok
+        args = self.expr_paren(self.args_atom)
         self.idx_incr()
         colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, "Expected : here", True)
         loop_body = self.code_block(True)
-        args = TreeSegment(lparen, rep_val, rparen)
-        return f'{kw_repeat}, {args}, {colon}, {loop_body}'
+        header = TreeSegment(kw_repeat, args, colon)
+        return TreeSegment(None, header, loop_body)
 
     def class_stmnt(self):
+        """
+        Parses the class statement.
+        """
         kw_class = self.curr_tok
         parent = None
         self.idx_incr()
         iden = self.look_for([IDENTIFIER], self.curr_tok, "Expecting Identifier", True)
         self.idx_incr()
         if self.curr_tok.token == "DLM_LPRN":
-            lparen = self.curr_tok
-            iden = self.expr_paren(self.rule_iden)
-            rparen = self.curr_tok
+            parent = self.expr_paren(self.rule_iden)
             self.idx_incr()
-            parent = TreeSegment(lparen, iden, rparen)
         
         colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, f"Expecting : here {self.curr_tok}", True)
         class_body = self.code_block(False)
@@ -784,19 +858,22 @@ class Parser:
         return TreeSegment(kw_class, class_name, class_body)
 
     def init_stmnt(self):
+        """
+        Parses the initialize statement in a class.
+        """
         kw_init = self.curr_tok
         self.idx_incr()
-        lparen = self.curr_tok
         param_list = self.expr_paren(self.param_list)
-        rparen = self.curr_tok
         self.idx_incr()
         colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, "Expecting : after parameter list", True)
         sub_stmnt = self.code_block()
-        param = TreeSegment(lparen, param_list, rparen)
-        header = TreeSegment(kw_init, param, colon)
+        header = TreeSegment(kw_init, param_list, colon)
         return TreeSegment(None, header, sub_stmnt)
 
     def ctrl_stmnt(self):
+        """
+        Parses the control statement for loops.
+        """
         kw = self.curr_tok
         self.idx_incr()
         delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, "Expected ; here", True)
@@ -804,6 +881,9 @@ class Parser:
         return  TreeSegment(None, kw, delim)
     
     def unary_expr(self, iden_value, un_type: int):
+        """
+        Parses the unary expressions.
+        """
         if un_type == 0:
             unary_op = self.curr_tok
             self.idx_incr()
@@ -818,49 +898,57 @@ class Parser:
             return TreeSegment(None, iden, unary_op)
 
     def unary_stmnt(self, iden_value = None, un_type: int = None):
+        """
+        Parses the unary statements.
+        """
         expr = self.unary_expr(iden_value, un_type)
         delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, "EXPECTED ; HERE", True)
         self.idx_incr()
         return TreeSegment(None, expr, delim)
     
     def raise_stmnt(self):
+        """
+        Parses the raise statement.
+        """
         kw_raise = self.curr_tok
         self.idx_incr()
         error = self.look_for([IDENTIFIER], self.curr_tok,  "Expected Error Identifier Here", True)
         self.idx_incr()
-        lparen = self.curr_tok
-        value = self.expr_paren(self.expr_or)
-        rparen = self.curr_tok
+        args = self.expr_paren(self.expr_or)
         self.idx_incr()
         delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, "Expecting ; here", True)
-        self.idx_incr()
-        args = TreeSegment(lparen, value, rparen)
         stmt = TreeSegment(kw_raise, error, args)
         return TreeSegment(None, stmt, delim)
 
     def try_block(self):
+        """
+        Parses both the try block and the finally block of a try...catch statement.
+        """
         kw_try = self.curr_tok
         self.idx_incr()
         colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, "Expected : Here", True)
         sub_stmnt = self.code_block()
         return TreeSegment(kw_try, colon, sub_stmnt)
 
-    def catch_block(self):    
+    def catch_block(self): 
+        """
+        Parses the catch block of a try...catch statement.
+        """   
         kw_catch = self.look_for(["KW_CATCH"], self.curr_tok, "Expected catch block Here", True)
         self.idx_incr()
-        lparen = self.curr_tok
-        value = self.expr_paren(self.error_atom)
-        rparen = self.curr_tok
+        error_val = self.expr_paren(self.error_atom)
         self.idx_incr()
         colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, "Expected : Here", True)
         sub_stmnt = self.code_block()
 
-        error_val = TreeSegment(lparen, value, rparen)
         catch_block = TreeSegment(kw_catch, error_val, colon)
         catch_block = TreeSegment(None, catch_block, sub_stmnt)
         return catch_block
 
     def try_stmnt(self):
+        """
+        Parses the try...catch statement.
+        """
         try_block = self.try_block()
         catch_block = None
         finally_block = None
@@ -877,53 +965,56 @@ class Parser:
         return TreeSegment(try_block, catch_block, finally_block)
 
     def cast_expr(self):
+        """
+        Used by cast stmnts. 
+        """
         res = self.curr_tok
         self.idx_incr()
         return res
 
     def cast_stmnt(self):
-        lparen = self.curr_tok
-        data_type = self.expr_paren(self.cast_expr)
-        rparen = self.curr_tok
+        """
+        Parses the cast statements
+        """
+        cast_type = self.expr_paren(self.cast_expr)
         self.idx_incr()
         self.look_for([IDENTIFIER], self.curr_tok, "Expecting Identifier", True)
         iden = self.rule_iden()
-        cast_type = TreeSegment(lparen, data_type, rparen)
         return TreeSegment(None, cast_type, iden)
     
     def info_stmnt(self):
+        """
+        Parses the info statement.
+        """
         kw_info = self.curr_tok
         self.idx_incr()
-        lparen = self.curr_tok
-        value = self.expr_paren(self.info_atom)
-        rparen = self.curr_tok
+        args = self.expr_paren(self.info_atom)
         self.idx_incr()
         delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, "Expecting ; here", True)
         self.idx_incr()
-        args = TreeSegment(lparen, value, rparen)
         return TreeSegment(kw_info, args, delim)
 
     def swap_stmnt(self):
+        """
+        Parses the swap statement.
+        """
         kw_swap = self.curr_tok
         self.idx_incr()
-        lparen = self.curr_tok
         iden_list = self.expr_paren(self.swap_atom)
-        rparen = self.curr_tok
         self.idx_incr()
         delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, "Expected ; here", True)
         self.idx_incr()
-        value = TreeSegment(lparen, iden_list, rparen)
-        return TreeSegment(kw_swap, value, delim)
+        return TreeSegment(kw_swap, iden_list, delim)
 
     def check_stmnt(self):
+        """
+        Parses the check statement.
+        """
         kw_check = self.curr_tok
         self.idx_incr()
-        lparen = self.curr_tok
         args_val = self.expr_paren(self.check_atom)
-        rparen = self.curr_tok
         self.idx_incr()
         delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, "Expected ; here", True)
         self.idx_incr()
-        value = TreeSegment(lparen, args_val, rparen)
-        return TreeSegment(kw_check, value, delim)
+        return TreeSegment(kw_check, args_val, delim)
 #endregion

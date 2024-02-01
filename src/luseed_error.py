@@ -37,13 +37,13 @@ class Error:
     
         def displayerror(self, type: int = None):
             if type == 1:
-                print(f"\033[91m[TokenError]: Invalid lexeme found in line {self.line_count}.\n\t{self.prompt}\033[0m")
+                print(f"\033[1;33;40m[Warning]: Invalid lexeme found in line {self.line_count}.\n\t{self.prompt}\033[0m")
             
             elif type == 2:
-                print(f"\033[91m[TokenError]: Unterminated char/str/comment found in character {self.lexeme_start}, line {self.line_count}.\n\t{self.prompt}\033[0m") 
+                print(f"\033[1;33;40m[Warning]: Unterminated char/str/comment found in character {self.lexeme_start}, line {self.line_count}.\n\t{self.prompt}\033[0m") 
 
             elif type == 3:
-                print(f"\033[91m[TokenError]: Error within string literal in character {self.lexeme_start}, line {self.line_count}.\n\t{self.prompt}\033[0m")
+                print(f"\033[1;33;40m[Warning]: Error within string literal in character {self.lexeme_start}, line {self.line_count}.\n\t{self.prompt}\033[0m")
 
     class OutputError:
         INVALID_OUTPUT = "Invalid output method for the following symbol table."
