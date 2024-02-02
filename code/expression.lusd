@@ -1,5 +1,6 @@
 main():
 {
+    const int var1 = 5;
     public int var1 = 5;
     string hello = 5;
 
@@ -62,4 +63,65 @@ main():
     {
         display(i);
     }
+
+    func FUNC1():
+    {
+        a = 'c';
+    }
+
+    private func FUNC2(int a, str b, list c):
+    {
+        protected int d = 3;
+    }
+
+    try:
+    {
+        x = (int) y;
+    }
+    catch (Exception):
+    {
+
+    }
+    finally:
+    {
+        x = 5;
+    }
+
+    info(display);
+    info(Testing);
+    swap(a, b, c);
+    swap(d, e);
+    check(value.Value);
+    check(TestClass.sayName(name));
+    int a = FuncDec(1);
+    FuncDec(1);
 }
+
+class TestClass:
+{
+    class1var = "This is a test string";
+    class1var2 = 10.5f;
+}
+
+public class SayHi:
+{
+    init(this, str name, str message):
+    {
+        this.name = name;
+        this.message = message;
+    }
+
+
+    public func sayName(this):
+    {
+        display(this.name);
+    }
+
+    public func sayMes(this, str name):
+    {
+        display(this.message + name);
+    }
+}
+
+obj NewObj = SayHi("Gheru", "Hello ");
+

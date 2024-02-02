@@ -54,6 +54,7 @@ Note: This is not 1 to 1 with the code since each lexeme in this document will b
 <DATA_BOOL> ::= bool | boolean
 <DATA_OBJ> ::= obj | object     
 <DATA_CONST> ::= const | constant
+<DATA_LIST>  ::= list
 
 # VALUES
 <LIT_DATA> ::= <LIT_INT> | <LIT_FLT> | <LIT_DBL> | <LIT_CHAR> | <LIT_STR> 

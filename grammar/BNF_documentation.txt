@@ -47,7 +47,7 @@ Note: This is not 1 to 1 with the code since each lexeme in this document will b
 
 # DATA TYPES
 <DATA_TYPE> ::= float | double | <DATA_INT> | <DATA_CHAR> 
-                    | <DATA_BOOL> | <DATA_OBJ> | <DATA_CONST>
+              | <DATA_BOOL> | <DATA_OBJ> | <DATA_CONST> | list
 <DATA_INT> ::= int | integer
 <DATA_CHAR> ::= char | character
 <DATA_STR> ::= str | string

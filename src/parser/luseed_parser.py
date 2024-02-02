@@ -171,7 +171,7 @@ class Parser:
             return None
         
         elif curr_tok.token == "KW_ASK":
-            return self.input_expr(curr_tok)
+            return self.io_expr(curr_tok)
 
         elif curr_tok.token in ["DLM_RPRN", "DLM_TRMNTR"]:
             self.parse_error(Error.SyntaxError.EXPECTING_OPERAND, curr_tok)
@@ -224,7 +224,7 @@ class Parser:
 
         return left_node
 
-    def rule_iden(self):
+    def rule_iden(self, is_idenstmnt: bool = False):
         """
         Rules for Identifiers.
         """
@@ -248,6 +248,9 @@ class Parser:
         elif self.curr_tok.token == "DLM_LSQUARE":
             res = self.list_idx()
             return TreeSegment(None, iden_tok, res)
+
+        elif self.curr_tok.token == "DLM_LPRN" and not is_idenstmnt:
+            iden_tok = self.call_expr(iden_tok)
 
         return iden_tok
 
@@ -278,7 +281,7 @@ class Parser:
         List of arguments that is passed in a method call/function call/class instantiation.
         """
         arg_list = self.curr_tok
-        if arg_list.token in VALUE_LIST or arg_list.token in ["DLM_LPRN", "DLM_LSQUARE", "KW_BOOL_NOT"]:
+        if arg_list.token in VALUE_LIST or arg_list.token in ["DLM_LPRN", "DLM_LSQUARE", "KW_BOOL_NOT", "KW_THIS"]:
             return self.expr_operation(self.args_atom, ['DLM_SPRTR'], 'L')
 
         elif arg_list.token in ["DLM_RPRN", "DLM_RSQUARE"]:
@@ -340,6 +343,9 @@ class Parser:
             self.idx_incr()
             return kw_this
         
+        elif self.curr_tok.token == "DLM_RPRN":
+            return None
+
         else:
             self.parse_error(Error.SyntaxError.INVALID_VALUE, self.curr_tok)
 
@@ -389,11 +395,6 @@ class Parser:
         """
         self.look_for([IDENTIFIER], self.curr_tok, Error.SyntaxError.EXPECTING_IDEN + self.curr_tok.line, True)
         iden = self.rule_iden()
-
-        if self.curr_tok.token == "DLM_LPRN":
-            values = self.expr_paren(self.args_list)
-            self.idx_incr()
-            return values
 
         return iden
 
@@ -525,7 +526,16 @@ class Parser:
             curr_stmnt = self.prog_stmnt()
 
         elif self.curr_tok.token in DATA_TYPE:
+            if self.curr_tok.token == "KW_DATA_CONST":
+                const = self.curr_tok
+                self.idx_incr()
+                self.look_for(DATA_TYPE, self.curr_tok, Error.SyntaxError.EXPECTING_DATA_TYPE, True)
+            
+            else:
+                const = None
+
             curr_stmnt = self.dec_stmnt()
+            curr_stmnt = TreeSegment(None, const, curr_stmnt)
 
         elif self.curr_tok.token in ["KW_DISPLAY", "KW_ASK"]:
             curr_stmnt = self.io_stmnt()
@@ -608,7 +618,16 @@ class Parser:
             modifier = self.curr_tok
             self.idx_incr()
             if self.curr_tok.token in DATA_TYPE:
+                if self.curr_tok.token == "KW_DATA_CONST":
+                    const = self.curr_tok
+                    self.idx_incr()
+                    self.look_for(DATA_TYPE, self.curr_tok, Error.SyntaxError.EXPECTING_DATA_TYPE, True)
+            
+                else:
+                    const = None
+
                 curr_stmnt = self.dec_stmnt()
+                curr_stmnt = TreeSegment(None, const, curr_stmnt)
                 curr_stmnt = TreeSegment(None, modifier, curr_stmnt)
             
             elif self.curr_tok.token == "KW_FUNC":
@@ -655,7 +674,7 @@ class Parser:
         """
         Contains all the possible statements that can be used when an identifier is found first.
         """
-        identifier = self.rule_iden()
+        identifier = self.rule_iden(True)
         if self.curr_tok.token in OP_ASSIGNMENT.values():
             curr_stmnt = self.assign_stmnt(identifier)
 
@@ -673,16 +692,23 @@ class Parser:
 
         return curr_stmnt  
     
-    def call_stmnt(self, identifier):
+    def call_expr(self, identifier):
         """
         This is for call statements such as function calls and method calls.
         """
         args = self.expr_paren(self.args_list)
         self.idx_incr()
+        return TreeSegment(None, identifier, args)
+
+    def call_stmnt(self, identifer):
+        """
+        This is for call statments.
+        """
+        stmnt = self.call_expr(identifer)
         self.look_for(OP_ASSIGNMENT.values(), self.curr_tok, Error.SyntaxError.INVALID_ASSIGN, False)
         delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, Error.SyntaxError.EXPECTING_SEMICOLON + self.curr_tok.line, True)
         self.idx_incr()
-        return TreeSegment(identifier, args, delim)
+        return TreeSegment(None, stmnt, delim)
 
     def imprt_stmnt(self):
         """
@@ -732,7 +758,7 @@ class Parser:
         self.idx_incr()
         return TreeSegment(data_type, res, delim)
 
-    def input_expr(self, keyword):
+    def io_expr(self, keyword):
         """
         Parses the input expressions. This is also used by assignment statements.
         """
@@ -747,7 +773,7 @@ class Parser:
         Parses the ask and display functions of the language.
         """
         kw_disp = self.curr_tok
-        expr = self.input_expr(kw_disp)
+        expr = self.io_expr(kw_disp)
         delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, Error.SyntaxError.EXPECTING_SEMICOLON + self.curr_tok.line, True)
         self.idx_incr()
         return TreeSegment(None, expr, delim)
@@ -1076,8 +1102,8 @@ class Parser:
         catch_block = self.catch_block()        
         while self.curr_tok.token == "WHT_NEWLINE":
             self.idx_incr()
-
-        if self.curr_tok == "KW_FINALLY":
+        
+        if self.curr_tok.token == "KW_FINALLY":
             finally_block = self.try_block()
         
         return TreeSegment(try_block, catch_block, finally_block)
@@ -1120,7 +1146,7 @@ class Parser:
         self.idx_incr()
         args = self.expr_paren(self.info_atom)
         self.idx_incr()
-        delim = self.look_for(["DLM_TRMNTR"], Error.SyntaxError.EXPECTING_SEMICOLON + self.curr_tok.line, True)
+        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, Error.SyntaxError.EXPECTING_SEMICOLON + self.curr_tok.line, True)
         self.idx_incr()
         return TreeSegment(kw_info, args, delim)
 
@@ -1132,7 +1158,7 @@ class Parser:
         self.idx_incr()
         iden_list = self.expr_paren(self.swap_atom)
         self.idx_incr()
-        delim = self.look_for(["DLM_TRMNTR"], Error.SyntaxError.EXPECTING_SEMICOLON + self.curr_tok.line, True)
+        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, Error.SyntaxError.EXPECTING_SEMICOLON + self.curr_tok.line, True)
         self.idx_incr()
         return TreeSegment(kw_swap, iden_list, delim)
 
