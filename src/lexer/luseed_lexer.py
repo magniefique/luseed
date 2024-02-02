@@ -256,7 +256,7 @@ class Lexer(object):
             self.char_count = 0
             self.code_str = ""
 
-        elif char == " " and not self.isString and not self.singleComment and not self.multiComment:
+        elif char == " " and not self.isString and not self.isChar and not self.singleComment and not self.multiComment:
             # Tokenizes lexemes if they are not empty
             self.reset_buffers("lexeme")
             

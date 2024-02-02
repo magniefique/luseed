@@ -12,6 +12,8 @@ LIT_STR = "LIT_STR"
 LIT_INT = "LIT_INT"
 LIT_FLT = "LIT_FLT"
 LIT_DBL = "LIT_DBL"
+LIT_BOOL_TRUE = "KW_TRUE"
+LIT_BOOL_FALSE = "KW_FALSE"
 
 # COMMENTS
 CMNT_SINGLE = "CMNT_SINGLE"
@@ -70,7 +72,9 @@ KEYWORDS = {
 
     # Boolean values
     "true"          : "KW_TRUE",
+    "True"          : "KW_TRUE",
     "false"         : "KW_FALSE",
+    "False"         : "KW_FALSE",
 
     # Boolean Operators
     "and"           : "KW_BOOL_AND",

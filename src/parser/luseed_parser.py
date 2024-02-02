@@ -82,7 +82,7 @@ class Parser:
         final_time = time.time()
         elapsed_time = final_time - init_time
 
-        print(f"\nSuccessful Parse!\nElapsed Parsing Time\t\t: {elapsed_time}")
+        print(f"\nSuccessful Parse!\nElapsed Parsing Time\t: {elapsed_time}")
 
     def parse_error(self, error: str, token: Token):
         """
@@ -316,7 +316,7 @@ class Parser:
             return TreeSegment(identifier, op, value)
 
         else:
-            self.parse_error(Error.SyntaxError.EXPECTING_DEC, self.curr_tok)
+            self.parse_error(Error.SyntaxError.EXPECTING_DEC + self.curr_tok.line, self.curr_tok)
     
     def param_list(self):
         """
@@ -401,10 +401,12 @@ class Parser:
         """
         The expression for the for loop. This includes the initialization, condition, and update of the for loop.
         """
-        if self.curr_tok in DATA_TYPE:
+        if self.curr_tok.token in DATA_TYPE:
             data_type = self.curr_tok
             self.idx_incr()
-        
+        else:
+            data_type = None
+
         iden = self.look_for([IDENTIFIER], self.curr_tok, Error.SyntaxError.EXPECTING_IDEN + self.curr_tok.line, True)
         self.idx_incr()
         self.look_for(OP_ASSIGNMENT.values(), self.curr_tok, Error.SyntaxError.EXPECTING_ASSIGN + self.curr_tok.line, True)
@@ -435,7 +437,23 @@ class Parser:
             self.parse_error(Error.SyntaxError.EXPECTING_IDEN + self.curr_tok.line, self.curr_tok)
 
         condn = TreeSegment(None, expr, delim)
+        init = TreeSegment(None, data_type, init)
         return TreeSegment(init, condn, update)
+
+    def foreach_expr(self):
+        """
+        Contains the arguments for a foreach loop.
+        """
+        data_type = self.look_for(DATA_TYPE, self.curr_tok, Error.SyntaxError.EXPECTING_DATA_TYPE + self.curr_tok.line, True)
+        self.idx_incr()
+        iden = self.look_for([IDENTIFIER], self.curr_tok, Error.SyntaxError.EXPECTING_IDEN + self.curr_tok.line, True)
+        self.idx_incr()
+        kw_in = self.look_for(["KW_LOOP_IN"], self.curr_tok, Error.SyntaxError.IN_ERROR, True)
+        self.idx_incr()
+        list_var = self.look_for([IDENTIFIER], self.curr_tok, Error.SyntaxError.EXPECTING_IDEN + self.curr_tok.line, True)
+        self.idx_incr()
+        dec = TreeSegment(None, data_type, iden)
+        return TreeSegment (dec, kw_in, list_var)
 
     def error_atom(self):
         """
@@ -515,8 +533,11 @@ class Parser:
         elif self.curr_tok.token == "KW_IF":
             curr_stmnt = self.if_stmnt()
 
-        elif self.curr_tok.token in ["KW_PASS", "KW_RETURN"]:
-            curr_stmnt =  self.ctrl_stmnt()
+        elif self.curr_tok.token == "KW_PASS":
+            curr_stmnt =  self.pass_stmnt()
+        
+        elif self.curr_tok.token == "KW_RETURN":
+            curr_stmnt = self.return_stmnt()
 
         elif self.curr_tok.token in ["KW_BREAK",  "KW_CONTINUE"] and is_loop:
             curr_stmnt = self.ctrl_stmnt()
@@ -529,6 +550,9 @@ class Parser:
 
         elif self.curr_tok.token == "KW_LOOP_FOR":
             curr_stmnt = self.for_stmnt()
+
+        elif self.curr_tok.token == "KW_LOOP_FOREACH":
+            curr_stmnt = self.foreach_stmnt()
 
         elif self.curr_tok.token == "KW_LOOP_WHILE":
             curr_stmnt = self.while_stmnt()
@@ -572,6 +596,9 @@ class Parser:
             elif self.curr_tok.token == "KW_LOOP_REPEAT":
                 curr_stmnt = self.repeat_stmnt()
 
+            else:
+                self.parse_error(Error.SyntaxError.EXPECTING_LOOP, self.curr_tok)
+
             curr_stmnt = TreeSegment(None, loop_header, curr_stmnt)
 
         elif self.curr_tok.token == "KW_CHECK":
@@ -592,6 +619,9 @@ class Parser:
                 curr_stmnt = self.class_stmnt()
                 curr_stmnt = TreeSegment(None, modifier, curr_stmnt)
             
+            else:
+                self.parse_error(Error.SyntaxError.EXPECTING_ACCESS_MOD + self.curr_tok.line, self.curr_tok)
+
             curr_stmnt = TreeSegment(None, modifier, curr_stmnt)
 
         elif self.curr_tok.token == "KW_ELIF":
@@ -638,6 +668,9 @@ class Parser:
         elif self.curr_tok.token == "DLM_TRMNTR":
             self.parse_error(Error.SyntaxError.EXPRESSION_STMNT, self.curr_tok)
         
+        else:
+            self.parse_error(Error.SyntaxError.EXPECTING_IDEN_STMNT + self.curr_tok.line, self.curr_tok)
+
         return curr_stmnt  
     
     def call_stmnt(self, identifier):
@@ -828,6 +861,20 @@ class Parser:
         header = TreeSegment(kw_for, args, colon)
         return TreeSegment(None, header, loop_body)
 
+    def foreach_stmnt(self):
+        """
+        Parses the foreach loop statement.
+        """
+        kw_foreach = self.curr_tok
+        self.idx_incr()
+        args = self.expr_paren(self.foreach_expr)
+        self.idx_incr()
+        colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, Error.SyntaxError.EXPECTING_COLON + self.curr_tok.line, True)
+        loop_body = self.code_block(True)
+
+        header = TreeSegment(kw_foreach, args, colon)
+        return TreeSegment(None, header, loop_body)
+
     def while_stmnt(self):
         """
         Parses the while loop statement.
@@ -905,16 +952,52 @@ class Parser:
         header = TreeSegment(kw_init, param_list, colon)
         return TreeSegment(None, header, sub_stmnt)
 
-    def ctrl_stmnt(self):
+    def pass_stmnt(self):
         """
-        Parses the control statement for loops.
+        Parses the pass statement.
         """
-        kw = self.curr_tok
+        kw_pass = self.curr_tok
         self.idx_incr()
         delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, Error.SyntaxError.EXPECTING_SEMICOLON + self.curr_tok.line, True)
         self.idx_incr()
-        return  TreeSegment(None, kw, delim)
+        return  TreeSegment(None, kw_pass, delim)
     
+    def return_stmnt(self):
+        kw_return = self.curr_tok
+        self.idx_incr()
+        if self.curr_tok.token == "DLM_TRMNTR":
+            ret_val = None
+
+        elif self.curr_tok.token in VALUE_LIST or self.curr_tok.token in ["DLM_LPRN", "DLM_LSQUARE", "KW_BOOL_NOT"]:
+            ret_val = self.expr_parse()
+
+        else:
+            self.parse_error(Error.SyntaxError.EXPECTING_SEMICOLON + self.curr_tok.line, self.curr_tok)
+
+        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, Error.SyntaxError.EXPECTING_SEMICOLON + self.curr_tok.line, True)
+        self.idx_incr()
+        return TreeSegment(kw_return, ret_val, delim)
+
+    def ctrl_stmnt(self):
+        """
+        Parses the pass statement.
+        """
+        kw = self.curr_tok
+        self.idx_incr()
+        if self.curr_tok.token == "DLM_TRMNTR":
+            loop_name = None
+
+        elif self.curr_tok.token == IDENTIFIER:
+            loop_name = self.curr_tok
+            self.idx_incr()
+
+        else:
+            self.parse_error(Error.SyntaxError.EXPECTING_SEMICOLON + self.curr_tok.line, self.curr_tok)
+
+        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, Error.SyntaxError.EXPECTING_SEMICOLON + self.curr_tok.line, True)
+        self.idx_incr()
+        return TreeSegment(kw, loop_name, delim)
+
     def unary_expr(self, iden_value, un_type: int):
         """
         Parses the unary expressions.
