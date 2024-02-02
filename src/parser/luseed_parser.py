@@ -1,6 +1,7 @@
 from lexer.luseed_token import *
 from luseed_error import *
 from parser.grammar import *
+import time
 
 class TreeSegment:
     """
@@ -46,11 +47,8 @@ class Parser:
             self.look_for(["UNKNOWN_TOKEN"], self.curr_tok, Error.SyntaxError.UNKNOWN_TOKEN + self.curr_tok.line, False)
             
         else:
-            if self.curr_tok.token not in ["WHT_NEWLINE", "DLM_RCURLY"]:
-                self.look_for(["DLM_TRMNTR"], self.curr_tok, Error.SyntaxError.UNKNOWN_TOKEN + self.curr_tok.line, True) # Check if final char is semicolon
-
             self.is_done = True
-            self.curr_tok = Token(None, " ",  "EOF")
+            self.curr_tok = Token(self.curr_tok.line, " ",  "EOF")
             return
 
         return self.curr_tok
@@ -73,18 +71,24 @@ class Parser:
         
         self.parse_error(error, tok)
 
-    def parse_error(self, error: str, token: Token):
-        Error.SyntaxError(error, token, self.line_list).displayerror()
-
     def parse(self):
         """
         Starts the parsing process.
         """
+        init_time = time.time()
         while not self.is_done:
             parse_res = self.stmnt()
             print(parse_res)
+        final_time = time.time()
+        elapsed_time = final_time - init_time
 
-        print("\nSuccessful Parse!")
+        print(f"\nSuccessful Parse!\nElapsed Parsing Time\t\t: {elapsed_time}")
+
+    def parse_error(self, error: str, token: Token):
+        """
+        Handles the parser errors.
+        """
+        Error.SyntaxError(error, token, self.line_list).displayerror()
 
     def expr_parse(self):
         """
@@ -193,7 +197,7 @@ class Parser:
         
         return res if is_op else TreeSegment(lparen, res, rparen)
 
-    def expr_operation(self, func, acc_op: list, assoc: str):
+    def expr_operation(self, func, acc_op: list, assoc: str): 
         """
         Recursion Function for Operator Precedence
         """
@@ -478,6 +482,7 @@ class Parser:
         """
         Collection of all possible statements in the luseed programming language.
         """
+
         if self.curr_tok.token == "WHT_NEWLINE":
             self.idx_incr()
             if self.curr_tok.token != "EOF" and self.curr_tok.token != "DLM_RCURLY":
@@ -518,7 +523,7 @@ class Parser:
 
         elif self.curr_tok.token in OP_UNARY.values():
             curr_stmnt = self.unary_stmnt(None, 0)
-        
+
         elif self.curr_tok.token == "KW_FUNC":
             curr_stmnt = self.func_stmnt()
 
@@ -551,6 +556,23 @@ class Parser:
 
         elif self.curr_tok.token == "KW_SWAP":
             curr_stmnt = self.swap_stmnt()
+        
+        elif self.curr_tok.token == "KW_LOOP":
+            loop_header = self.loop_name()
+            
+            if self.curr_tok.token == "KW_LOOP_FOR":
+                curr_stmnt = self.for_stmnt()
+
+            elif self.curr_tok.token == "KW_LOOP_WHILE":
+                curr_stmnt = self.while_stmnt()
+
+            elif self.curr_tok.token == "KW_LOOP_DO":
+                curr_stmnt = self.do_stmnt()
+
+            elif self.curr_tok.token == "KW_LOOP_REPEAT":
+                curr_stmnt = self.repeat_stmnt()
+
+            curr_stmnt = TreeSegment(None, loop_header, curr_stmnt)
 
         elif self.curr_tok.token == "KW_CHECK":
             curr_stmnt = self.check_stmnt()
@@ -570,7 +592,7 @@ class Parser:
                 curr_stmnt = self.class_stmnt()
                 curr_stmnt = TreeSegment(None, modifier, curr_stmnt)
             
-            curr_stmnt = (None, modifier, curr_stmnt)
+            curr_stmnt = TreeSegment(None, modifier, curr_stmnt)
 
         elif self.curr_tok.token == "KW_ELIF":
             self.parse_error(Error.SyntaxError.ELIF_ERROR, self.curr_tok)
@@ -595,7 +617,7 @@ class Parser:
         
         else:
             next_stmnt = None
-
+        
         res = TreeSegment(None, curr_stmnt, next_stmnt)
         return res
 
@@ -995,6 +1017,18 @@ class Parser:
         iden = self.rule_iden()
         return TreeSegment(None, cast_type, iden)
     
+    def loop_name(self):
+        """
+        Handles the loop naming.
+        """
+        kw_loop = self.curr_tok
+        self.idx_incr()
+        iden = self.look_for(["IDENTIFIER"], self.curr_tok, Error.SyntaxError.EXPECTING_IDEN + self.curr_tok.line, True)
+        self.idx_incr()
+        colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, Error.SyntaxError.EXPECTING_COLON + self.curr_tok.line, True)
+        self.idx_incr()
+        return TreeSegment(kw_loop, iden, colon)
+
     def info_stmnt(self):
         """
         Parses the info statement.

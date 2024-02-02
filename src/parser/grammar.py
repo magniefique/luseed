@@ -1,4 +1,5 @@
 from lexer.luseed_tokens import *
+from luseed_error import *
 
 # PRECEDENCE OF OPERATIONS (HIGHER TO LOWER)
 EXPR_EXPO   = ["OP_EXPO"]
@@ -24,18 +25,18 @@ ACCESS_MOD = ["KW_PUB", "KW_PRIV", "KW_PROT"]
 # STATEMENT MAP (FOR LENGTHY REPETITIVE STATEMENTS)
 IMPORT_STMNT = [
                 # import <IDENTIFIER>;
-                [[[IDENTIFIER], 'Invalid Import statement', True], 
-                 [["DLM_TRMNTR"], 'Missing ;', True]],
+                [[[IDENTIFIER], Error.SyntaxError.INVALID_IMPORT, True], 
+                 [["DLM_TRMNTR"], Error.SyntaxError.EXPECTING_SEMICOLON, True]],
 
                 # from <IDENTIFIER> import (<all> | <IDENTIFIER>);
-                [[[IDENTIFIER], 'Expecting an identifier b', True],
-                 [["KW_IMPORT"], 'Expecting keyword import', True],
-                 [["KW_ALL", IDENTIFIER], 'Expecting keyword all or an Identifier', True],
-                 [["DLM_TRMNTR"], 'Missing ;', True]]
+                [[[IDENTIFIER], Error.SyntaxError.EXPECTING_IDEN, True],
+                 [["KW_IMPORT"], Error.SyntaxError.IMPORT_ERROR, True],
+                 [["KW_ALL", IDENTIFIER], Error.SyntaxError.IMPORT_IDEN_ERROR, True],
+                 [["DLM_TRMNTR"], Error.SyntaxError.EXPECTING_SEMICOLON, True]]
                ]
 
 MAIN_STMNT = [
-                [["DLM_LPRN"], 'Expecting ( here', True],
-                [["DLM_RPRN"], 'Expecting ) here', True],
-                [["DLM_CODEBLK"], 'Expecting : here', True]
+                [["DLM_LPRN"], Error.SyntaxError.EXPECTING_LPAREN, True],
+                [["DLM_RPRN"], Error.SyntaxError.EXPECTING_RPAREN, True],
+                [["DLM_CODEBLK"], Error.SyntaxError.EXPECTING_COLON, True]
              ]

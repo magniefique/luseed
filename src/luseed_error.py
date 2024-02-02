@@ -57,12 +57,15 @@ class Error:
     
     class SyntaxError:
         UNKNOWN_TOKEN = "Unknown token found at line "
+        INVALID_IMPORT = "Invalid import statement at line "
         INVALID_STMNT = "Cannot start a statement with "
         EXPRESSION_STMNT = "Cannot use a value/expression/identifer as a statement"
         ELIF_ERROR = "Cannot  use \'elif\' without previous \'if\' statement"
         ELSE_ERROR = "Cannot  use \'else\' without previous \'if\' statement"
         CATCH_ERROR = "Cannot  use \'catch\' without previous \'try\' statement"
         FINALLY_ERROR = "Cannot  use \'finally\' without previous \'try\' statement"
+        IMPORT_ERROR = "Expecting an \'import\' keyword after identifier at line "
+        IMPORT_IDEN_ERROR = "Expecting an identifier or \'all\' keyword at line "
         INVALID_ASSIGN = "Expression cannot be an assignment statement"
         INVALID_PAREN = "Used a closing parenthesis \')\' without opening one"
         EXPECTING_LPAREN = "Expecting left parenthesis \'(\' at line "
@@ -96,6 +99,18 @@ class Error:
 
         def displayerror(self):
             print(f"\033[91m[SyntaxError]: Syntax analyzer found an error within the source code:\n\t{self.prompt}.")
-            print(f"\t{self.line_list[self.line_info - 1]}\033[0m")
+            print(f"\033[0m\t{self.line_list[self.line_info - 1]}\033[0m")
             
+            if self.token.token not in ["WHT_NEWLINE", "EOF"]:
+                i = self.line_list[self.line_info - 1].rfind(self.token.lexeme)
+                spaces = i * " "
+                j = len(self.token.lexeme)
+                indicator = j * "^"
+                print(f"\033[93m\t{spaces}{indicator}")
+            
+            else:
+                i = len(self.line_list[self.line_info - 1])
+                spaces =  i * " "
+                print(f"\033[93m\t{spaces}^")
+            print(f"\033[91m\tParsing process halted.\033[0m")
             exit(1)

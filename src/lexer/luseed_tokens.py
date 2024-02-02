@@ -107,7 +107,10 @@ KEYWORDS = {
     "check"         : "KW_CHECK",
 
     # Swap Functionality - New Feature
-    "swap"          : "KW_SWAP"
+    "swap"          : "KW_SWAP",
+
+    # Loop Name Functionality - New Feature
+    "loop"          : "KW_LOOP"
 }
 
 # NOISEWORDS
