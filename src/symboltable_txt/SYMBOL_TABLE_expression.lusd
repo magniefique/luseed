@@ -1,7 +1,7 @@
 
 SYMBOL TABLE for expression.lusd
-Total Tokenized Lexemes		: 25
-Elapsed Time				: 0.0009970664978027344
+Total Tokenized Lexemes		: 24
+Elapsed Time				: 0.0
 |------------------------END OF SYMBOL TABLE------------------------|
 LEXEME            LINE                TOKEN
 main              1                   KW_MAIN
@@ -15,7 +15,6 @@ class             3                   KW_CLASS
 Helping           3                   IDENTIFIER
 (                 3                   DLM_LPRN
 Helping2          3                   IDENTIFIER
-)                 3                   DLM_RPRN
 :                 3                   DLM_CODEBLK
 \n                3                   WHT_NEWLINE
 {                 4                   DLM_LCURLY

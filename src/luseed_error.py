@@ -61,23 +61,41 @@ class Error:
         EXPRESSION_STMNT = "Cannot use a value/expression/identifer as a statement"
         ELIF_ERROR = "Cannot  use \'elif\' without previous \'if\' statement"
         ELSE_ERROR = "Cannot  use \'else\' without previous \'if\' statement"
+        CATCH_ERROR = "Cannot  use \'catch\' without previous \'try\' statement"
+        FINALLY_ERROR = "Cannot  use \'finally\' without previous \'try\' statement"
         INVALID_ASSIGN = "Expression cannot be an assignment statement"
         INVALID_PAREN = "Used a closing parenthesis \')\' without opening one"
-        MISSING_LPAREN = "Expecting left parenthesis \'(\' at line "
-        MISSING_RPAREN = "Expecting right parenthesis \')\' at line "
-        MISSING_RSQUARE = "Expecting right square bracket \']\' at line "
-        MISSING_OPERAND = "Expecting a value or an identifier at line "
-        MISSING_SEMICOLON = "Expecting a statement terminator \';\' at line "
+        EXPECTING_LPAREN = "Expecting left parenthesis \'(\' at line "
+        EXPECTING_RPAREN = "Expecting right parenthesis \')\' at line "
+        EXPECTING_RSQUARE = "Expecting right square bracket \']\' at line "
+        EXPECTING__LCURLY = "Expecting left curly bracket \'{\' at line "
+        EXPECTING__RCURLY = "Expecting right curly bracket \'}\' at line "
+        EXPECTING_OPERAND = "Expecting a value or an identifier at line "
+        EXPECTING_SEMICOLON = "Expecting a statement terminator \';\' at line "
         EXPECTING_DEC = "Expecting \'[\', \'=\', or \';\' at line "
         EXPECTING_UN = "Expecting \'++\' or \'--\' at line "
+        EXPECTING_OP = "Expecting an operator at line "
+        EXPECTING_SEP = "Expecting a comma \',\' at line "
+        EXPECTING_COLON = "Expecting a colon \':\' at line "
+        EXPECTING_ASSIGN = "Expecting an assignment operator \'=\', \'+=\', \'-=\', \'*=\', \'/=\', \'%=\', \'~=\' at line "
         EXPECTING_IDEN = "Expecting identifier at line "
+        EXPECTING_VAL = "Expecting a value at line "
+        EXPECTING_THEN = "Expecting keyword 'then' after the condition"
+        EXPECTING_UNTIL = "Expecting keyword 'until' after the code block"
+        EXPECTING_ERROR = "Expecting an Error at line " 
+        EXPECTING_CATCH = "Expecting keyword 'catch' after the try statement" 
+        INVALID_EXPR_PAREN = "Expressional parentheses cannot be empty"
         INVALID_VALUE = "Invalid value found at line "
+        THIS_ERROR = "The \"this\" keyword cannot be used as an identifier in this context"
         
-        def __init__(self, prompt: str = None, line_info: str = None) -> None:
+        def __init__(self, prompt: str = None, token: str = None, line_list: list = None) -> None:
             self.prompt = prompt
-            self.line_info = line_info
+            self.token = token
+            self.line_info = int(token.line)
+            self.line_list = line_list
 
         def displayerror(self):
             print(f"\033[91m[SyntaxError]: Syntax analyzer found an error within the source code:\n\t{self.prompt}.")
-            print(f"\t{self.line_info}\033[0m")
+            print(f"\t{self.line_list[self.line_info - 1]}\033[0m")
+            
             exit(1)

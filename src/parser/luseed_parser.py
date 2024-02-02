@@ -31,8 +31,9 @@ class Parser:
     """
     Parses the tokens provided by the syntax analyzer.
     """
-    def __init__(self, tk_list: list):
-        self.tk_list = tk_list
+    def __init__(self, list: list):
+        self.tk_list = list[0]
+        self.line_list = list[1]
         self.idx_ctr = -1
         self.is_done = False
         self.debugger = 0
@@ -73,7 +74,7 @@ class Parser:
         self.parse_error(error, tok)
 
     def parse_error(self, error: str, token: Token):
-        Error.SyntaxError(error, token.line).displayerror()
+        Error.SyntaxError(error, token, self.line_list).displayerror()
 
     def parse(self):
         """
@@ -151,7 +152,7 @@ class Parser:
             self.idx_incr()
             lsquare = curr_tok
             list_val = self.args_list()
-            rsquare = self.look_for(["DLM_RSQUARE"], self.curr_tok, Error.SyntaxError.MISSING_RSQUARE + self.curr_tok.line, True)
+            rsquare = self.look_for(["DLM_RSQUARE"], self.curr_tok, Error.SyntaxError.EXPECTING_RSQUARE + self.curr_tok.line, True)
             self.idx_incr()
             return TreeSegment(lsquare, list_val, rsquare)
 
@@ -169,7 +170,7 @@ class Parser:
             return self.input_expr(curr_tok)
 
         elif curr_tok.token in ["DLM_RPRN", "DLM_TRMNTR"]:
-            self.parse_error(Error.SyntaxError.MISSING_OPERAND, curr_tok)
+            self.parse_error(Error.SyntaxError.EXPECTING_OPERAND, curr_tok)
         
         else:
             self.parse_error(Error.SyntaxError.INVALID_VALUE, curr_tok)
@@ -178,17 +179,17 @@ class Parser:
         """
         Contains the contents of a equation within a parenthesis which cannot be empty
         """
-        self.look_for(["DLM_RPRN"], self.curr_tok, "CANNOT BE EMPTY", False)#### CANNOT BE EMPTY EX. () + 3
+        self.look_for(["DLM_RPRN"], self.curr_tok, Error.SyntaxError.INVALID_EXPR_PAREN, False)#### CANNOT BE EMPTY EX. () + 3
         return self.expr_or()
 
     def expr_paren(self, func, is_op: bool = False):
         """
         Function that handles different parenthetical expressions
         """
-        lparen = self.look_for(["DLM_LPRN"], self.curr_tok, "Expected opening parenthesis", True)############
+        lparen = self.look_for(["DLM_LPRN"], self.curr_tok, Error.SyntaxError.EXPECTING_LPAREN + self.curr_tok.line, True)############
         self.idx_incr()
         res = func()
-        rparen = self.look_for(["DLM_RPRN"], self.curr_tok, f"MISSING RIGHT PARENTHESIS{self.curr_tok} {self.tk_list[self.idx_ctr-2]}", True)################################ CANNOT BE MISSING A RIGHT PARENTHESIS
+        rparen = self.look_for(["DLM_RPRN"], self.curr_tok, Error.SyntaxError.EXPECTING_RPAREN + self.curr_tok.line, True)################################ CANNOT BE MISSING A RIGHT PARENTHESIS
         
         return res if is_op else TreeSegment(lparen, res, rparen)
 
@@ -201,7 +202,7 @@ class Parser:
             return left_node
         
         # ERROR VALUES FOR PARENTHESIS AND VALUE LIST
-        self.look_for(VALUE_LIST, self.curr_tok, f"Invalid operation on value {self.curr_tok}, {self.tk_list[self.idx_ctr-1]}", False) #########CHECKS FOR THE NEXT OPERATOR ERROR IF: 3 3 + 3, IDEN IDEN * IDEN
+        self.look_for(VALUE_LIST, self.curr_tok, Error.SyntaxError.EXPECTING_OP + self.curr_tok.line, False) #########CHECKS FOR THE NEXT OPERATOR ERROR IF: 3 3 + 3, IDEN IDEN * IDEN
 
         while self.curr_tok.token in acc_op:
             op_tok = self.curr_tok
@@ -227,13 +228,13 @@ class Parser:
         self.idx_incr()
 
         if iden_tok.token == "KW_THIS":
-            self.look_for(["DLM_OBJECT"], self.curr_tok, "The \"this\" keyword cannot be used as an identifier in this context", True)
+            self.look_for(["DLM_OBJECT"], self.curr_tok, Error.SyntaxError.THIS_ERROR, True)
 
         if self.curr_tok.token == "DLM_OBJECT":
             left_node = iden_tok
             
             while self.curr_tok.token == "DLM_OBJECT":
-                self.look_for([IDENTIFIER], self.curr_tok, "Missing operand", False)
+                self.look_for([IDENTIFIER], self.curr_tok, Error.SyntaxError.EXPECTING_IDEN + self.curr_tok.line, False)
                 root_node = self.curr_tok
                 right_node = self.obj_atom()
                 left_node = TreeSegment(left_node, root_node, right_node)
@@ -258,7 +259,7 @@ class Parser:
         else:
             self.parse_error(Error.SyntaxError.INVALID_VALUE, self.curr_tok)
 
-        rsquare = self.look_for(["DLM_RSQUARE"],  self.curr_tok, "Expected ']' to close index expression.", True)
+        rsquare = self.look_for(["DLM_RSQUARE"],  self.curr_tok, Error.SyntaxError.EXPECTING_RSQUARE + self.curr_tok.line, True)
         self.idx_incr()
         if self.curr_tok.token == "DLM_LSQUARE":
             res = TreeSegment(lsquare, idx_value, rsquare)
@@ -286,7 +287,7 @@ class Parser:
         """
         Accepted values that can be passed as arguments.
         """
-        self.look_for(["DLM_RPRN"], self.curr_tok, "Unfinished Comma", False)
+        self.look_for(["DLM_RPRN"], self.curr_tok, Error.SyntaxError.EXPECTING_VAL + self.curr_tok.line, False)
         res = self.expr_or()
         return res
 
@@ -326,7 +327,7 @@ class Parser:
         if self.curr_tok.token in DATA_TYPE:
             dataType = self.curr_tok
             self.idx_incr()
-            identifier = self.look_for([IDENTIFIER], self.curr_tok, "Expecting Identifier", True)
+            identifier = self.look_for([IDENTIFIER], self.curr_tok, Error.SyntaxError.EXPECTING_IDEN + self.curr_tok.line, True)
             self.idx_incr()
             return  TreeSegment(None, dataType, identifier)
         
@@ -343,7 +344,7 @@ class Parser:
         Atom that can be used as a property. Ex. TestClass.test <- obj_atom
         """
         self.idx_incr()
-        self.look_for([IDENTIFIER], self.curr_tok, "Expecting Identifier", True)
+        self.look_for([IDENTIFIER], self.curr_tok, Error.SyntaxError.EXPECTING_IDEN + self.curr_tok.line, True)
         return self.rule_iden()
     
     def info_atom(self):
@@ -362,16 +363,16 @@ class Parser:
         """
         Atoms for the swap statement. Can be either 2 or 3 identifiers only.
         """
-        atom_1 = self.look_for([IDENTIFIER], self.curr_tok, "Expected Identifier", True)
+        atom_1 = self.look_for([IDENTIFIER], self.curr_tok, Error.SyntaxError.EXPECTING_IDEN + self.curr_tok.line, True)
         self.idx_incr()
-        sep_1 = self.look_for(["DLM_SPRTR"], self.curr_tok,  "Expected a separator", True)
+        sep_1 = self.look_for(["DLM_SPRTR"], self.curr_tok,  Error.SyntaxError.EXPECTING_SEP + self.curr_tok.line, True)
         self.idx_incr()
-        atom_2 = self.look_for([IDENTIFIER], self.curr_tok, "Expected Identifier", True)
+        atom_2 = self.look_for([IDENTIFIER], self.curr_tok, Error.SyntaxError.EXPECTING_IDEN + self.curr_tok.line, True)
         self.idx_incr()
         if self.curr_tok.token == "DLM_SPRTR":
             sep_2 = self.curr_tok
             self.idx_incr()
-            atom_3 = self.look_for([IDENTIFIER], self.curr_tok, "Expected Identifier", True)
+            atom_3 = self.look_for([IDENTIFIER], self.curr_tok, Error.SyntaxError.EXPECTING_IDEN + self.curr_tok.line, True)
             self.idx_incr()
             return f'{atom_1}, {sep_1}, {atom_2}, {sep_2}, {atom_3}'
         
@@ -382,7 +383,7 @@ class Parser:
         """
         Atoms for the check function.
         """
-        self.look_for([IDENTIFIER], self.curr_tok, "Expecting an Identifier", True)
+        self.look_for([IDENTIFIER], self.curr_tok, Error.SyntaxError.EXPECTING_IDEN + self.curr_tok.line, True)
         iden = self.rule_iden()
 
         if self.curr_tok.token == "DLM_LPRN":
@@ -400,9 +401,9 @@ class Parser:
             data_type = self.curr_tok
             self.idx_incr()
         
-        iden = self.look_for([IDENTIFIER], self.curr_tok, "Expecting an Identifier", True)
+        iden = self.look_for([IDENTIFIER], self.curr_tok, Error.SyntaxError.EXPECTING_IDEN + self.curr_tok.line, True)
         self.idx_incr()
-        self.look_for(OP_ASSIGNMENT.values(), self.curr_tok, "Expecting assignment operation", True)
+        self.look_for(OP_ASSIGNMENT.values(), self.curr_tok, Error.SyntaxError.EXPECTING_ASSIGN + self.curr_tok.line, True)
         init = self.assign_stmnt(iden)
         if self.curr_tok.token in VALUE_LIST or self.curr_tok.token in ["DLM_LPRN", "DLM_LSQUARE", "KW_BOOL_NOT"]:
             expr = self.expr_parse()
@@ -410,7 +411,7 @@ class Parser:
         else:
             self.parse_error(Error.SyntaxError.INVALID_VALUE, self.curr_tok)
 
-        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, "Expecting a delimiter ;", True)
+        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, Error.SyntaxError.EXPECTING_SEMICOLON + self.curr_tok.line, True)
         self.idx_incr()
         if self.curr_tok.token in OP_UNARY.values():
             update = self.unary_expr(None, 0)
@@ -427,7 +428,7 @@ class Parser:
                 self.parse_error(Error.SyntaxError.EXPECTING_UN, self.curr_tok)
 
         else:
-            self.parse_error(Error.SyntaxError.EXPECTING_IDEN, self.curr_tok)
+            self.parse_error(Error.SyntaxError.EXPECTING_IDEN + self.curr_tok.line, self.curr_tok)
 
         condn = TreeSegment(None, expr, delim)
         return TreeSegment(init, condn, update)
@@ -436,7 +437,7 @@ class Parser:
         """
         Possible values that can be and error. This is an identifier since Errors are Classes in python which is where is this based.
         """
-        error = self.look_for([IDENTIFIER], self.curr_tok, "Expected an Identifier", True)
+        error = self.look_for([IDENTIFIER], self.curr_tok, Error.SyntaxError.EXPECTING_IDEN + self.curr_tok.line, True)
         self.idx_incr()
         return error
 
@@ -448,12 +449,12 @@ class Parser:
         if self.curr_tok.token == "WHT_NEWLINE":
             self.idx_incr()
 
-        lcurly = self.look_for(["DLM_LCURLY"], self.curr_tok,  "Missing '{' before code_block", True)
+        lcurly = self.look_for(["DLM_LCURLY"], self.curr_tok,  Error.SyntaxError.EXPECTING__LCURLY + self.curr_tok.line, True)
         self.idx_incr()
         while self.curr_tok.token != "DLM_RCURLY" and not self.is_done:
             sub_stmnt = self.stmnt(is_loop)
 
-        rcurly = self.look_for(["DLM_RCURLY"], self.curr_tok,  "Missing '}' before code_block", True)
+        rcurly = self.look_for(["DLM_RCURLY"], self.curr_tok,  Error.SyntaxError.EXPECTING__RCURLY + self.curr_tok.line, True)
         self.idx_incr()
 
         return TreeSegment(lcurly, sub_stmnt, rcurly)
@@ -467,7 +468,7 @@ class Parser:
 
         for i in stmnt_order:
             self.idx_incr()
-            self.look_for(i[0], self.curr_tok, i[1], i[2])
+            self.look_for(i[0], self.curr_tok, i[1] + self.curr_tok.line, i[2])
             stmnt_list.append(self.curr_tok)
         
         return stmnt_list
@@ -577,6 +578,12 @@ class Parser:
         elif self.curr_tok.token == "KW_ELSE":
             self.parse_error(Error.SyntaxError.ELSE_ERROR, self.curr_tok)
 
+        elif self.curr_tok.token == "KW_CATCH":
+            self.parse_error(Error.SyntaxError.CATCH_ERROR, self.curr_tok)
+
+        elif self.curr_tok.token == "KW_FINALLY":
+            self.parse_error(Error.SyntaxError.FINALLY_ERROR, self.curr_tok)
+
         elif self.curr_tok.token in LIT_DATA:
             self.parse_error(Error.SyntaxError.EXPRESSION_STMNT, self.curr_tok)
 
@@ -617,8 +624,8 @@ class Parser:
         """
         args = self.expr_paren(self.args_list)
         self.idx_incr()
-        self.look_for(OP_ASSIGNMENT.values(), self.curr_tok, "Cannot assign value to an expression", False)
-        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, f"Missing ; here {self.curr_tok}", True)
+        self.look_for(OP_ASSIGNMENT.values(), self.curr_tok, Error.SyntaxError.INVALID_ASSIGN, False)
+        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, Error.SyntaxError.EXPECTING_SEMICOLON + self.curr_tok.line, True)
         self.idx_incr()
         return TreeSegment(identifier, args, delim)
 
@@ -664,9 +671,9 @@ class Parser:
         """
         data_type = self.curr_tok
         self.idx_incr()
-        self.look_for([IDENTIFIER], self.curr_tok, "Expecting an Identifier", True)
+        self.look_for([IDENTIFIER], self.curr_tok, Error.SyntaxError.EXPECTING_IDEN + self.curr_tok.line, True)
         res = self.expr_operation(self.dec_atom, ["DLM_SPRTR"], 'L')
-        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok,  f"Expected ';' after declaration {self.curr_tok}", True)
+        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, Error.SyntaxError.EXPECTING_SEMICOLON + self.curr_tok.line, True)
         self.idx_incr()
         return TreeSegment(data_type, res, delim)
 
@@ -686,7 +693,7 @@ class Parser:
         """
         kw_disp = self.curr_tok
         expr = self.input_expr(kw_disp)
-        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, "Expected ; here", True)
+        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, Error.SyntaxError.EXPECTING_SEMICOLON + self.curr_tok.line, True)
         self.idx_incr()
         return TreeSegment(None, expr, delim)
     
@@ -696,7 +703,7 @@ class Parser:
         """
         op = self.curr_tok
         self.idx_incr()
-        self.look_for(["DLM_TRMNTR", "WHT_NEWLINE"], self.curr_tok, "Expecting a value after operator", False)
+        self.look_for(["DLM_TRMNTR", "WHT_NEWLINE"], self.curr_tok, Error.SyntaxError.EXPECTING_VAL + self.curr_tok.line, False)
         value = self.expr_parse() if is_assign else self.expr_or()
         return TreeSegment(dest_value, op, value)
 
@@ -705,7 +712,7 @@ class Parser:
         Parses the assignment statements.
         """
         expr = self.assign_expr(dest_value)
-        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, f"Missing ; symbol {self.curr_tok}", True)
+        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, Error.SyntaxError.EXPECTING_SEMICOLON + self.curr_tok.line, True)
         self.idx_incr()
         return TreeSegment (None, expr, delim)
 
@@ -715,11 +722,11 @@ class Parser:
         """
         kw_func = self.curr_tok
         self.idx_incr()
-        iden = self.look_for([IDENTIFIER], self.curr_tok, "Expecting an Identifier", True)
+        iden = self.look_for([IDENTIFIER], self.curr_tok, Error.SyntaxError.EXPECTING_IDEN + self.curr_tok.line, True)
         self.idx_incr()
         param = self.expr_paren(self.param_list)
         self.idx_incr()
-        colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, "Expecting : symbol", True)
+        colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, Error.SyntaxError.EXPECTING_COLON + self.curr_tok.line, True)
         sub_stmnt = self.code_block()
         header = TreeSegment(iden, param, colon)
         return TreeSegment(kw_func, header, sub_stmnt)
@@ -733,10 +740,10 @@ class Parser:
         if with_condn:
             condn_expr = self.expr_paren(self.atom_paren)
             self.idx_incr()
-            kw_then = self.look_for(["KW_THEN"], self.curr_tok, "Expecting then keyword after condition", True)
+            kw_then = self.look_for(["KW_THEN"], self.curr_tok, Error.SyntaxError.EXPECTING_THEN, True)
             self.idx_incr()
 
-        colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, "Expecting : symbol", True)
+        colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, Error.SyntaxError.EXPECTING_COLON + self.curr_tok.line, True)
         sub_stmnt = self.code_block()
         # For if/elif statements
         if with_condn:
@@ -793,7 +800,7 @@ class Parser:
         self.idx_incr()
         args = self.expr_paren(self.for_expr)
         self.idx_incr()
-        colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, "Expecting : after arguments", True)
+        colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, Error.SyntaxError.EXPECTING_COLON + self.curr_tok.line, True)
         loop_body = self.code_block(True)
 
         header = TreeSegment(kw_for, args, colon)
@@ -807,7 +814,7 @@ class Parser:
         self.idx_incr()
         condn = self.expr_paren(self.atom_paren)
         self.idx_incr()
-        colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, "Expected : after arguments", True)
+        colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, Error.SyntaxError.EXPECTING_COLON + self.curr_tok.line, True)
         loop_body = self.code_block(True)
         header = TreeSegment(kw_while, condn, colon)
         return TreeSegment(None, header, loop_body)
@@ -818,15 +825,15 @@ class Parser:
         """
         kw_do = self.curr_tok
         self.idx_incr()
-        colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, "Expected : after arguments", True)
+        colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, Error.SyntaxError.EXPECTING_COLON + self.curr_tok.line, True)
         loop_body = self.code_block(True)
         if self.curr_tok.token == "WHT_NEWLINE":
             self.idx_incr()
-        kw_until = self.look_for(["KW_LOOP_UNTIL"], self.curr_tok, f"Expected 'Until' keyword {self.curr_tok}", True)
+        kw_until = self.look_for(["KW_LOOP_UNTIL"], self.curr_tok, Error.SyntaxError.EXPECTING_UNTIL, True)
         self.idx_incr()
         condn = self.expr_paren(self.atom_paren)
         self.idx_incr()
-        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, "Expected ;", True)
+        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, Error.SyntaxError.EXPECTING_SEMICOLON + self.curr_tok.line, True)
         self.idx_incr()
         header = TreeSegment(None, kw_do, colon)
         footer = TreeSegment(kw_until, condn, delim)
@@ -840,7 +847,7 @@ class Parser:
         self.idx_incr()
         args = self.expr_paren(self.args_atom)
         self.idx_incr()
-        colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, "Expected : here", True)
+        colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, Error.SyntaxError.EXPECTING_COLON + self.curr_tok.line, True)
         loop_body = self.code_block(True)
         header = TreeSegment(kw_repeat, args, colon)
         return TreeSegment(None, header, loop_body)
@@ -852,13 +859,13 @@ class Parser:
         kw_class = self.curr_tok
         parent = None
         self.idx_incr()
-        iden = self.look_for([IDENTIFIER], self.curr_tok, "Expecting Identifier", True)
+        iden = self.look_for([IDENTIFIER], self.curr_tok, Error.SyntaxError.EXPECTING_IDEN + self.curr_tok.line, True)
         self.idx_incr()
         if self.curr_tok.token == "DLM_LPRN":
             parent = self.expr_paren(self.rule_iden)
             self.idx_incr()
         
-        colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, f"Expecting : here {self.curr_tok}", True)
+        colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, Error.SyntaxError.EXPECTING_COLON + self.curr_tok.line, True)
         class_body = self.code_block(False)
         class_name = TreeSegment(iden, parent, colon)
         return TreeSegment(kw_class, class_name, class_body)
@@ -871,7 +878,7 @@ class Parser:
         self.idx_incr()
         param_list = self.expr_paren(self.param_list)
         self.idx_incr()
-        colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, "Expecting : after parameter list", True)
+        colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, Error.SyntaxError.EXPECTING_COLON + self.curr_tok.line, True)
         sub_stmnt = self.code_block()
         header = TreeSegment(kw_init, param_list, colon)
         return TreeSegment(None, header, sub_stmnt)
@@ -882,7 +889,7 @@ class Parser:
         """
         kw = self.curr_tok
         self.idx_incr()
-        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, "Expected ; here", True)
+        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, Error.SyntaxError.EXPECTING_SEMICOLON + self.curr_tok.line, True)
         self.idx_incr()
         return  TreeSegment(None, kw, delim)
     
@@ -893,13 +900,13 @@ class Parser:
         if un_type == 0:
             unary_op = self.curr_tok
             self.idx_incr()
-            iden = self.look_for([IDENTIFIER], self.curr_tok, "EXPECTED IDENTIFIER HERE", True)
+            iden = self.look_for([IDENTIFIER], self.curr_tok, Error.SyntaxError.EXPECTING_IDEN + self.curr_tok.line, True)
             self.idx_incr()
             return TreeSegment(None, unary_op, iden)
 
         elif un_type == 1:
             iden = iden_value
-            unary_op = self.look_for(OP_UNARY.values(), self.curr_tok, "Expected  Unary Operator Here", True)
+            unary_op = self.look_for(OP_UNARY.values(), self.curr_tok, Error.SyntaxError.EXPECTING_UN + self.curr_tok.line, True)
             self.idx_incr()
             return TreeSegment(None, iden, unary_op)
 
@@ -908,7 +915,7 @@ class Parser:
         Parses the unary statements.
         """
         expr = self.unary_expr(iden_value, un_type)
-        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, "EXPECTED ; HERE", True)
+        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, Error.SyntaxError.EXPECTING_SEMICOLON + self.curr_tok.line, True)
         self.idx_incr()
         return TreeSegment(None, expr, delim)
     
@@ -918,11 +925,11 @@ class Parser:
         """
         kw_raise = self.curr_tok
         self.idx_incr()
-        error = self.look_for([IDENTIFIER], self.curr_tok,  "Expected Error Identifier Here", True)
+        error = self.look_for([IDENTIFIER], self.curr_tok, Error.SyntaxError.EXPECTING_ERROR + self.curr_tok.line, True)
         self.idx_incr()
         args = self.expr_paren(self.expr_or)
         self.idx_incr()
-        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, "Expecting ; here", True)
+        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, Error.SyntaxError.EXPECTING_SEMICOLON + self.curr_tok.line, True)
         stmt = TreeSegment(kw_raise, error, args)
         return TreeSegment(None, stmt, delim)
 
@@ -932,7 +939,7 @@ class Parser:
         """
         kw_try = self.curr_tok
         self.idx_incr()
-        colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, "Expected : Here", True)
+        colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, Error.SyntaxError.EXPECTING_COLON + self.curr_tok.line, True)
         sub_stmnt = self.code_block()
         return TreeSegment(kw_try, colon, sub_stmnt)
 
@@ -940,11 +947,11 @@ class Parser:
         """
         Parses the catch block of a try...catch statement.
         """   
-        kw_catch = self.look_for(["KW_CATCH"], self.curr_tok, "Expected catch block Here", True)
+        kw_catch = self.look_for(["KW_CATCH"], self.curr_tok, Error.SyntaxError.EXPECTING_CATCH, True)
         self.idx_incr()
         error_val = self.expr_paren(self.error_atom)
         self.idx_incr()
-        colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, "Expected : Here", True)
+        colon = self.look_for(["DLM_CODEBLK"], self.curr_tok, Error.SyntaxError.EXPECTING_COLON + self.curr_tok.line, True)
         sub_stmnt = self.code_block()
 
         catch_block = TreeSegment(kw_catch, error_val, colon)
@@ -984,7 +991,7 @@ class Parser:
         """
         cast_type = self.expr_paren(self.cast_expr)
         self.idx_incr()
-        self.look_for([IDENTIFIER], self.curr_tok, "Expecting Identifier", True)
+        self.look_for([IDENTIFIER], self.curr_tok, Error.SyntaxError.EXPECTING_IDEN + self.curr_tok.line, True)
         iden = self.rule_iden()
         return TreeSegment(None, cast_type, iden)
     
@@ -996,7 +1003,7 @@ class Parser:
         self.idx_incr()
         args = self.expr_paren(self.info_atom)
         self.idx_incr()
-        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, "Expecting ; here", True)
+        delim = self.look_for(["DLM_TRMNTR"], Error.SyntaxError.EXPECTING_SEMICOLON + self.curr_tok.line, True)
         self.idx_incr()
         return TreeSegment(kw_info, args, delim)
 
@@ -1008,7 +1015,7 @@ class Parser:
         self.idx_incr()
         iden_list = self.expr_paren(self.swap_atom)
         self.idx_incr()
-        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, "Expected ; here", True)
+        delim = self.look_for(["DLM_TRMNTR"], Error.SyntaxError.EXPECTING_SEMICOLON + self.curr_tok.line, True)
         self.idx_incr()
         return TreeSegment(kw_swap, iden_list, delim)
 
@@ -1020,7 +1027,7 @@ class Parser:
         self.idx_incr()
         args_val = self.expr_paren(self.check_atom)
         self.idx_incr()
-        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, "Expected ; here", True)
+        delim = self.look_for(["DLM_TRMNTR"], self.curr_tok, Error.SyntaxError.EXPECTING_SEMICOLON + self.curr_tok.line, True)
         self.idx_incr()
         return TreeSegment(kw_check, args_val, delim)
 #endregion

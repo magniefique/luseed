@@ -50,6 +50,10 @@ class Lexer(object):
         self.comment_line = 0
         self.comment_start = 0
         
+        # Lines in the code
+        self.code_str = ""
+        self.code_line = []
+
         # Token list refers to the list of tokenized lexemes found in the file
         self.tokenized_lexemes = []
 
@@ -71,6 +75,9 @@ class Lexer(object):
         self.line_count = 1
 
         for char in self.source_code:
+            if char not in ["\n", "\t"]:
+                self.code_str += char
+
             self.char_count += 1
 
             # Checks for whitespace characters
@@ -108,6 +115,8 @@ class Lexer(object):
         self.reset_buffers("oplexeme_2")
 
         self.error_check(1)
+        self.code_line.append(self.code_str.lstrip())
+        self.code_str = ""
 
     def parse_alnum(self, char: str):
         """
@@ -240,10 +249,13 @@ class Lexer(object):
 
             self.tokenize(char)
 
+            self.code_line.append(self.code_str.lstrip())
+
             # Increments line count for new line and resets char cout
             self.line_count += 1
             self.char_count = 0
-        
+            self.code_str = ""
+
         elif char == " " and not self.isString and not self.singleComment and not self.multiComment:
             # Tokenizes lexemes if they are not empty
             self.reset_buffers("lexeme")
@@ -462,7 +474,6 @@ class Lexer(object):
         "pdf" = Prints values in .pdf file.\n
         "all" = Prints values in all formats.
         """
-
         if type == "console":
             print(f"\n\033[1mSYMBOL TABLE for {self.file_path}\033[0m")
             print(f"Total Tokenized Lexemes\t\t: {len(self.tokenized_lexemes)}")
@@ -590,4 +601,4 @@ class Lexer(object):
         """
         Returns the tokens found in the file.
         """
-        return self.tokenized_lexemes
+        return [self.tokenized_lexemes, self.code_line]

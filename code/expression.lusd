@@ -1,6 +1,6 @@
 main():
 {
-    class Helping(Helping2):
+    class Helping(Helping2:
     {
         int var1 = 'cd';
     }
