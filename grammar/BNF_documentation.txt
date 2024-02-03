@@ -89,9 +89,8 @@ Note: This is not 1 to 1 with the code since each lexeme in this document will b
 <NOISEWORDS> ::= boolean | character | constant | integer | information | initialize | object | string
 
 # DECLARATION STATEMENTS
-<DEC_STMNT> ::= <ACCESS_MOD>? <DATA_TYPE> <IDENTIFIER>(, <IDENTIFIER>)*;
-              | <ACCESS_MOD>? <DATA_TYPE> <IDENTIFIER> = <VALUE>(, <IDENTIFIER> = <VALUE>)*;
-              | <ACCESS_MOD>? <IDENTIFIER> list[<VALUE>]([VALUE])* = <LIST>
+<DEC_STMNT> ::= <ACCESS_MOD>? <DATA_TYPE> <DEC_EXPR>(, <DEC_EXPR>)*;
+<DEC_EXPR> ::= <IDENTIFIER>| <IDENTIFIER> = <VALUE> | list[<VALUE>]([VALUE])* = <LIST> | list[<VALUE>]([VALUE])*
 <LIST> ::= [<VALUE>(, <VALUE>)*]
 <VALUE> ::= <ATOM> | <EXPR>
 
@@ -157,7 +156,7 @@ Note: This is not 1 to 1 with the code since each lexeme in this document will b
               | <ACCESS_MOD>? class <IDENTIFIER>(<IDENTIFIER>):{<CLASS_CNSTRCT> <STMNT_LIST>}
               | <ACCESS_MOD>? class <IDENTIFIER>(<IDENTIFIER>):{<STMNT_LIST>}
 
-<CLASS_CNSTRCT> ::= func init(this, <PARAM_LIST>):{<STMNT_LIST>}
+<CLASS_CNSTRCT> ::= init(this, <PARAM_LIST>):{<STMNT_LIST>}
 <CLASS_METHOD> ::= <ACCESS_MOD>? func <IDENTIFIER>(self, <PARAM_LIST>):{<STMNT_LIST>}
 <PROPERTY> ::= <IDENTIFIER>.<IDENTIFIER>
              | this.<IDENTIFIER>
@@ -180,7 +179,7 @@ Note: This is not 1 to 1 with the code since each lexeme in this document will b
 
 # RETURN STATEMENT
 <RETURN_STMNT> ::= return
-                 | return VALUE(, VALUE)*;
+                 | return VALUE;
 <VALUE> ::= <ATOM> | <EXPR>
 
 # SWAP STATMENT

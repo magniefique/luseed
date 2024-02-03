@@ -75,9 +75,11 @@ class Parser:
         """
         Starts the parsing process.
         """
+        
         init_time = time.time()
         while not self.is_done:
             parse_res = self.stmnt()
+            print(f"\n| - Abstract Syntax Tree - |")
             print(parse_res)
         final_time = time.time()
         elapsed_time = final_time - init_time
@@ -513,15 +515,12 @@ class Parser:
                 res = None
                 return res
 
-        # Mediator for the Simple Statements, Function Calls, and Method Calls.
         elif self.curr_tok.token in [IDENTIFIER, "KW_THIS"]:
             curr_stmnt = self.iden_stmnt()
 
-        # Mediator for the import statements
         elif self.curr_tok.token in ["KW_IMPORT", "KW_FROM"]:
             curr_stmnt = self.imprt_stmnt()
     
-        # Mediator for the main function
         elif self.curr_tok.token in ["KW_MAIN"]:
             curr_stmnt = self.prog_stmnt()
 
