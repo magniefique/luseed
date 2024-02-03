@@ -579,7 +579,7 @@ class Parser:
     def call_expr(self, identifier):
         """
         This is for call statements such as function calls and method calls.
-        Ex. (value, value, value)
+        Ex. (args_list)
         """
         args = self.expr_paren(self.args_list)
         self.idx_incr()
@@ -588,7 +588,7 @@ class Parser:
     def args_list(self):
         """
         List of arguments that is passed in a method call/function call/class instantiation.
-        (args_atom, args_atom, ...)
+        args_atom, args_atom, ...
         """
         arg_list = self.curr_tok
         if arg_list.token in VALUE_LIST or arg_list.token in ["DLM_LPRN", "DLM_LSQUARE", "KW_BOOL_NOT", "KW_THIS"]:
