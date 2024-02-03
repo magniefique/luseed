@@ -105,7 +105,7 @@ class Error:
         def displayerror(self):
             print(f"\033[91m[SyntaxError]: Syntax analyzer found an error within the source code:\n\t{self.prompt}.")
             print(f"\033[0m\t{self.line_list[self.line_info - 1]}\033[0m")
-            
+
             if self.token.token not in ["WHT_NEWLINE", "EOF"]:
                 i = self.line_list[self.line_info - 1].rfind(self.token.lexeme)
                 spaces = i * " "

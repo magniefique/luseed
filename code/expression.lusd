@@ -1,3 +1,5 @@
+from lib import all;
+
 main():
 {
     const int var1 = 5;
@@ -25,9 +27,6 @@ main():
     elif (x < 5) then:
     {
         display("HI");
-
-
-
     }
     else:
     {
@@ -43,7 +42,7 @@ main():
 
     display(x);
 
-    for(int i = 5; i < 10; i--):
+    loop Identifier: for(int i = 5; i < 10; i--):
     {
         display("Ilabyoumigs");
     }
@@ -56,12 +55,14 @@ main():
     do:
     {
         pass;
+        break IDETIFIETR;
+        break;
     }
     until(x > 5);
 
     foreach(int i in list1):
     {
-        display(i);
+
     }
 
     func FUNC1():
@@ -103,7 +104,7 @@ class TestClass:
     class1var2 = 10.5f;
 }
 
-public class SayHi:
+class SayHi(Parent):
 {
     init(this, str name, str message):
     {

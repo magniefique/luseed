@@ -2,7 +2,8 @@ from lexer.luseed_tokens import *
 from luseed_error import *
 
 # PRECEDENCE OF OPERATIONS (HIGHER TO LOWER)
-EXPR_EXPO   = ["OP_EXPO"]
+# ATOM
+EXPR_EXPO   = ["OP_EXPO"] 
 EXPR_UN     = ["OP_POS", "OP_NEG", "KW_BOOL_NOT"]
 EXPR_MUL    = ["OP_MULTIPLY", "OP_MUL", "OP_DIVD", "OP_MOD", "OP_FLRDIVD"]
 EXPR_ADD    = ["OP_PLUS", "OP_MINUS"]
@@ -39,4 +40,4 @@ MAIN_STMNT = [
                 [["DLM_LPRN"], Error.SyntaxError.EXPECTING_LPAREN, True],
                 [["DLM_RPRN"], Error.SyntaxError.EXPECTING_RPAREN, True],
                 [["DLM_CODEBLK"], Error.SyntaxError.EXPECTING_COLON, True]
-             ]
+             ] 
