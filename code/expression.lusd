@@ -115,7 +115,11 @@ class SayHi(Parent):
 
     public func sayName(this):
     {
-        display(this.name);
+        display (this.name);
+        for(i = 5; (i<5) and (i>10); i+= 10):
+        {
+            return 5 + 3;
+        }
     }
 
     public func sayMes(this, str name):

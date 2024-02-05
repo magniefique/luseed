@@ -25,6 +25,9 @@ class TreeSegment:
         elif self.right_node == None and self.left_node == None:
             return f'{self.root_node}'
 
+        elif self.left_node == None and self.root_node == None:
+            return f'{self.right_node}'
+
         else:
             return f'({self.left_node}, {self.root_node}, {self.right_node})'
     
@@ -365,7 +368,8 @@ class Parser:
                 const = None
 
             curr_stmnt = self.dec_stmnt()
-            curr_stmnt = TreeSegment(None, const, curr_stmnt)
+            if const != None:
+                curr_stmnt = TreeSegment(None, const, curr_stmnt)
 
         elif self.curr_tok.token in ["KW_DISPLAY", "KW_ASK"]:
             curr_stmnt = self.io_stmnt()
@@ -457,7 +461,9 @@ class Parser:
                     const = None
 
                 curr_stmnt = self.dec_stmnt()
-                curr_stmnt = TreeSegment(None, const, curr_stmnt)
+                if const != None:
+                    curr_stmnt = TreeSegment(None, const, curr_stmnt)
+
                 curr_stmnt = TreeSegment(None, modifier, curr_stmnt)
             
             elif self.curr_tok.token == "KW_FUNC":

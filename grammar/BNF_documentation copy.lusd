@@ -15,7 +15,7 @@ Note: This is not 1 to 1 with the code since each lexeme in this document will b
 <CHARACTERSET> ::= <ALNUM> | <SPECIAL_CHAR>
 
 # IDENTIFIER
-<IDENTIFIER> ::= <ALPHABET><VALID_CHAR>*<ALNUM>
+<IDENTIFIER> ::= <ALPHABET><VALID_CHAR>*<ALNUM> 
 <VALID_CHAR> ::= <ALNUM> | <UNDSC>
 <ALNUM> ::= <ALPHABET> | <DIGITS>
 <ALPHABET> ::= <LOWERC> | <UPPERC>
@@ -29,21 +29,20 @@ Note: This is not 1 to 1 with the code since each lexeme in this document will b
                 | # | @ | - | ` | <UNDSC> | <DELIMITERS> | <OP_ARITH_SNGLE> | <OP_RELATION_SNGLE> | <WHITESPACES>
 
 # OPERATORS
-    <OP_ASSIGNMENT> ::= = | += | -= | *= | /= | %= | ~=
-    <OP_ARITHMETIC> ::= <OP_ARITH_SNGLE> | **
-    <OP_ARITH_SNGLE> ::= <OP_ARITH_M> | <OP_ARITH_A> 
-    <OP_ARITH_M> ::= * | / | ~ | %
-    <OP_ARITH_A> ::= + | -
-    <OP_UNARY> ::= <OP_ARITH_A> | <OP_UNARY_S>
-    <OP_UNARY_M> ::= ++ | -- 
-    <OP_RELATION> ::= <OP_RELATION_E> | <OP_RELATION_R>
-    <OP_RELATION_E> ::= == | !=
-    <OP_RELATION_R> ::= <OP_RELATION_SNGLE> | >= | <=
-    <OP_RELATION_SNGLE> ::= > | <
-    <OP_BOOLEAN> ::= not | and | or            
-    <DELIMITERS> ::= ; | : | { | } | [ | ] | ( | ) | , | .              
-    <WHITESPACES> ::= <space> | <newline>
-#endregion 
+<OP_ASSIGNMENT> ::= = | += | -= | *= | /= | %= | ~=
+<OP_ARITHMETIC> ::= <OP_ARITH_SNGLE> | **
+<OP_ARITH_SNGLE> ::= <OP_ARITH_M> | <OP_ARITH_A> 
+<OP_ARITH_M> ::= * | / | ~ | %
+<OP_ARITH_A> ::= + | -
+<OP_UNARY> ::= <OP_ARITH_A> | <OP_UNARY_S>
+<OP_UNARY_M> ::= ++ | -- 
+<OP_RELATION> ::= <OP_RELATION_E> | <OP_RELATION_R>
+<OP_RELATION_E> ::= == | !=
+<OP_RELATION_R> ::= <OP_RELATION_SNGLE> | >= | <=
+<OP_RELATION_SNGLE> ::= > | <
+<OP_BOOLEAN> ::= not | and | or            
+<DELIMITERS> ::= ; | : | { | } | [ | ] | ( | ) | , | .              
+<WHITESPACES> ::= <space> | <newline>
 
 # DATA TYPES
 <DATA_TYPE> ::= float | double | <DATA_INT> | <DATA_CHAR> 
