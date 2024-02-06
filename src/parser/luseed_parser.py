@@ -43,6 +43,9 @@ class Parser:
         self.idx_incr()
     
     def idx_incr(self):
+        """
+        Increments the value of the Index Counter and sets the current token.
+        """
         self.idx_ctr += 1
         if self.idx_ctr < len(self.tk_list):
             self.curr_tok = self.tk_list[self.idx_ctr]
@@ -193,7 +196,7 @@ class Parser:
         Contains the contents of a equation within a parenthesis which cannot be empty. Used for expressions
         (<EXPR>)
         """
-        self.look_for(["DLM_RPRN"], self.curr_tok, Error.SyntaxError.INVALID_EXPR_PAREN, False)#### CANNOT BE EMPTY EX. () + 3
+        self.look_for(["DLM_RPRN"], self.curr_tok, Error.SyntaxError.INVALID_EXPR_PAREN, False)
         return self.expr_or()
 
     def expr_paren(self, func, is_op: bool = False):
@@ -204,10 +207,10 @@ class Parser:
         Ex. For for loop the specified atoms are (<INIT> <CONDN> <UPDATE>)
             Foe a display statement specified atoms are (<VALUE>(, <VALUE>)*)
         """
-        lparen = self.look_for(["DLM_LPRN"], self.curr_tok, Error.SyntaxError.EXPECTING_LPAREN + self.curr_tok.line, True)############
+        lparen = self.look_for(["DLM_LPRN"], self.curr_tok, Error.SyntaxError.EXPECTING_LPAREN + self.curr_tok.line, True)
         self.idx_incr()
         res = func()
-        rparen = self.look_for(["DLM_RPRN"], self.curr_tok, Error.SyntaxError.EXPECTING_RPAREN + self.curr_tok.line, True)################################ CANNOT BE MISSING A RIGHT PARENTHESIS
+        rparen = self.look_for(["DLM_RPRN"], self.curr_tok, Error.SyntaxError.EXPECTING_RPAREN + self.curr_tok.line, True)
         
         return res if is_op else TreeSegment(lparen, res, rparen)
 
@@ -219,7 +222,7 @@ class Parser:
         if self.curr_tok.token in ["DLM_TRMNTR", "WHT_NEWLINE"]:
             return left_node
 
-        self.look_for(VALUE_LIST, self.curr_tok, Error.SyntaxError.EXPECTING_OP + self.curr_tok.line, False) #########CHECKS FOR THE NEXT OPERATOR ERROR IF: 3 3 + 3, IDEN IDEN * IDEN
+        self.look_for(VALUE_LIST, self.curr_tok, Error.SyntaxError.EXPECTING_OP + self.curr_tok.line, False) 
 
         while self.curr_tok.token in acc_op:
             op_tok = self.curr_tok 
