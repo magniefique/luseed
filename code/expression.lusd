@@ -2,7 +2,7 @@ from lib import all;
 
 main():
 {
-    const int var1 = 5;
+    //const int var1 = 5;
     public int var1 = 5;
     string hello = 5;
 

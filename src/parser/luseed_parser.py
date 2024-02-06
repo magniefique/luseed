@@ -47,6 +47,8 @@ class Parser:
         if self.idx_ctr < len(self.tk_list):
             self.curr_tok = self.tk_list[self.idx_ctr]
             self.look_for(["UNKNOWN_TOKEN"], self.curr_tok, Error.SyntaxError.UNKNOWN_TOKEN + self.curr_tok.line, False)
+            if self.curr_tok.token in [CMNT_SINGLE, CMNT_MULTI]:
+                self.idx_incr()
             
         else:
             self.is_done = True
