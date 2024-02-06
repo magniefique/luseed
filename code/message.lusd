@@ -1,0 +1,8 @@
+
+// For Sir Mon ~
+func thankYou(str message):
+{
+    display(message);
+}
+
+thankYou("Thank you for being a wonderful, understanding, and caring professor, sir Mon! Thank you for guiding us through this sem.");

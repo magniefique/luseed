@@ -1,0 +1,4 @@
+try:
+    x = 2.00 + "Hello"
+except Test:
+    x += 5
