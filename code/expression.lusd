@@ -16,6 +16,13 @@ main():
     display(IDENTI);
     display(" ");
 
+    func thankYou(str message):
+    {
+        display(message);
+    }
+
+    thankYou("Thank you for being a wonderful, understanding, and caring professor, sir Mon!");
+
     if(x == 5) then:{
         x++;
     }
@@ -62,7 +69,7 @@ main():
 
     foreach(int i in list1):
     {
-
+        --x;
     }
 
     func FUNC1():
@@ -129,4 +136,3 @@ class SayHi(Parent):
 }
 
 obj NewObj = SayHi("Gheru", "Hello ");
-
