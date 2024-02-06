@@ -139,7 +139,3 @@ class SayHi(Parent):
 }
 
 obj NewObj = SayHi("Gheru", "Hello ");
-
-// Expression
-int i = 5
-int j += 10;
