@@ -1,4 +1,10 @@
 ![luseed](https://github.com/magniefique/luseed/assets/132038523/f1a00acd-934e-41fd-8bc6-69cf789992fe)
+# 🚧 CURRENTLY IN DEVELOPMENT PHASE 🚧
+The programming language, as of now, is capable of the following functionalities:
+- Reading .lsed file (unique source code file of luseed)
+- Lexical Analysis
+- Syntactical Analysis (Unfinished Parse Tree)
+
 # 🌱 About
 A beginner friendly programming language without sacrificing syntactical elements. This language is made in python.
 
